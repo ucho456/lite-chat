@@ -12,18 +12,11 @@ const Welcome = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("welcomeのuseEffect");
     const unsubscribe = auth.onAuthStateChanged((loginUser) => {
-      if (loginUser) {
-        dispatch(
-          login({
-            uid: loginUser.uid,
-            name: loginUser.displayName,
-            photo: loginUser.photoURL,
-          })
-        );
-      } else {
-        dispatch(logout());
-      }
+      loginUser
+        ? dispatch(login({ uid: loginUser.uid, name: "", photo: "" }))
+        : dispatch(logout());
     });
     return () => {
       unsubscribe();
