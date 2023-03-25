@@ -14,6 +14,9 @@ dist-ssr
 
 # Editor directories and files
 .firebase
+docker/firebase/bin
+docker/firebase/config
+docker/firebase/src
 .env
 .idea
 .DS_Store

@@ -8,8 +8,29 @@ services:
       - .:/app:cached
     ports:
       - "5173:5173"
+      - "24678:24678"
     tty: true
+    environment:
+      - VITE_USE_EMULATOR=true
     command: sh -c "npm install && npm run dev"
+  firebase:
+    container_name: firebase
+    build: ./docker/firebase
+    volumes:
+      - ./.firebaserc:/opt/firebase/.firebaserc
+      - ./firebase.json:/opt/firebase/firebase.json
+      - ./firestore.rules:/opt/firebase/firestore.rules
+      - ./docker/firebase/bin/:/root/.cache:cached
+      - ./docker/firebase/config/:/root/.config:cached
+      - ./docker/firebase/src:/opt/firebase/
+    ports:
+      - 9099:9099
+      - 8080:8080
+      - 5050:5050
+      - 4000:4000
+    tty: true
+    working_dir: /opt/firebase
+    command: firebase emulators:start --import=./.emulator --export-on-exit
 
 volumes:
   node_modules:
