@@ -3,7 +3,7 @@ import { NavigationGuard } from "./NavigationGuard";
 
 import Chat from "../components/chat/Chat";
 import ErrorPage from "../components/error/ErrorPage";
-import Overview from "../components/overview/Overview";
+import Welcome from "../components/welcome/Welcome";
 
 const isAuth = () => {
   return true;
@@ -12,7 +12,7 @@ const isAuth = () => {
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <NavigationGuard beforeEnter={isAuth} redirectPath="/overview" />,
+    element: <NavigationGuard beforeEnter={isAuth} redirectPath="/welcome" />,
     errorElement: <ErrorPage />,
     children: [
       {
@@ -22,7 +22,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/overview",
-    element: <Overview />,
+    path: "/welcome",
+    element: <Welcome />,
   },
 ]);
