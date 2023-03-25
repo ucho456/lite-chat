@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  react-app:
+    container_name: react-app
+    build: ./docker/react
+    volumes:
+      - .:/app:cached
+    ports:
+      - "5173:5173"
+    tty: true
+    command: sh -c "npm install && npm run dev"
+
+volumes:
+  node_modules:
