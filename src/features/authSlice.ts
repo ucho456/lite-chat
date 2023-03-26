@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: InitialAuthState = {
   uid: null,
@@ -8,7 +8,7 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    signIn: (state, action) => {
+    signIn: (state, action: PayloadAction<InitialAuthState["uid"]>) => {
       state.uid = action.payload;
     },
     signOut: (state) => {
