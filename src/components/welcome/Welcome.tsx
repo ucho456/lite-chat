@@ -4,7 +4,7 @@ import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../firebase";
 import "./Welcome.scss";
 import { useAppDispatch } from "../../app/hooks";
-import { login, logout } from "../../features/userSlice";
+import { signIn, signOut } from "../../features/authSlice";
 import { useNavigate } from "react-router-dom";
 
 const Welcome = () => {
@@ -12,18 +12,17 @@ const Welcome = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("welcomeのuseEffect");
     const unsubscribe = auth.onAuthStateChanged((loginUser) => {
       loginUser
-        ? dispatch(login({ uid: loginUser.uid, name: "", photo: "" }))
-        : dispatch(logout());
+        ? dispatch(signIn({ uid: loginUser.uid }))
+        : dispatch(signOut());
     });
     return () => {
       unsubscribe();
     };
   }, [dispatch]);
 
-  const signIn = async () => {
+  const handleSignIn = async () => {
     await signInWithPopup(auth, provider).catch((err) => {
       alert(err.message);
     });
@@ -32,7 +31,7 @@ const Welcome = () => {
 
   return (
     <div>
-      <Button onClick={signIn}>始める</Button>
+      <Button onClick={handleSignIn}>始める</Button>
     </div>
   );
 };

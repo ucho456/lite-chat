@@ -6,8 +6,8 @@ import ErrorPage from "../components/error/ErrorPage";
 import Welcome from "../components/welcome/Welcome";
 
 const isAuth = (): boolean => {
-  const user = useAppSelector((state) => state.user);
-  return user ? true : false;
+  const uid = useAppSelector((state) => state.auth.uid);
+  return uid ? true : false;
 };
 
 export const router = createBrowserRouter([
