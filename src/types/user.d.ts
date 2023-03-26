@@ -5,5 +5,10 @@ type User = {
 };
 
 type InitialUserState = {
-  user: null | User;
+  user: User | null;
+};
+
+type InputUser = {
+  name: User.name;
+  photo: User.photo;
 };

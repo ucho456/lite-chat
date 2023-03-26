@@ -1,40 +1,33 @@
-import { Button } from "@mui/material";
 import "./Chat.scss";
-import { auth, db } from "../../firebase";
-import { useNavigate } from "react-router-dom";
+import { db } from "../../firebase";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useEffect } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { userConverter } from "../../utils/converter";
-import { login } from "../../features/userSlice";
+import { updateUser } from "../../features/userSlice";
+import ChatDialog from "./ChatDialog";
 
 const Chat = () => {
-  const user = useAppSelector((state) => state.user);
+  const uid = useAppSelector((state) => state.auth.uid);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (user) {
+    if (uid) {
       const fetchUser = async () => {
-        const uRef = doc(db, "users", user.uid).withConverter(userConverter);
-        const uSnap = await getDoc(uRef);
-        if (uSnap.exists()) {
-          const u = uSnap.data();
-          dispatch(login({ uid: u.uid, name: u.name, photo: u.photo }));
+        const userRef = doc(db, "users", uid).withConverter(userConverter);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          const user = userSnap.data();
+          dispatch(updateUser(user));
         }
       };
       fetchUser();
     }
-  }, [user]);
+  }, [uid]);
 
-  const navigate = useNavigate();
-  const signOut = () => {
-    auth.signOut();
-    navigate("/welcome");
-  };
   return (
     <div>
-      {user ? user.name : ""}
-      <Button onClick={signOut}>ログアウト</Button>
+      <ChatDialog />
     </div>
   );
 };
