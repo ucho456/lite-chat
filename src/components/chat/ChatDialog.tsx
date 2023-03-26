@@ -7,6 +7,10 @@ import {
   DialogContent,
   DialogContentText,
   Stack,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../../firebase";
@@ -31,7 +35,7 @@ const ChatDialog = () => {
   /** Form */
   const { control, handleSubmit, setValue } = useForm<InputUser>({
     shouldUnregister: false,
-    defaultValues: { name: "", photo: "" },
+    defaultValues: { name: "", photo: "", sex: "man" },
   });
 
   const validationRules = {
@@ -90,6 +94,25 @@ const ChatDialog = () => {
                   size="small"
                   type="text"
                 />
+              )}
+            />
+            <Controller
+              control={control}
+              name="sex"
+              render={({ field }) => (
+                <FormControl>
+                  <InputLabel id="my-sex-label">あなたの性別</InputLabel>
+                  <Select
+                    {...field}
+                    fullWidth
+                    label="あなたの性別"
+                    labelId="my-sex-label"
+                    size="small"
+                  >
+                    <MenuItem value={"man"}>男性</MenuItem>
+                    <MenuItem value={"woman"}>女性</MenuItem>
+                  </Select>
+                </FormControl>
               )}
             />
           </DialogContent>
