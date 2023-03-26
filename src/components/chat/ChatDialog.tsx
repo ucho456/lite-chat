@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   TextField,
@@ -8,35 +8,52 @@ import {
   DialogContentText,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { updateUser } from "../../features/userSlice";
+import { doc, getDoc } from "firebase/firestore";
+import { userConverter } from "../../utils/converter";
 
 const ChatDialog = () => {
-  const [open, setOpen] = useState(true);
-  const user = useAppSelector((state) => state.user.user);
   const dispatch = useAppDispatch();
-  const { handleSubmit, register, reset } = useForm<InputUser>({
-    defaultValues: {
-      name: user?.name,
-      photo: user?.photo,
-    },
+  const navigate = useNavigate();
+
+  const [open, setOpen] = useState(true);
+
+  const { handleSubmit, register, reset, setValue } = useForm<InputUser>({
+    shouldUnregister: false,
+  });
+
+  const uid = useAppSelector((state) => state.auth.uid);
+  useEffect(() => {
+    if (uid) {
+      const fetchUser = async () => {
+        const userRef = doc(db, "users", uid).withConverter(userConverter);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          const user = userSnap.data();
+          dispatch(updateUser(user));
+          setValue("name", user.name);
+          setValue("photo", user.photo);
+        }
+      };
+      fetchUser();
+    }
   });
 
   const handleStart = (inputUser: InputUser) => {
-    if (!user) {
+    if (!uid) {
       return;
     }
     //Todo: photoの入力フォームを作成する。
-    dispatch(updateUser({ uid: user.uid, ...inputUser, photo: "" }));
+    dispatch(updateUser({ uid, ...inputUser, photo: "" }));
     reset();
     setOpen(false);
   };
 
   //Todo: useEffectでroomがnullになったらtrueにしてDialogを出す。
 
-  const navigate = useNavigate();
   const handleSignOut = () => {
     auth.signOut();
     navigate("/welcome");
@@ -51,13 +68,15 @@ const ChatDialog = () => {
               あなたのプロフィールと相手の条件を入力して開始して下さい。
             </DialogContentText>
             <TextField
-              margin="dense"
-              id="name"
-              label="あなたのニックネーム"
-              type="text"
               fullWidth
+              InputLabelProps={{ shrink: true }}
+              inputProps={{ maxLength: 10 }}
+              label="あなたのニックネーム"
+              margin="dense"
               {...register("name")}
-              variant="standard"
+              required
+              size="small"
+              type="text"
             />
           </DialogContent>
           <DialogActions>
