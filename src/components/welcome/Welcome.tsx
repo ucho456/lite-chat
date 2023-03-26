@@ -13,9 +13,7 @@ const Welcome = () => {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((loginUser) => {
-      loginUser
-        ? dispatch(signIn({ uid: loginUser.uid }))
-        : dispatch(signOut());
+      loginUser ? dispatch(signIn(loginUser.uid)) : dispatch(signOut());
     });
     return () => {
       unsubscribe();
