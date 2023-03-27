@@ -1,8 +1,13 @@
+type Sex = "man" | "woman";
+
+type WaitingState = "waiting" | "matched";
+
 type User = {
   name: string;
   photo: string | null;
-  sex: "man" | "woman";
-  waitingState: "waiting" | "matched";
+  sex: Sex;
+  youSex: Sex;
+  waitingState: WaitingState;
   waitingStartAt?: import("firebase/firestore").Timestamp;
   roomId: string | null;
 };
@@ -15,4 +20,5 @@ type InputUser = {
   name: User.name;
   photo: User.photo;
   sex: User.sex;
+  youSex: User.youSex;
 };

@@ -25,7 +25,7 @@ const Welcome = () => {
 
   const { control, handleSubmit, setValue } = useForm<InputUser>({
     shouldUnregister: false,
-    defaultValues: { name: "", photo: "", sex: "man" },
+    defaultValues: { name: "", photo: "", sex: "man", youSex: "woman" },
   });
 
   useEffect(() => {
@@ -40,7 +40,9 @@ const Welcome = () => {
   const handleStart: SubmitHandler<InputUser> = async (
     inputUser: InputUser
   ) => {
-    alert(inputUser.name);
+    alert(
+      `name: ${inputUser.name}, sex: ${inputUser.sex}, youSex: ${inputUser.youSex}`
+    );
     // try {
     //   const userCredential = await signInAnonymously(auth);
     //   const userRef = doc(db, "users", userCredential.user.uid).withConverter(
@@ -89,6 +91,7 @@ const Welcome = () => {
                         InputLabelProps={{ shrink: true }}
                         inputProps={{ maxLength: 10 }}
                         label="ニックネーム"
+                        required
                         size="small"
                         type="text"
                       />
@@ -120,9 +123,28 @@ const Welcome = () => {
             </div>
             <div className="you-row">
               <h3>- あいての条件 -</h3>
+              <Controller
+                control={control}
+                name="youSex"
+                render={({ field }) => (
+                  <FormControl>
+                    <InputLabel id="you-sex-label">性別</InputLabel>
+                    <Select
+                      {...field}
+                      fullWidth
+                      label="性別"
+                      labelId="you-sex-label"
+                      size="small"
+                    >
+                      <MenuItem value={"man"}>男性</MenuItem>
+                      <MenuItem value={"woman"}>女性</MenuItem>
+                    </Select>
+                  </FormControl>
+                )}
+              />
             </div>
             <div className="button-row">
-              <Button fullWidth type="submit">
+              <Button fullWidth size="large" type="submit" variant="contained">
                 開始する
               </Button>
             </div>
