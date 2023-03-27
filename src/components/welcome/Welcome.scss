@@ -1,0 +1,45 @@
+@import "../../assets/variables";
+
+.welcome {
+  margin: 10px;
+
+  .container {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 150px);
+    margin: 0 auto;
+    max-width: 1000px;
+
+    .logo-row {
+      grid-column: 1 / 5;
+      grid-row: 1;
+    }
+
+    .discription-row {
+      grid-column: 2 / 4;
+      grid-row: 2;
+    }
+
+    .me-row {
+      grid-column: 2 / 4;
+      grid-row: 3;
+      @include sp {
+        grid-column: 1 / 5;
+      }
+    }
+
+    .you-row {
+      grid-column: 2 / 4;
+      grid-row: 4;
+      @include sp {
+        grid-column: 1 / 5;
+      }
+    }
+
+    .button-row {
+      grid-column: 2 / 4;
+      grid-row: 5;
+    }
+  }
+}

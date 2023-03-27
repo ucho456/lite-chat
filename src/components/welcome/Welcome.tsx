@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { signInAnonymously } from "firebase/auth";
 import { auth, db } from "../../firebase";
 import "./Welcome.scss";
@@ -43,8 +43,18 @@ const Welcome = () => {
   };
 
   return (
-    <div>
-      <Button onClick={handleStart}>始める</Button>
+    <div className="welcome">
+      <div className="container">
+        <div className="logo-row">ろご</div>
+        <div className="discription-row">説明</div>
+        <div className="me-row">あなた</div>
+        <div className="you-row">あいて</div>
+        <div className="button-row">
+          <Button fullWidth onClick={handleStart}>
+            開始する
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };
