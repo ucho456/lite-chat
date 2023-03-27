@@ -1,0 +1,95 @@
+@import "../../assets/variables.scss";
+
+.room {
+  .header {
+    height: 50px;
+    background-color: $limeGreen;
+    .container {
+      display: grid;
+      grid-template-columns: 50px 160px auto 50px 50px;
+      grid-template-rows: 50px;
+      max-width: 1000px;
+      height: 100%;
+      margin: 0 auto;
+      .photo-column {
+        grid-column: 1 / 2;
+        padding: 5px 0 0 5px;
+      }
+      .name-column {
+        grid-column: 2 / 3;
+        line-height: 50px;
+        font-size: 15px;
+      }
+      .phone-column {
+        grid-column: 4 / 5;
+        padding: 7px 0 0 5px;
+        &:hover {
+          cursor: pointer;
+          opacity: 0.6;
+        }
+      }
+      .leave-column {
+        grid-column: 5 / 6;
+        padding: 7px 0 0 5px;
+        &:hover {
+          cursor: pointer;
+          color: lightblue;
+        }
+      }
+    }
+  }
+  .body {
+    height: calc(100vh - 110px);
+    background-color: $white;
+    .container {
+      margin: 0 auto;
+      max-width: 1000px;
+      height: 100%;
+      overflow-y: auto;
+      &::-webkit-scrollbar {
+        width: 5px;
+      }
+      &::-webkit-scrollbar-track {
+        background-color: green;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: $limeGreen;
+      }
+    }
+  }
+  .footer {
+    height: 60px;
+    background-color: #e6ffe9;
+    form {
+      .container {
+        display: grid;
+        grid-template-columns: auto 50px;
+        grid-template-rows: 50px;
+        width: 98%;
+        max-width: 1000px;
+        background-color: $limeGreen;
+        margin: 0 auto;
+        border-radius: 5px;
+        .input-column {
+          grid-column: 1 / 2;
+          padding: 5px;
+          textarea {
+            box-sizing: border-box;
+            resize: none;
+            height: 40px;
+            width: 100%;
+            padding: 7px;
+            overflow: hidden;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: large;
+          }
+        }
+        .button-column {
+          grid-column: 2 / 3;
+        }
+      }
+    }
+  }
+}

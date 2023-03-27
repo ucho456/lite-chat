@@ -20,11 +20,11 @@ import { updateUser } from "../../features/userSlice";
 import { doc, getDoc } from "firebase/firestore";
 import { userConverter } from "../../utils/converter";
 
-const ChatDialog = () => {
+const RoomDialog = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   //Todo: useEffectでroomがnullになったらtrueにしてDialogを出す。
 
   const handleSignOut = () => {
@@ -126,4 +126,4 @@ const ChatDialog = () => {
   );
 };
 
-export default ChatDialog;
+export default RoomDialog;
