@@ -1,10 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import {
-  connectAuthEmulator,
-  getAuth,
-  GoogleAuthProvider,
-} from "firebase/auth";
+import { connectAuthEmulator, getAuth } from "firebase/auth";
 import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 
 const env = import.meta.env;
@@ -23,11 +19,10 @@ const app = initializeApp(firebaseConfig);
 getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const provider = new GoogleAuthProvider();
 
 if (env.VITE_USE_EMULATOR === "true") {
   connectAuthEmulator(auth, "http://localhost:9099", { disableWarnings: true });
   connectFirestoreEmulator(db, "localhost", 8080);
 }
 
-export { auth, db, provider };
+export { auth, db };

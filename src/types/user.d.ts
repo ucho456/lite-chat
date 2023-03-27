@@ -1,8 +1,10 @@
 type User = {
-  uid: string;
   name: string;
-  photo: string;
+  photo: string | null;
   sex: "man" | "woman";
+  waitingState: "waiting" | "matched";
+  waitingStartAt?: import("firebase/firestore").Timestamp;
+  roomId: string | null;
 };
 
 type InitialUserState = {

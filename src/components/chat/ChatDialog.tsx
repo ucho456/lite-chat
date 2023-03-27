@@ -65,7 +65,7 @@ const ChatDialog = () => {
       return;
     }
     //Todo: photoの入力フォームを作成する。
-    dispatch(updateUser({ uid, ...inputUser, photo: "" }));
+    // dispatch(updateUser({ uid, ...inputUser, photo: "" }));
     setOpen(false);
   };
 

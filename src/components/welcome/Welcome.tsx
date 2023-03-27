@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { Button } from "@mui/material";
-import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "../../firebase";
+import { signInAnonymously } from "firebase/auth";
+import { auth, db } from "../../firebase";
 import "./Welcome.scss";
 import { useAppDispatch } from "../../app/hooks";
 import { signIn, signOut } from "../../features/authSlice";
 import { useNavigate } from "react-router-dom";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { userConverter } from "../../utils/converter";
 
 const Welcome = () => {
   const dispatch = useAppDispatch();
@@ -20,16 +22,29 @@ const Welcome = () => {
     };
   }, [dispatch]);
 
-  const handleSignIn = async () => {
-    await signInWithPopup(auth, provider).catch((err) => {
-      alert(err.message);
-    });
+  const handleStart = async () => {
+    try {
+      const userCredential = await signInAnonymously(auth);
+      const userRef = doc(db, "users", userCredential.user.uid).withConverter(
+        userConverter
+      );
+      await setDoc(userRef, {
+        name: "test user",
+        photo: null,
+        sex: "man",
+        waitingState: "waiting",
+        waitingStartAt: serverTimestamp(),
+        roomId: null,
+      });
+    } catch (error: any) {
+      alert(error.message);
+    }
     navigate("/");
   };
 
   return (
     <div>
-      <Button onClick={handleSignIn}>始める</Button>
+      <Button onClick={handleStart}>始める</Button>
     </div>
   );
 };
