@@ -1,18 +1,18 @@
-//Todo 不要かも
-@import "../../assets/variables";
-
-.welcome {
+.top {
   margin: 10px 10px 100px 10px;
   text-align: center;
   .container {
     display: grid;
     gap: 10px;
     grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: 150px 150px 300px;
+    grid-template-rows: 150px 80px 300px;
     margin: 0 auto;
     max-width: 1000px;
     .logo-row {
       grid-row: 1;
+      img {
+        width: 350px;
+      }
     }
     .discription-row {
       grid-row: 2;
@@ -24,10 +24,14 @@
         display: grid;
         gap: 10px;
         grid-template-columns: repeat(1, 1fr);
-        grid-template-rows: 150px 100px 50px;
+        grid-template-rows: 150px 130px 50px;
         .me-row {
           grid-row: 1;
+          h3 {
+            color: gray;
+          }
           .container {
+            margin-top: 10px;
             display: grid;
             height: 130px;
             gap: 0;
@@ -35,9 +39,15 @@
             grid-template-rows: repeat(2, 1fr);
             width: 100%;
             .photo-column {
-              background-color: red;
               grid-column: 1;
               grid-row: 1 / 3;
+              .photo {
+                margin: 0 30px 0 auto;
+                &:hover {
+                  cursor: pointer;
+                  opacity: 0.6;
+                }
+              }
             }
             .name-column {
               grid-column: 2 / 3;
@@ -54,7 +64,8 @@
         .you-row {
           grid-row: 2;
           h3 {
-            margin-bottom: 10px;
+            color: gray;
+            margin-bottom: 20px;
           }
         }
         .button-row {

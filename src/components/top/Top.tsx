@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import {
+  Avatar,
   Box,
   Button,
   FormControl,
@@ -11,7 +12,7 @@ import {
 } from "@mui/material";
 import { signInAnonymously } from "firebase/auth";
 import { auth, db } from "../../firebase";
-import "./Welcome.scss";
+import "./Top.scss";
 import { useAppDispatch } from "../../app/hooks";
 import { signIn, signOut } from "../../features/authSlice";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +20,7 @@ import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { userConverter } from "../../utils/converter";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
-const Welcome = () => {
+const Top = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -40,35 +41,35 @@ const Welcome = () => {
   const handleStart: SubmitHandler<InputUser> = async (
     inputUser: InputUser
   ) => {
-    alert(
-      `name: ${inputUser.name}, sex: ${inputUser.sex}, youSex: ${inputUser.youSex}`
-    );
-    // try {
-    //   const userCredential = await signInAnonymously(auth);
-    //   const userRef = doc(db, "users", userCredential.user.uid).withConverter(
-    //     userConverter
-    //   );
-    //   await setDoc(userRef, {
-    //     name: "test user",
-    //     photo: null,
-    //     sex: "man",
-    //     waitingState: "waiting",
-    //     waitingStartAt: serverTimestamp(),
-    //     roomId: null,
-    //   });
-    // } catch (error: any) {
-    //   alert(error.message);
-    // }
-    // navigate("/");
+    try {
+      const userCredential = await signInAnonymously(auth);
+      // const userRef = doc(db, "users", userCredential.user.uid).withConverter(
+      //   userConverter
+      // );
+      // await setDoc(userRef, {
+      //   name: "test user",
+      //   photo: null,
+      //   sex: "man",
+      //   waitingState: "waiting",
+      //   waitingStartAt: serverTimestamp(),
+      //   roomId: null,
+      // });
+    } catch (error: any) {
+      alert(error.message);
+    }
+    navigate("/room/roomId");
   };
 
   return (
-    <div className="welcome">
+    <div className="top">
       <div className="container">
-        <div className="logo-row">ろご</div>
+        <div className="logo-row">
+          <img src="/logo.png" />
+        </div>
         <div className="discription-row">
-          <h2></h2>
-          <p>登録・インストール不要で気軽に繋がるチャットサービスです。</p>
+          <p>
+            登録・インストール不要。チャットや通話を気軽に楽しめるサービスです。さぁ始めましょう！
+          </p>
         </div>
         <Stack
           className="form-row"
@@ -79,7 +80,13 @@ const Welcome = () => {
             <div className="me-row">
               <h3>- あなたのプロフィール -</h3>
               <div className="container">
-                <div className="photo-column">写真</div>
+                <div className="photo-column">
+                  <Avatar
+                    className="photo"
+                    src="/avatar.png"
+                    sx={{ width: 110, height: 110 }}
+                  />
+                </div>
                 <div className="name-column">
                   <Controller
                     control={control}
@@ -91,7 +98,8 @@ const Welcome = () => {
                         InputLabelProps={{ shrink: true }}
                         inputProps={{ maxLength: 10 }}
                         label="ニックネーム"
-                        required
+                        //Todo requiredを復活させる。
+                        // required
                         size="small"
                         type="text"
                       />
@@ -155,4 +163,4 @@ const Welcome = () => {
   );
 };
 
-export default Welcome;
+export default Top;
