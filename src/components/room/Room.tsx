@@ -102,7 +102,7 @@ const Room = () => {
       <div className="body">
         <div className="container">
           {messages.map((m) => (
-            <RoomMessage key={m.id} message={m.text} meId={me.uid} />
+            <RoomMessage key={m.id} message={m.text} meUid={me.uid} />
           ))}
         </div>
       </div>
