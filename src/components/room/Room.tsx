@@ -3,8 +3,11 @@ import { Logout, Phone, Send } from "@mui/icons-material";
 import "./Room.scss";
 import RoomDialog from "./RoomDialog";
 import RoomMessage from "./RoomMessage";
+import { useNavigate } from "react-router-dom";
 
 const Room = () => {
+  const navigate = useNavigate();
+
   const messages = [...Array(20)].map((_, i) => {
     const user =
       i % 2 === 0 ? { uid: "me", name: "私" } : { uid: "you", name: "貴方" };
@@ -14,12 +17,15 @@ const Room = () => {
       message: `メッセージ ${i}`.repeat(10),
     };
   });
+
   const handlePhone = () => {
     window.alert("phone");
   };
+
   const handleLeave = () => {
-    window.alert("Leave");
+    navigate("/");
   };
+
   return (
     <div className="room">
       <div className="header">
