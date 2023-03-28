@@ -1,0 +1,21 @@
+{
+  "kind": "identitytoolkit#DownloadAccountResponse",
+  "users": [
+    {
+      "localId": "Zp9V68ZeLOzCdLoXHdNBWLsdA3u0",
+      "createdAt": "1679927195473",
+      "lastLoginAt": "1679927195473",
+      "validSince": "1679994849",
+      "emailVerified": false,
+      "disabled": false
+    },
+    {
+      "localId": "CSTSEXwDXiK5FLLlNLYb12345678",
+      "createdAt": "1679927195473",
+      "lastLoginAt": "1679927195473",
+      "validSince": "1679994849",
+      "emailVerified": false,
+      "disabled": false
+    }
+  ]
+}

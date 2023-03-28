@@ -13,8 +13,8 @@ services:
     environment:
       - VITE_USE_EMULATOR=true
     command: sh -c "npm install && npm run dev"
-  firebase:
-    container_name: firebase
+  firebase-emulator:
+    container_name: firebase-emulator
     build: ./docker/firebase
     volumes:
       - ./.firebaserc:/opt/firebase/.firebaserc
@@ -23,6 +23,7 @@ services:
       - ./docker/firebase/bin/:/root/.cache:cached
       - ./docker/firebase/config/:/root/.config:cached
       - ./docker/firebase/src:/opt/firebase/
+      - ./seed:/opt/firebase/seed
     ports:
       - 9099:9099
       - 8080:8080
@@ -30,7 +31,7 @@ services:
       - 4000:4000
     tty: true
     working_dir: /opt/firebase
-    command: firebase emulators:start --import=./.emulator --export-on-exit
+    command: firebase emulators:start --import=./seed
 
 volumes:
   node_modules:
