@@ -98,7 +98,7 @@ const Top = () => {
                         InputLabelProps={{ shrink: true }}
                         inputProps={{ maxLength: 10 }}
                         label="ニックネーム"
-                        //Todo requiredを復活させる。
+                        //[Todo: 開発用] 入力が面倒なので。後々requiredを復活させる予定。
                         // required
                         size="small"
                         type="text"

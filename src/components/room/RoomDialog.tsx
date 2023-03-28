@@ -25,7 +25,6 @@ const RoomDialog = () => {
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
-  //Todo: useEffectでroomがnullになったらtrueにしてDialogを出す。
 
   const handleSignOut = () => {
     auth.signOut();
@@ -64,7 +63,7 @@ const RoomDialog = () => {
     if (!uid) {
       return;
     }
-    //Todo: photoの入力フォームを作成する。
+    //[Todo: 次ステップ] photoの入力フォームを作成する。
     // dispatch(updateUser({ uid, ...inputUser, photo: "" }));
     setOpen(false);
   };
