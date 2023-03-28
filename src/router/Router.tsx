@@ -6,8 +6,8 @@ import ErrorPage from "../components/error/ErrorPage";
 import Top from "../components/top/Top";
 
 const isAuth = (): boolean => {
-  const uid = useAppSelector((state) => state.auth.uid);
-  return uid ? true : false;
+  const authUid = useAppSelector((state) => state.auth.uid);
+  return authUid ? true : false;
 };
 
 export const router = createBrowserRouter([
@@ -21,7 +21,7 @@ export const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/room/:room_id",
+        path: "/room/:roomId",
         element: <Room />,
       },
     ],

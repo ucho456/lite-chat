@@ -3,20 +3,103 @@ import { Logout, Phone, Send } from "@mui/icons-material";
 import "./Room.scss";
 import RoomDialog from "./RoomDialog";
 import RoomMessage from "./RoomMessage";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
+import { db } from "../../firebase";
+import { messageConverter, roomConverter } from "../../utils/converter";
+import { useEffect, useState } from "react";
+import { useAppSelector } from "../../app/hooks";
+
+const defaultRoom: Room = {
+  id: "",
+  users: {
+    A: {
+      uid: "",
+      name: "",
+      photo: null,
+    },
+    B: {
+      uid: "",
+      name: "",
+      photo: null,
+    },
+  },
+  isLeave: false,
+  limitAt: new Date(),
+};
+
+const defaultRoomUser: RoomUser = { uid: "", name: "", photo: null };
 
 const Room = () => {
   const navigate = useNavigate();
+  const { roomId } = useParams();
 
-  const messages = [...Array(20)].map((_, i) => {
-    const user =
-      i % 2 === 0 ? { uid: "me", name: "私" } : { uid: "you", name: "貴方" };
-    return {
-      id: i,
-      user,
-      message: `メッセージ ${i}`.repeat(10),
+  const [room, setRoom] = useState<Room>(defaultRoom);
+
+  useEffect(() => {
+    if (!roomId) {
+      return;
+    }
+    const roomRef = doc(db, "rooms", roomId).withConverter(roomConverter);
+    const unsubscribe = onSnapshot(roomRef, (doc) => {
+      if (doc.exists()) {
+        setRoom(doc.data());
+      }
+    });
+    return () => {
+      unsubscribe();
     };
-  });
+  }, [roomId]);
+
+  const [messages, setMessages] = useState<Message[]>([]);
+  useEffect(() => {
+    if (!roomId) {
+      return;
+    }
+    const messageCollectionRef = collection(
+      db,
+      "rooms",
+      roomId,
+      "messages"
+    ).withConverter(messageConverter);
+    const q = query(messageCollectionRef, orderBy("createdAt", "asc"));
+    const unsubscribe = onSnapshot(q, (querySnap) => {
+      const result: Message[] = [];
+      querySnap.forEach((doc) => {
+        result.push(doc.data());
+      });
+      setMessages(result);
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [roomId]);
+
+  const [me, setMe] = useState<RoomUser>(defaultRoomUser);
+  const [you, setYou] = useState<RoomUser>(defaultRoomUser);
+
+  // const uid = useAppSelector((state) => state.auth.uid)
+  const authUid = "Zp9V68ZeLOzCdLoXHdNBWLsdA3u0";
+  useEffect(() => {
+    if (!room) {
+      return;
+    }
+    const userA = room.users.A;
+    const userB = room.users.B;
+    if (userA.uid === authUid) {
+      setMe(userA);
+      setYou(userB);
+    } else {
+      setMe(userB);
+      setYou(userA);
+    }
+  }, [room]);
 
   const handlePhone = () => {
     window.alert("phone");
@@ -31,9 +114,13 @@ const Room = () => {
       <div className="header">
         <div className="container">
           <div className="photo-column">
-            <Avatar src="/avatar.png" />
+            {you.photo ? (
+              <Avatar src={you.photo} />
+            ) : (
+              <Avatar src="/avatar.png" />
+            )}
           </div>
-          <div className="name-column">最大１０文字の名前！</div>
+          <div className="name-column">{you.name}</div>
           <div className="phone-column">
             <IconButton onClick={() => handlePhone()}>
               <Phone fontSize="large" />
@@ -49,7 +136,7 @@ const Room = () => {
       <div className="body">
         <div className="container">
           {messages.map((m) => (
-            <RoomMessage key={m.id} message={m.message} user={m.user} />
+            <RoomMessage key={m.id} message={m.text} meId={me.uid} />
           ))}
         </div>
       </div>

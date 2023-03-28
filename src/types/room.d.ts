@@ -1,11 +1,14 @@
+type RoomUser = {
+  uid: string;
+  name: string;
+  photo: string | null;
+};
+
 type Room = {
   id: string;
   users: {
-    [key: string]: {
-      uid: string;
-      name: string;
-      photo: string | null;
-    };
+    A: RoomUser;
+    B: RoomUser;
   };
   isLeave: boolean;
   limitAt: Date;

@@ -57,7 +57,7 @@ const Top = () => {
     } catch (error: any) {
       alert(error.message);
     }
-    navigate("/room/roomId");
+    navigate("/room/4J3gRbhuM26WshKyENqW");
   };
 
   return (
