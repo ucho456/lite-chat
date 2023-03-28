@@ -14,6 +14,12 @@ const Room = () => {
       message: `メッセージ ${i}`.repeat(10),
     };
   });
+  const handlePhone = () => {
+    window.alert("phone");
+  };
+  const handleLeave = () => {
+    window.alert("Leave");
+  };
   return (
     <div className="room">
       <div className="header">
@@ -23,10 +29,14 @@ const Room = () => {
           </div>
           <div className="name-column">最大１０文字の名前！</div>
           <div className="phone-column">
-            <Phone className="phone-icon" fontSize="large" />
+            <IconButton onClick={() => handlePhone()}>
+              <Phone fontSize="large" />
+            </IconButton>
           </div>
           <div className="leave-column">
-            <Logout className="leave-icon" fontSize="large" />
+            <IconButton onClick={() => handleLeave()}>
+              <Logout fontSize="large" />
+            </IconButton>
           </div>
         </div>
       </div>

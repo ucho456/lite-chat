@@ -28,19 +28,9 @@ $bodyHeight: calc(
       }
       .phone-column {
         grid-column: 4 / 5;
-        padding: 7px 0 0 5px;
-        &:hover {
-          cursor: pointer;
-          opacity: 0.6;
-        }
       }
       .leave-column {
         grid-column: 5 / 6;
-        padding: 7px 0 0 5px;
-        &:hover {
-          cursor: pointer;
-          color: lightblue;
-        }
       }
     }
   }
