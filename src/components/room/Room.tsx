@@ -4,17 +4,12 @@ import "./Room.scss";
 import RoomDialog from "./RoomDialog";
 import RoomMessage from "./RoomMessage";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  collection,
-  doc,
-  onSnapshot,
-  orderBy,
-  query,
-} from "firebase/firestore";
-import { db } from "../../firebase";
+import { orderBy } from "firebase/firestore";
 import { messageConverter, roomConverter } from "../../utils/converter";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../../app/hooks";
+import useDocument from "../../hooks/useDocument";
+import useSubCollection from "../../hooks/useSubCollection";
 
 const defaultRoom: Room = {
   id: "",
@@ -40,56 +35,27 @@ const Room = () => {
   const navigate = useNavigate();
   const { roomId } = useParams();
 
-  const [room, setRoom] = useState<Room>(defaultRoom);
+  const { document: room } = useDocument<Room>(
+    "rooms",
+    roomId,
+    roomConverter,
+    defaultRoom
+  );
 
-  useEffect(() => {
-    if (!roomId) {
-      return;
-    }
-    const roomRef = doc(db, "rooms", roomId).withConverter(roomConverter);
-    const unsubscribe = onSnapshot(roomRef, (doc) => {
-      if (doc.exists()) {
-        setRoom(doc.data());
-      }
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, [roomId]);
+  const { subCollection: messages } = useSubCollection<Message>(
+    "rooms",
+    roomId,
+    "messages",
+    messageConverter,
+    [orderBy("createdAt", "asc")]
+  );
 
-  const [messages, setMessages] = useState<Message[]>([]);
-  useEffect(() => {
-    if (!roomId) {
-      return;
-    }
-    const messageCollectionRef = collection(
-      db,
-      "rooms",
-      roomId,
-      "messages"
-    ).withConverter(messageConverter);
-    const q = query(messageCollectionRef, orderBy("createdAt", "asc"));
-    const unsubscribe = onSnapshot(q, (querySnap) => {
-      const result: Message[] = [];
-      querySnap.forEach((doc) => {
-        result.push(doc.data());
-      });
-      setMessages(result);
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, [roomId]);
-
+  //[Todo: 開発用] 匿名認証でuidが定まらない為。後々削除する。
+  let authUid = useAppSelector((state) => state.auth.uid);
+  authUid = "Zp9V68ZeLOzCdLoXHdNBWLsdA3u0";
   const [me, setMe] = useState<RoomUser>(defaultRoomUser);
   const [you, setYou] = useState<RoomUser>(defaultRoomUser);
-
-  // const uid = useAppSelector((state) => state.auth.uid)
-  const authUid = "Zp9V68ZeLOzCdLoXHdNBWLsdA3u0";
   useEffect(() => {
-    if (!room) {
-      return;
-    }
     const userA = room.users.A;
     const userB = room.users.B;
     if (userA.uid === authUid) {
