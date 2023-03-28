@@ -1,19 +1,23 @@
 @import "../../assets/variables.scss";
 
 .top {
-  padding: 10px 10px 100px 10px;
+  min-height: 100vh;
+  background-color: $ghostwhite;
+  padding: 0 10px;
   text-align: center;
   .container {
     display: grid;
     gap: 10px;
     grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: 150px 80px 300px;
+    grid-template-rows: 180px 80px 400px;
     margin: 0 auto;
     max-width: 1000px;
     .logo-row {
       grid-row: 1;
+      padding-top: 30px;
       img {
-        width: 350px;
+        max-width: 350px;
+        width: 96%;
       }
     }
     .discription-row {

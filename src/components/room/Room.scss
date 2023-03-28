@@ -50,6 +50,7 @@ $bodyHeight: calc(
       }
       &::-webkit-scrollbar-thumb {
         background-color: $Blue;
+        border-radius: 10px;
       }
     }
   }
