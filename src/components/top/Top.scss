@@ -1,6 +1,9 @@
+@import "../../assets/variables.scss";
+
 .top {
-  margin: 10px 10px 100px 10px;
+  padding: 10px 10px 100px 10px;
   text-align: center;
+  background-color: $ghostwhite;
   .container {
     display: grid;
     gap: 10px;
@@ -27,9 +30,6 @@
         grid-template-rows: 150px 130px 50px;
         .me-row {
           grid-row: 1;
-          h3 {
-            color: gray;
-          }
           .container {
             margin-top: 10px;
             display: grid;
@@ -64,7 +64,6 @@
         .you-row {
           grid-row: 2;
           h3 {
-            color: gray;
             margin-bottom: 20px;
           }
         }

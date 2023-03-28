@@ -1,9 +1,15 @@
 @import "../../assets/variables.scss";
+$headerHeight: 50px;
+$footerHeight: 60px;
+$betweenFooterAndTextarea: 10px;
+$bodyHeight: calc(
+  100vh - ($headerHeight + $footerHeight + $betweenFooterAndTextarea)
+);
 
 .room {
   .header {
-    height: 50px;
-    background-color: $limeGreen;
+    height: $headerHeight;
+    background-color: $ghostwhite;
     .container {
       display: grid;
       grid-template-columns: 50px 160px auto 50px 50px;
@@ -39,8 +45,8 @@
     }
   }
   .body {
-    height: calc(100vh - 110px);
-    background-color: $white;
+    height: $bodyHeight;
+    background-color: $ghostwhite;
     .container {
       margin: 0 auto;
       max-width: 1000px;
@@ -50,16 +56,17 @@
         width: 5px;
       }
       &::-webkit-scrollbar-track {
-        background-color: green;
+        background-color: $ghostwhite;
       }
       &::-webkit-scrollbar-thumb {
-        background-color: $limeGreen;
+        background-color: $Blue;
       }
     }
   }
   .footer {
-    height: 60px;
-    background-color: #e6ffe9;
+    height: $footerHeight;
+    background-color: $Blue;
+    padding-top: $betweenFooterAndTextarea;
     form {
       .container {
         display: grid;
@@ -67,7 +74,7 @@
         grid-template-rows: 50px;
         width: 98%;
         max-width: 1000px;
-        background-color: $limeGreen;
+        background-color: $lightBlue;
         margin: 0 auto;
         border-radius: 5px;
         .input-column {

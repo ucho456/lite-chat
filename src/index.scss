@@ -1,4 +1,7 @@
+@import "./assets/variables.scss";
+
 * {
   margin: 0;
   font-family: "Noto Sans JP";
+  color: $mainFontColor;
 }
