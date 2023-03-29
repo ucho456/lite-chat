@@ -13,7 +13,7 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { messageConverter, roomConverter } from "../../utils/converter";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "../../app/hooks";
 import useDocument from "../../hooks/useDocument";
 import useSubCollection from "../../hooks/useSubCollection";
@@ -76,13 +76,21 @@ const Room = () => {
   }, [room]);
 
   const [inputText, setInputText] = useState<string>("");
+  const bodyRef = useRef<HTMLDivElement>(null);
   const sendMessage = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    if (!roomId || !authUid || inputText === "") {
+    if (
+      !roomId ||
+      !authUid ||
+      !bodyRef ||
+      !bodyRef.current ||
+      inputText === ""
+    ) {
       return;
     }
+
     const messageRef = collection(
       db,
       "rooms",
@@ -96,6 +104,10 @@ const Room = () => {
       createdAt: serverTimestamp(),
     });
     setInputText("");
+    bodyRef.current.scrollTo(
+      0,
+      bodyRef.current.scrollHeight - bodyRef.current.clientHeight
+    );
   };
 
   const handlePhone = () => {
@@ -131,7 +143,7 @@ const Room = () => {
         </div>
       </div>
       <div className="body">
-        <div className="container">
+        <div className="container" ref={bodyRef}>
           {messages.map((m) => (
             <RoomMessage key={m.id} message={m.text} meUid={me.uid} />
           ))}
