@@ -6,4 +6,11 @@ const matching = functions
     return "Hello, functions";
   });
 
+// const matching = functions
+//   .region("asia-northeast1")
+//   .https.onRequest(async (req, res) => {
+//     // return "Hello, functions";
+//     res.send("あああ");
+//   });
+
 export default matching;
