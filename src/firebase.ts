@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { connectAuthEmulator, getAuth } from "firebase/auth";
 import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
+import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
 
 const env = import.meta.env;
 
@@ -19,10 +20,12 @@ const app = initializeApp(firebaseConfig);
 getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const functions = getFunctions(app, "asia-northeast1");
 
 if (env.VITE_USE_EMULATOR === "true") {
   connectAuthEmulator(auth, "http://localhost:9099", { disableWarnings: true });
   connectFirestoreEmulator(db, "localhost", 8080);
+  connectFunctionsEmulator(functions, "localhost", 5001);
 }
 
-export { auth, db };
+export { auth, db, functions };

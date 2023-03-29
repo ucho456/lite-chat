@@ -11,7 +11,7 @@ import {
   TextField,
 } from "@mui/material";
 import { signInAnonymously } from "firebase/auth";
-import { auth, db } from "../../firebase";
+import { auth, db, functions } from "../../firebase";
 import "./Top.scss";
 import { useAppDispatch } from "../../app/hooks";
 import { signIn, signOut } from "../../features/authSlice";
@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { userConverter } from "../../utils/converter";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { httpsCallable } from "firebase/functions";
 
 const Top = () => {
   const dispatch = useAppDispatch();
@@ -43,6 +44,13 @@ const Top = () => {
   ) => {
     try {
       const userCredential = await signInAnonymously(auth);
+      const matching = httpsCallable(functions, "matching");
+      const result = await matching();
+      // const result = await fetch(
+      //   "http://localhost:5001/lite-chat-f5b5a/asia-northeast1/matching"
+      // );
+      console.log("ok");
+      alert(result);
       // const userRef = doc(db, "users", userCredential.user.uid).withConverter(
       //   userConverter
       // );
