@@ -25,7 +25,7 @@ export const userConverter: FirestoreDataConverter<User> = {
       sex: d.sex,
       youSex: d.youSex,
       waitingState: d.waitingState,
-      waitingStartAt: d.waitingStartAt.toDate(),
+      waitingStartAt: d.waitingStartAt,
       roomId: d.roomId,
     };
   },
@@ -45,7 +45,7 @@ export const roomConverter: FirestoreDataConverter<Room> = {
       id: snapshot.id,
       users: d.users,
       isLeave: d.isLeave,
-      limitAt: d.limitAt.toDate(),
+      limitAt: d.limitAt,
     };
   },
 };
@@ -64,7 +64,7 @@ export const messageConverter: FirestoreDataConverter<Message> = {
       id: snapshot.id,
       uid: d.uid,
       text: d.text,
-      createdAt: d.createdAt.toDate(),
+      createdAt: d.createdAt,
     };
   },
 };

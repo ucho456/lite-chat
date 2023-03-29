@@ -9,7 +9,7 @@ type User = {
   sex: Sex;
   youSex: Sex;
   waitingState: WaitingState;
-  waitingStartAt: Date;
+  waitingStartAt: import("firebase/firestore").Timestamp;
   roomId: string | null;
 };
 

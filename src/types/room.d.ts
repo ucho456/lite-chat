@@ -11,7 +11,7 @@ type Room = {
     B: RoomUser;
   };
   isLeave: boolean;
-  limitAt: Date;
+  limitAt: import("firebase/firestore").Timestamp;
 };
 
 // このあとやること

@@ -4,12 +4,20 @@ import "./Room.scss";
 import RoomDialog from "./RoomDialog";
 import RoomMessage from "./RoomMessage";
 import { useNavigate, useParams } from "react-router-dom";
-import { orderBy } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  orderBy,
+  serverTimestamp,
+  Timestamp,
+} from "firebase/firestore";
 import { messageConverter, roomConverter } from "../../utils/converter";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppSelector } from "../../app/hooks";
 import useDocument from "../../hooks/useDocument";
 import useSubCollection from "../../hooks/useSubCollection";
+import { db } from "../../firebase";
 
 const defaultRoom: Room = {
   id: "",
@@ -26,7 +34,7 @@ const defaultRoom: Room = {
     },
   },
   isLeave: false,
-  limitAt: new Date(),
+  limitAt: Timestamp.fromDate(new Date()),
 };
 
 const defaultRoomUser: RoomUser = { uid: "", name: "", photo: null };
@@ -66,6 +74,29 @@ const Room = () => {
       setYou(userA);
     }
   }, [room]);
+
+  const [inputText, setInputText] = useState<string>("");
+  const sendMessage = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    if (!roomId || !authUid || inputText === "") {
+      return;
+    }
+    const messageRef = collection(
+      db,
+      "rooms",
+      roomId,
+      "messages"
+    ).withConverter(messageConverter);
+    await addDoc(messageRef, {
+      id: doc(messageRef).id,
+      uid: authUid,
+      text: inputText,
+      createdAt: serverTimestamp(),
+    });
+    setInputText("");
+  };
 
   const handlePhone = () => {
     window.alert("phone");
@@ -110,10 +141,20 @@ const Room = () => {
         <form>
           <div className="container">
             <div className="input-column">
-              <textarea />
+              <textarea
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                  setInputText(e.target.value)
+                }
+                value={inputText}
+              />
             </div>
             <div className="button-column">
-              <IconButton type="submit">
+              <IconButton
+                type="submit"
+                onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
+                  sendMessage(e)
+                }
+              >
                 <Send fontSize="large" />
               </IconButton>
             </div>
