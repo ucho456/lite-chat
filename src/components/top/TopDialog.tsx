@@ -68,7 +68,7 @@ const TopDialog = () => {
       <Button fullWidth size="large" variant="contained" onClick={handleOpen}>
         始める
       </Button>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog className="top-dialog" open={open} onClose={handleClose}>
         <Stack component="form" onSubmit={handleSubmit(handleMatching)}>
           <div className="container">
             <div className="me-row">
