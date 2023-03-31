@@ -9,7 +9,7 @@ $bodyHeight: calc(
 .room {
   .header {
     height: $headerHeight;
-    background-color: $ghostwhite;
+    background-color: $lightBlue;
     .container {
       display: grid;
       grid-template-columns: 50px 160px auto 50px 50px;
@@ -36,7 +36,7 @@ $bodyHeight: calc(
   }
   .body {
     height: $bodyHeight;
-    background-color: $ghostwhite;
+    background-color: $lightBlue;
     .container {
       margin: 0 auto;
       max-width: 1000px;
@@ -63,7 +63,7 @@ $bodyHeight: calc(
         display: grid;
         grid-template-columns: auto 50px;
         grid-template-rows: 50px;
-        width: 98%;
+        width: 94%;
         max-width: 1000px;
         background-color: $lightBlue;
         margin: 0 auto;
