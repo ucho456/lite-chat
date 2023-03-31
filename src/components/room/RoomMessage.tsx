@@ -1,19 +1,19 @@
-import { useAppSelector } from "../../app/hooks";
 import "./RoomMessage.scss";
 
 type Props = {
-  message: string;
+  message: Message;
   meUid: string;
 };
 
 const RoomMessage = (props: Props) => {
   const { message, meUid } = props;
-  const authUid = useAppSelector((state) => state.auth.uid);
   return (
     <div
-      className={meUid === authUid ? "room-message right" : "room-message left"}
+      className={
+        meUid === message.uid ? "room-message right" : "room-message left"
+      }
     >
-      <p>{message}</p>
+      <p>{message.text}</p>
     </div>
   );
 };

@@ -59,9 +59,7 @@ const Room = () => {
     [orderBy("createdAt", "asc")]
   );
 
-  //[Todo: 開発用] 匿名認証でuidが定まらない為。後々削除する。
-  let authUid = useAppSelector((state) => state.auth.uid);
-  authUid = "Zp9V68ZeLOzCdLoXHdNBWLsdA3u0";
+  const authUid = useAppSelector((state) => state.auth.uid);
   const [me, setMe] = useState<RoomUser>(defaultRoomUser);
   const [you, setYou] = useState<RoomUser>(defaultRoomUser);
   useEffect(() => {
@@ -146,7 +144,7 @@ const Room = () => {
       <div className="body">
         <div className="container" ref={bodyRef}>
           {messages.map((m) => (
-            <RoomMessage key={m.id} message={m.text} meUid={me.uid} />
+            <RoomMessage key={m.id} message={m} meUid={me.uid} />
           ))}
         </div>
       </div>
