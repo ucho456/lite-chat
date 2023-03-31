@@ -43,6 +43,7 @@ const Room = () => {
   const navigate = useNavigate();
   const { roomId } = useParams();
 
+  //Todo: マッチした後roomが取れてない。
   const { document: room } = useDocument<Room>(
     "rooms",
     roomId,

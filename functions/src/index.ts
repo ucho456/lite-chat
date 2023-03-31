@@ -1,7 +1,7 @@
 import * as admin from "firebase-admin";
-import matching from "./matching";
-
 admin.initializeApp();
+
+import matching from "./matching";
 
 module.exports = {
   matching,

@@ -11,8 +11,8 @@ import {
 } from "@mui/material";
 import { signInAnonymously } from "firebase/auth";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
-import { httpsCallable } from "firebase/functions";
-import React, { useState } from "react";
+import { HttpsCallable, httpsCallable } from "firebase/functions";
+import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { auth, db, functions } from "../../firebase";
@@ -38,6 +38,8 @@ const TopDialog = () => {
   const handleMatching: SubmitHandler<InputUser> = async (
     inputUser: InputUser
   ) => {
+    const alertMessage =
+      "マッチングできませんでした。暫く待ってから再度お試し下さい。";
     try {
       const userCredential = await signInAnonymously(auth);
       const userRef = doc(db, "users", userCredential.user.uid).withConverter(
@@ -54,12 +56,22 @@ const TopDialog = () => {
         roomId: null,
       });
 
-      // const matching = httpsCallable(functions, "matching");
-      // const result = await matching();
-      // alert(`ok: ${result}`);
-      navigate("/room/4J3gRbhuM26WshKyENqW");
+      const matching: HttpsCallable<
+        { uid: string; youSex: Sex },
+        { roomId: string | null; ok: boolean }
+      > = httpsCallable(functions, "matching");
+      const result = await matching({
+        uid: userCredential.user.uid,
+        youSex: inputUser.youSex,
+      });
+      console.log(result);
+      if (result.data.ok && result.data.roomId) {
+        navigate(`/room/${result.data.roomId}`);
+      } else {
+        alert(alertMessage);
+      }
     } catch (error: any) {
-      alert(`error: ${error.message}`);
+      alert(alertMessage);
     }
   };
 
