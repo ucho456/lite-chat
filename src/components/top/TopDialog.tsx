@@ -9,6 +9,7 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import { signInAnonymously } from "firebase/auth";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { HttpsCallable, httpsCallable } from "firebase/functions";
@@ -18,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { auth, db, functions } from "../../firebase";
 import { userConverter } from "../../utils/converter";
 import "./TopDialog.scss";
+import { Send } from "@mui/icons-material";
 
 const TopDialog = () => {
   const navigate = useNavigate();
@@ -35,12 +37,14 @@ const TopDialog = () => {
     defaultValues: { name: "", photo: null, sex: "man", youSex: "woman" },
   });
 
+  const [loading, setLoading] = useState(false);
   const handleMatching: SubmitHandler<InputUser> = async (
     inputUser: InputUser
   ) => {
     const alertMessage =
       "マッチングできませんでした。暫く待ってから再度お試し下さい。";
     try {
+      setLoading(true);
       const userCredential = await signInAnonymously(auth);
       const userRef = doc(db, "users", userCredential.user.uid).withConverter(
         userConverter
@@ -71,7 +75,10 @@ const TopDialog = () => {
         alert(alertMessage);
       }
     } catch (error: any) {
+      console.log(error);
       alert(alertMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -158,9 +165,16 @@ const TopDialog = () => {
               />
             </div>
             <div className="button-row">
-              <Button size="large" type="submit" variant="contained">
-                マッチングを開始する
-              </Button>
+              <LoadingButton
+                loading={loading}
+                endIcon={<Send />}
+                loadingPosition="end"
+                size="large"
+                type="submit"
+                variant="contained"
+              >
+                {loading ? "マッチング中..." : "マッチングを開始"}
+              </LoadingButton>
             </div>
           </div>
         </Stack>
