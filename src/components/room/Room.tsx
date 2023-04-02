@@ -18,6 +18,7 @@ import { useAppSelector } from "../../app/hooks";
 import useDocument from "../../hooks/useDocument";
 import useSubCollection from "../../hooks/useSubCollection";
 import { db } from "../../firebase";
+import useVideoPhone from "../../hooks/useVideoPhone";
 
 const defaultRoom: Room = {
   id: "",
@@ -109,8 +110,9 @@ const Room = () => {
     );
   };
 
-  const handlePhone = () => {
-    window.alert("phone");
+  const { getMedia } = useVideoPhone();
+  const handlePhone = async () => {
+    await getMedia();
   };
 
   const handleLeave = () => {
