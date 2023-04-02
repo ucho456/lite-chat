@@ -18,7 +18,7 @@ import { useAppSelector } from "../../app/hooks";
 import useDocument from "../../hooks/useDocument";
 import useSubCollection from "../../hooks/useSubCollection";
 import { db } from "../../firebase";
-import useVideoPhone from "../../hooks/useVideoPhone";
+import RoomVideoPhone from "./RoomVideoPhone";
 
 const defaultRoom: Room = {
   id: "",
@@ -110,11 +110,6 @@ const Room = () => {
     );
   };
 
-  const { getMedia } = useVideoPhone();
-  const handlePhone = async () => {
-    await getMedia();
-  };
-
   const handleLeave = () => {
     navigate("/");
   };
@@ -132,9 +127,7 @@ const Room = () => {
           </div>
           <div className="name-column">{you.name}</div>
           <div className="phone-column">
-            <IconButton onClick={() => handlePhone()}>
-              <Phone fontSize="large" />
-            </IconButton>
+            <RoomVideoPhone me={me} you={you} />
           </div>
           <div className="leave-column">
             <IconButton onClick={() => handleLeave()}>
