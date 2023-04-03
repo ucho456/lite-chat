@@ -15,17 +15,18 @@ type Props = {
 
 const RoomVideoPhone = (props: Props) => {
   const { me, you } = props;
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const meVideoRef = useRef<HTMLVideoElement>(null);
+  const youVideoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const constraints = { audio: true, video: true };
     navigator.mediaDevices
       .getUserMedia(constraints)
       .then((stream) => {
-        if (videoRef.current === null) {
+        if (meVideoRef.current === null) {
           return;
         }
-        videoRef.current.srcObject = stream;
+        meVideoRef.current.srcObject = stream;
       })
       .catch((error: any) => {
         alert(error.message);
@@ -48,8 +49,10 @@ const RoomVideoPhone = (props: Props) => {
       </IconButton>
       <Dialog open={open}>
         <DialogContent>
-          <video autoPlay muted ref={videoRef} />
+          <video autoPlay muted ref={meVideoRef} />
           <div>{me.name}</div>
+          <video autoPlay ref={youVideoRef} />
+          <div>{you.name}</div>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>終了</Button>
