@@ -1,5 +1,12 @@
 import { Phone } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  IconButton,
+} from "@mui/material";
+import { useState, useRef, useEffect } from "react";
 
 type Props = {
   me: RoomUser;
@@ -8,18 +15,30 @@ type Props = {
 
 const RoomVideoPhone = (props: Props) => {
   const { me, you } = props;
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  const getMedia = async () => {
+  useEffect(() => {
     const constraints = { audio: true, video: true };
-    try {
-      return await navigator.mediaDevices.getUserMedia(constraints);
-    } catch (error: any) {
-      alert(error.message);
-    }
+    navigator.mediaDevices
+      .getUserMedia(constraints)
+      .then((stream) => {
+        if (videoRef.current === null) {
+          return;
+        }
+        videoRef.current.srcObject = stream;
+      })
+      .catch((error: any) => {
+        alert(error.message);
+      });
+  });
+
+  const [open, setOpen] = useState(false);
+  const handlePhone = async () => {
+    setOpen(true);
   };
 
-  const handlePhone = async () => {
-    await getMedia();
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -27,6 +46,15 @@ const RoomVideoPhone = (props: Props) => {
       <IconButton onClick={() => handlePhone()}>
         <Phone fontSize="large" />
       </IconButton>
+      <Dialog open={open}>
+        <DialogContent>
+          <video autoPlay muted ref={videoRef} />
+          <div>{me.name}</div>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>終了</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
