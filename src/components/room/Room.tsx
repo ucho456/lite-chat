@@ -1,7 +1,6 @@
 import { Avatar, IconButton } from "@mui/material";
 import { Logout, Phone, Send } from "@mui/icons-material";
 import "./Room.scss";
-import RoomDialog from "./RoomDialog";
 import RoomMessage from "./RoomMessage";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -171,7 +170,6 @@ const Room = () => {
           </div>
         </form>
       </div>
-      <RoomDialog />
     </div>
   );
 };
