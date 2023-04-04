@@ -18,7 +18,6 @@ import { useAppSelector } from "../../app/hooks";
 import useDocument from "../../hooks/useDocument";
 import useSubCollection from "../../hooks/useSubCollection";
 import { db } from "../../firebase";
-import RoomVideoPhone from "./RoomVideoPhone";
 
 const defaultRoom: Room = {
   id: "",
@@ -41,7 +40,6 @@ const defaultRoom: Room = {
 const defaultRoomUser: RoomUser = { uid: "", name: "", photo: null };
 
 const Room = () => {
-  const navigate = useNavigate();
   const { roomId } = useParams();
 
   //Todo: マッチした後roomが取れてない。
@@ -110,8 +108,12 @@ const Room = () => {
     );
   };
 
+  const navigate = useNavigate();
   const handleLeave = () => {
     navigate("/");
+  };
+  const handlePhone = () => {
+    navigate(`/room/${roomId}/video-phone?meUid=${me.uid}&youUid=${you.uid}`);
   };
 
   return (
@@ -127,7 +129,9 @@ const Room = () => {
           </div>
           <div className="name-column">{you.name}</div>
           <div className="phone-column">
-            <RoomVideoPhone me={me} you={you} />
+            <IconButton onClick={() => handlePhone()}>
+              <Phone fontSize="large" />
+            </IconButton>
           </div>
           <div className="leave-column">
             <IconButton onClick={() => handleLeave()}>
