@@ -34,7 +34,7 @@ const TopDialog = () => {
 
   const { control, handleSubmit } = useForm<InputUser>({
     shouldUnregister: false,
-    defaultValues: { name: "", photo: null, sex: "man", youSex: "woman" },
+    defaultValues: { name: "test", photo: null, sex: "man", youSex: "man" },
   });
 
   const [loading, setLoading] = useState(false);
@@ -68,7 +68,6 @@ const TopDialog = () => {
         uid: userCredential.user.uid,
         youSex: inputUser.youSex,
       });
-      console.log(result);
       if (result.data.ok && result.data.roomId) {
         navigate(`/room/${result.data.roomId}`);
       } else {
