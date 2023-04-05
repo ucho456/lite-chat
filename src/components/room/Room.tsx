@@ -41,7 +41,6 @@ const defaultRoomUser: RoomUser = { uid: "", name: "", photo: null };
 const Room = () => {
   const { roomId } = useParams();
 
-  //Todo: マッチした後roomが取れてない。
   const { document: room } = useDocument<Room>(
     "rooms",
     roomId,
@@ -112,7 +111,7 @@ const Room = () => {
     navigate("/");
   };
   const handlePhone = () => {
-    navigate(`/room/${roomId}/video-phone?meUid=${me.uid}&youUid=${you.uid}`);
+    navigate(`/room/${roomId}/phone?meUid=${me.uid}&youUid=${you.uid}`);
   };
 
   return (

@@ -4,7 +4,7 @@ import { useAppSelector } from "../app/hooks";
 import Room from "../components/room/Room";
 import ErrorPage from "../components/error/ErrorPage";
 import Top from "../components/top/Top";
-import RoomVideoPhone from "../components/room/RoomVideoPhone";
+import Phone from "../components/room/phone/Phone";
 
 const isAuth = (): boolean => {
   const authUid = useAppSelector((state) => state.auth.uid);
@@ -26,8 +26,8 @@ export const router = createBrowserRouter([
         element: <Room />,
       },
       {
-        path: ":roomId/video-phone",
-        element: <RoomVideoPhone />,
+        path: ":roomId/phone",
+        element: <Phone />,
       },
     ],
   },
