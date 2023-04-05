@@ -68,3 +68,23 @@ export const messageConverter: FirestoreDataConverter<Message> = {
     };
   },
 };
+
+export const signalConverter: FirestoreDataConverter<Signal> = {
+  toFirestore(s: Signal): DocumentData {
+    return {
+      type: s.type,
+      sender: s.sender,
+      sessionDescription: s.sessionDescription,
+      candidate: s.candidate,
+    };
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot): Signal {
+    const d = snapshot.data();
+    return {
+      type: d.type,
+      sender: d.sender,
+      sessionDescription: d.sessionDescription,
+      candidate: d.candidate,
+    };
+  },
+};
