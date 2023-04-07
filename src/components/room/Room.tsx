@@ -3,19 +3,10 @@ import { Logout, Phone, Send } from "@mui/icons-material";
 import "./Room.scss";
 import RoomMessage from "./RoomMessage";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  addDoc,
-  collection,
-  doc,
-  orderBy,
-  serverTimestamp,
-} from "firebase/firestore";
-import { messageConverter } from "../../utils/converter";
 import React, { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "../../app/hooks";
-import useSubCollection from "../../hooks/useSubCollection";
-import { db } from "../../firebase";
 import useRoom from "../../hooks/useRoom";
+import useMessage from "../../hooks/useMessage";
 
 const defaultRoomUser: { uid: string; name: string; photo: string | null } = {
   uid: "",
@@ -25,18 +16,13 @@ const defaultRoomUser: { uid: string; name: string; photo: string | null } = {
 
 const Room = () => {
   const { roomId } = useParams<{ roomId: string }>();
+  const { addMessageDoc, getReactiveMessageCol } = useMessage();
   const { getReactiveRoomDoc } = useRoom();
 
   // Todo: routerを修正してundefinedにならないようにする。
   const room = getReactiveRoomDoc(roomId as string);
 
-  const { subCollection: messages } = useSubCollection<Message>(
-    "rooms",
-    roomId,
-    "messages",
-    messageConverter,
-    [orderBy("createdAt", "asc")]
-  );
+  const messages = getReactiveMessageCol(roomId as string);
 
   const authUid = useAppSelector((state) => state.auth.uid);
   const [me, setMe] = useState<{
@@ -68,28 +54,11 @@ const Room = () => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    if (
-      !roomId ||
-      !authUid ||
-      !bodyRef ||
-      !bodyRef.current ||
-      inputText === ""
-    ) {
+    if (!roomId || !bodyRef || !bodyRef.current || inputText === "") {
       return;
     }
 
-    const messageRef = collection(
-      db,
-      "rooms",
-      roomId,
-      "messages"
-    ).withConverter(messageConverter);
-    await addDoc(messageRef, {
-      id: doc(messageRef).id,
-      uid: authUid,
-      text: inputText,
-      createdAt: serverTimestamp(),
-    });
+    await addMessageDoc(roomId, inputText);
     setInputText("");
     bodyRef.current.scrollTo(
       0,

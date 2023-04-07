@@ -22,6 +22,7 @@ export type Signal = {
 
 const useSignal = () => {
   const { deleteDoc, getDocRef, setDoc } = useFirestore();
+
   const signalConverter: FirestoreDataConverter<Signal> = {
     toFirestore(s: Signal): DocumentData {
       return {
@@ -44,20 +45,20 @@ const useSignal = () => {
 
   const collectionName = "signals";
 
-  const getSignalDocRef = (documentId: string): DocumentReference<Signal> => {
-    return getDocRef(collectionName, documentId, signalConverter);
+  const getSignalDocRef = (signalId: string): DocumentReference<Signal> => {
+    return getDocRef(collectionName, signalId, signalConverter);
   };
 
-  const deleteSignalDoc = async (documentId: string): Promise<void> => {
-    const signalRef = getSignalDocRef(documentId);
+  const deleteSignalDoc = async (signalId: string): Promise<void> => {
+    const signalRef = getSignalDocRef(signalId);
     await deleteDoc<Signal>(signalRef);
   };
 
   const setSignalDoc = async (
-    documentId: string,
+    signalId: string,
     signal: Signal
   ): Promise<void> => {
-    const signalRef = getSignalDocRef(documentId);
+    const signalRef = getSignalDocRef(signalId);
     await setDoc<Signal>(signalRef, signal);
   };
 

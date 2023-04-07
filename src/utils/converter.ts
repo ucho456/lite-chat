@@ -4,25 +4,6 @@ import type {
   QueryDocumentSnapshot,
 } from "firebase/firestore";
 
-export const messageConverter: FirestoreDataConverter<Message> = {
-  toFirestore(m: Message): DocumentData {
-    return {
-      uid: m.uid,
-      text: m.text,
-      createdAt: m.createdAt,
-    };
-  },
-  fromFirestore(snapshot: QueryDocumentSnapshot): Message {
-    const d = snapshot.data();
-    return {
-      id: snapshot.id,
-      uid: d.uid,
-      text: d.text,
-      createdAt: d.createdAt,
-    };
-  },
-};
-
 export const userConverter: FirestoreDataConverter<User> = {
   toFirestore(u: User): DocumentData {
     return {
