@@ -9,44 +9,26 @@ import {
   doc,
   orderBy,
   serverTimestamp,
-  Timestamp,
 } from "firebase/firestore";
-import { messageConverter, roomConverter } from "../../utils/converter";
+import { messageConverter } from "../../utils/converter";
 import React, { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "../../app/hooks";
-import useDocument from "../../hooks/useDocument";
 import useSubCollection from "../../hooks/useSubCollection";
 import { db } from "../../firebase";
+import useRoom from "../../hooks/useRoom";
 
-const defaultRoom: Room = {
-  id: "",
-  users: {
-    A: {
-      uid: "",
-      name: "",
-      photo: null,
-    },
-    B: {
-      uid: "",
-      name: "",
-      photo: null,
-    },
-  },
-  isLeave: false,
-  limitAt: Timestamp.fromDate(new Date()),
+const defaultRoomUser: { uid: string; name: string; photo: string | null } = {
+  uid: "",
+  name: "",
+  photo: null,
 };
 
-const defaultRoomUser: RoomUser = { uid: "", name: "", photo: null };
-
 const Room = () => {
-  const { roomId } = useParams();
+  const { roomId } = useParams<{ roomId: string }>();
+  const { getReactiveRoomDoc } = useRoom();
 
-  const { document: room } = useDocument<Room>(
-    "rooms",
-    roomId,
-    roomConverter,
-    defaultRoom
-  );
+  // Todo: routerを修正してundefinedにならないようにする。
+  const room = getReactiveRoomDoc(roomId as string);
 
   const { subCollection: messages } = useSubCollection<Message>(
     "rooms",
@@ -57,9 +39,18 @@ const Room = () => {
   );
 
   const authUid = useAppSelector((state) => state.auth.uid);
-  const [me, setMe] = useState<RoomUser>(defaultRoomUser);
-  const [you, setYou] = useState<RoomUser>(defaultRoomUser);
+  const [me, setMe] = useState<{
+    uid: string;
+    name: string;
+    photo: string | null;
+  }>(defaultRoomUser);
+  const [you, setYou] = useState<{
+    uid: string;
+    name: string;
+    photo: string | null;
+  }>(defaultRoomUser);
   useEffect(() => {
+    if (!room) return;
     const userA = room.users.A;
     const userB = room.users.B;
     if (userA.uid === authUid) {

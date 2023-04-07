@@ -23,25 +23,6 @@ export const messageConverter: FirestoreDataConverter<Message> = {
   },
 };
 
-export const roomConverter: FirestoreDataConverter<Room> = {
-  toFirestore(r: Room): DocumentData {
-    return {
-      users: r.users,
-      isLeave: r.isLeave,
-      limitAt: r.limitAt,
-    };
-  },
-  fromFirestore(snapshot: QueryDocumentSnapshot): Room {
-    const d = snapshot.data();
-    return {
-      id: snapshot.id,
-      users: d.users,
-      isLeave: d.isLeave,
-      limitAt: d.limitAt,
-    };
-  },
-};
-
 export const userConverter: FirestoreDataConverter<User> = {
   toFirestore(u: User): DocumentData {
     return {
