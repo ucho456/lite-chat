@@ -42,26 +42,6 @@ export const roomConverter: FirestoreDataConverter<Room> = {
   },
 };
 
-export const signalConverter: FirestoreDataConverter<Signal> = {
-  toFirestore(s: Signal): DocumentData {
-    return {
-      type: s.type,
-      sender: s.sender,
-      sessionDescription: s.sessionDescription,
-      candidate: s.candidate,
-    };
-  },
-  fromFirestore(snapshot: QueryDocumentSnapshot): Signal {
-    const d = snapshot.data();
-    return {
-      type: d.type,
-      sender: d.sender,
-      sessionDescription: d.sessionDescription,
-      candidate: d.candidate,
-    };
-  },
-};
-
 export const userConverter: FirestoreDataConverter<User> = {
   toFirestore(u: User): DocumentData {
     return {
@@ -88,17 +68,3 @@ export const userConverter: FirestoreDataConverter<User> = {
     };
   },
 };
-
-type CollectionName = "messages" | "rooms" | "signals" | "users";
-type ConverterType =
-  | FirestoreDataConverter<Message>
-  | FirestoreDataConverter<Room>
-  | FirestoreDataConverter<Signal>
-  | FirestoreDataConverter<User>;
-
-export const converterMap = new Map<CollectionName, ConverterType>([
-  ["messages", messageConverter],
-  ["rooms", roomConverter],
-  ["signals", signalConverter],
-  ["users", userConverter],
-]);
