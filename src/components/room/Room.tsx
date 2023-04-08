@@ -4,7 +4,7 @@ import "./Room.scss";
 import RoomMessage from "./RoomMessage";
 import { useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useRef, useState } from "react";
-import { useAppSelector } from "../../app/hooks";
+import { useAppSelector } from "../../store/hooks";
 import useRoom from "../../hooks/useRoom";
 import useMessage from "../../hooks/useMessage";
 

@@ -7,7 +7,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import useFirestore from "./useFirestore";
-import { useAppSelector } from "../app/hooks";
+import { useAppSelector } from "../store/hooks";
 import useSubCollection from "./useSubCollection";
 
 type Message = {

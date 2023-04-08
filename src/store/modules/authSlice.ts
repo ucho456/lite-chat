@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+type InitialAuthState = {
+  uid: string | null;
+};
+
 const initialState: InitialAuthState = {
   uid: null,
 };

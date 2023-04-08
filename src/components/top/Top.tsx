@@ -13,8 +13,8 @@ import {
 import { signInAnonymously } from "firebase/auth";
 import { auth, db, functions } from "../../firebase";
 import "./Top.scss";
-import { useAppDispatch } from "../../app/hooks";
-import { signIn, signOut } from "../../features/authSlice";
+import { useAppDispatch } from "../../store/hooks";
+import { signIn, signOut } from "../../store/modules/authSlice";
 import { useNavigate } from "react-router-dom";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { userConverter } from "../../utils/converter";

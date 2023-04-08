@@ -8,7 +8,7 @@ import {
   createBrowserRouter,
 } from "react-router-dom";
 import { NavigationGuard } from "./NavigationGuard";
-import { useAppSelector } from "../app/hooks";
+import { useAppSelector } from "../store/hooks";
 import Room from "../components/room/Room";
 import ErrorPage from "../components/error/ErrorPage";
 import Top from "../components/top/Top";
