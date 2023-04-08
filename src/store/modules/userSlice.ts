@@ -16,3 +16,5 @@ export const userSlice = createSlice({
 
 export const { updateUser } = userSlice.actions;
 export default userSlice.reducer;
+
+// Todo: userSliceわざわざ必要ない気がするのでしかるべき時に削除する。
