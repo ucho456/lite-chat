@@ -6,7 +6,7 @@
           display: grid;
           gap: 20px;
           grid-template-columns: repeat(1, 1fr);
-          grid-template-rows: 200px 100px 100px;
+          grid-template-rows: 200px 100px;
           text-align: center;
           .me-row {
             grid-row: 1;
@@ -46,14 +46,8 @@
               }
             }
           }
-          .you-row {
-            grid-row: 2;
-            h3 {
-              margin-bottom: 20px;
-            }
-          }
           .button-row {
-            grid-row: 3;
+            grid-row: 2;
           }
         }
       }

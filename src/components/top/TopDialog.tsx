@@ -10,19 +10,18 @@ import {
   TextField,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { signInAnonymously } from "firebase/auth";
-import { doc, serverTimestamp, setDoc } from "firebase/firestore";
-import { HttpsCallable, httpsCallable } from "firebase/functions";
+import { signInWithPopup } from "firebase/auth";
 import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { auth, db, functions } from "../../firebase";
-import { userConverter } from "../../utils/converter";
+import { auth, googleAuthProvider } from "../../firebase";
 import "./TopDialog.scss";
 import { Send } from "@mui/icons-material";
+import useUser, { InputUser } from "../../hooks/useUser";
 
 const TopDialog = () => {
   const navigate = useNavigate();
+  const { setUserDoc } = useUser();
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -34,48 +33,20 @@ const TopDialog = () => {
 
   const { control, handleSubmit } = useForm<InputUser>({
     shouldUnregister: false,
-    defaultValues: { name: "test", photo: null, sex: "man", youSex: "man" },
+    defaultValues: { name: "test", photo: null, sex: "man" },
   });
 
   const [loading, setLoading] = useState(false);
-  const handleMatching: SubmitHandler<InputUser> = async (
+  const handleSignup: SubmitHandler<InputUser> = async (
     inputUser: InputUser
   ) => {
-    const alertMessage =
-      "マッチングできませんでした。暫く待ってから再度お試し下さい。";
     try {
       setLoading(true);
-      const userCredential = await signInAnonymously(auth);
-      const userRef = doc(db, "users", userCredential.user.uid).withConverter(
-        userConverter
-      );
-      await setDoc(userRef, {
-        uid: userCredential.user.uid,
-        name: inputUser.name,
-        photo: inputUser.photo,
-        sex: inputUser.sex,
-        youSex: inputUser.youSex,
-        waitingState: "waiting",
-        waitingStartAt: serverTimestamp(),
-        roomId: null,
-      });
-
-      const matching: HttpsCallable<
-        { uid: string; youSex: Sex },
-        { roomId: string | null; ok: boolean }
-      > = httpsCallable(functions, "matching");
-      const result = await matching({
-        uid: userCredential.user.uid,
-        youSex: inputUser.youSex,
-      });
-      if (result.data.ok && result.data.roomId) {
-        navigate(`/room/${result.data.roomId}`);
-      } else {
-        alert(alertMessage);
-      }
+      const userCredential = await signInWithPopup(auth, googleAuthProvider);
+      await setUserDoc(userCredential.user.uid, inputUser);
+      navigate("/rooms");
     } catch (error: any) {
-      console.log(error);
-      alert(alertMessage);
+      alert(error.message);
     } finally {
       setLoading(false);
     }
@@ -84,10 +55,10 @@ const TopDialog = () => {
   return (
     <div>
       <Button fullWidth size="large" variant="contained" onClick={handleOpen}>
-        始める
+        新規登録
       </Button>
       <Dialog className="top-dialog" open={open} onClose={handleClose}>
-        <Stack component="form" onSubmit={handleSubmit(handleMatching)}>
+        <Stack component="form" onSubmit={handleSubmit(handleSignup)}>
           <div className="container">
             <div className="me-row">
               <h3>- あなたのプロフィール -</h3>
@@ -110,8 +81,7 @@ const TopDialog = () => {
                         InputLabelProps={{ shrink: true }}
                         inputProps={{ maxLength: 10 }}
                         label="ニックネーム"
-                        //[Todo: 開発用] 入力が面倒なので。後々requiredを復活させる予定。
-                        // required
+                        required
                         size="small"
                         type="text"
                       />
@@ -140,28 +110,6 @@ const TopDialog = () => {
                   />
                 </div>
               </div>
-            </div>
-            <div className="you-row">
-              <h3>- あいての条件 -</h3>
-              <Controller
-                control={control}
-                name="youSex"
-                render={({ field }) => (
-                  <FormControl>
-                    <InputLabel id="you-sex-label">性別</InputLabel>
-                    <Select
-                      {...field}
-                      fullWidth
-                      label="性別"
-                      labelId="you-sex-label"
-                      size="small"
-                    >
-                      <MenuItem value={"man"}>男性</MenuItem>
-                      <MenuItem value={"woman"}>女性</MenuItem>
-                    </Select>
-                  </FormControl>
-                )}
-              />
             </div>
             <div className="button-row">
               <LoadingButton

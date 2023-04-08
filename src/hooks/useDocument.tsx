@@ -4,28 +4,20 @@ import { onSnapshot, doc, FirestoreDataConverter } from "firebase/firestore";
 
 const useDocument = <T,>(
   collectionName: string,
-  documentId: string | null | undefined,
-  converter: FirestoreDataConverter<T>,
-  defaultValue: T
-) => {
-  const [document, setDocument] = useState<T>(defaultValue);
+  documentId: string,
+  converter: FirestoreDataConverter<T>
+): {
+  document: T | null;
+  setDocument: React.Dispatch<React.SetStateAction<T | null>>;
+} => {
+  const [document, setDocument] = useState<T | null>(null);
 
   useEffect(() => {
-    if (!documentId) {
-      return;
-    }
-
     const ref = doc(db, collectionName, documentId).withConverter(converter);
-
     const unsubscribe = onSnapshot(ref, (doc) => {
-      if (doc.exists()) {
-        setDocument(doc.data());
-      }
+      if (doc.exists()) setDocument(doc.data());
     });
-
-    return () => {
-      unsubscribe();
-    };
+    return () => unsubscribe();
   }, [documentId]);
 
   return { document, setDocument };

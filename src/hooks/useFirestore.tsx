@@ -1,9 +1,13 @@
 import {
+  addDoc as _addDoc,
+  collection,
+  CollectionReference,
   deleteDoc as _deleteDoc,
-  FirestoreDataConverter,
-  setDoc as _setDoc,
   doc,
   DocumentReference,
+  FirestoreDataConverter,
+  getDoc as _getDoc,
+  setDoc as _setDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -18,8 +22,32 @@ const useFirestore = () => {
     return doc(db, collectionName, documentId).withConverter(converter);
   };
 
-  const deleteDoc = async <T,>(docRef: DocumentReference<T>) => {
-    await _deleteDoc(docRef);
+  const getSubColRef = <T,>(
+    parentCollectionName: CollectionName,
+    parentId: string,
+    subCollectionName: CollectionName,
+    converter: FirestoreDataConverter<T>
+  ): CollectionReference<T> => {
+    return collection(
+      db,
+      parentCollectionName,
+      parentId,
+      subCollectionName
+    ).withConverter(converter);
+  };
+
+  const addDoc = async <T,>(
+    colRef: CollectionReference<T>,
+    data: T
+  ): Promise<void> => {
+    await _addDoc(colRef, data);
+  };
+
+  const getDoc = async <T,>(
+    docRef: DocumentReference<T>
+  ): Promise<T | null> => {
+    const snapshot = await _getDoc(docRef);
+    return snapshot.exists() ? snapshot.data() : null;
   };
 
   const setDoc = async <T,>(
@@ -29,7 +57,11 @@ const useFirestore = () => {
     await _setDoc(docRef, data);
   };
 
-  return { deleteDoc, getDocRef, setDoc };
+  const deleteDoc = async <T,>(docRef: DocumentReference<T>): Promise<void> => {
+    await _deleteDoc(docRef);
+  };
+
+  return { addDoc, deleteDoc, getDoc, getDocRef, getSubColRef, setDoc };
 };
 
 export default useFirestore;

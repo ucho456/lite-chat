@@ -1,6 +1,10 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { connectAuthEmulator, getAuth } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  connectAuthEmulator,
+  getAuth,
+} from "firebase/auth";
 import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
 
@@ -21,6 +25,7 @@ getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const functions = getFunctions(app, "asia-northeast1");
+const googleAuthProvider = new GoogleAuthProvider();
 
 if (env.VITE_USE_EMULATOR === "true") {
   connectAuthEmulator(auth, "http://localhost:9099", { disableWarnings: true });
@@ -28,4 +33,4 @@ if (env.VITE_USE_EMULATOR === "true") {
   connectFunctionsEmulator(functions, "localhost", 5001);
 }
 
-export { auth, db, functions };
+export { auth, db, functions, googleAuthProvider };

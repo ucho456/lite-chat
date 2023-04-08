@@ -10,6 +10,7 @@ import {
 import { NavigationGuard } from "./NavigationGuard";
 import { useAppSelector } from "../store/hooks";
 import Room from "../components/room/Room";
+import Rooms from "../components/room/Rooms";
 import ErrorPage from "../components/error/ErrorPage";
 import Top from "../components/top/Top";
 import Phone from "../components/room/phone/Phone";
@@ -25,10 +26,14 @@ export const router = createBrowserRouter([
     element: <Top />,
   },
   {
-    path: "/room",
+    path: "/rooms",
     element: <NavigationGuard beforeEnter={isAuth} redirectPath="/" />,
     errorElement: <ErrorPage />,
     children: [
+      {
+        path: "/rooms",
+        element: <Rooms />,
+      },
       {
         path: ":roomId",
         element: <Room />,
