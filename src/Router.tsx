@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import Room from "./components/room/Room";
-import Rooms from "./components/room/Rooms";
+import Rooms from "./components/rooms/Rooms";
 import ErrorPage from "./components/error/ErrorPage";
 import Top from "./components/top/Top";
 import Phone from "./components/room/phone/Phone";
