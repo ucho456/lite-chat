@@ -1,4 +1,12 @@
-import { createBrowserRouter } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Outlet,
+  Route,
+  RouterProvider,
+  Routes,
+  createBrowserRouter,
+} from "react-router-dom";
 import { NavigationGuard } from "./NavigationGuard";
 import { useAppSelector } from "../app/hooks";
 import Room from "../components/room/Room";
@@ -32,3 +40,46 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
+
+const Router = () => {
+  return <RouterProvider router={router} />;
+};
+
+/**
+ * Todo: 下記の方式に変更する。課題: roomにリダイレクトされた時に遷移する部屋どうする？
+ */
+// type Props = {
+//   needAuth: boolean;
+//   redirectPath: string;
+// };
+
+// const IsAuth = (props: Props) => {
+//   const { needAuth, redirectPath } = props;
+//   const authUid = useAppSelector((state) => state.auth.uid);
+//   return (needAuth && authUid) || (!needAuth && !authUid) ? (
+//     <Outlet />
+//   ) : (
+//     <Navigate to={redirectPath} />
+//   );
+// };
+
+// const Router = () => {
+//   return (
+//     <BrowserRouter>
+//       <Routes>
+//         <Route
+//           path="/"
+//           element={<IsAuth needAuth={false} redirectPath="/room" />}
+//         >
+//           <Route path="/" element={<Top />} />
+//         </Route>
+//         <Route path="/room" element={<IsAuth needAuth redirectPath="/" />}>
+//           <Route path="/room/:roomId" element={<Room />} />
+//           <Route path="/room/:roomId/phone" element={<Phone />} />
+//         </Route>
+//       </Routes>
+//     </BrowserRouter>
+//   );
+// };
+
+export default Router;
