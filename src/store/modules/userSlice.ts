@@ -1,6 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { User } from "../../hooks/useUser";
 
-const initialState: InitialUserState = {
+type UserState = {
+  user: User | null;
+};
+
+const initialState: UserState = {
   user: null,
 };
 
@@ -8,7 +13,7 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    updateUser: (state, action: PayloadAction<InitialUserState["user"]>) => {
+    updateUser: (state, action: PayloadAction<UserState["user"]>) => {
       state.user = action.payload;
     },
   },
@@ -16,5 +21,3 @@ export const userSlice = createSlice({
 
 export const { updateUser } = userSlice.actions;
 export default userSlice.reducer;
-
-// Todo: userSliceわざわざ必要ない気がするのでしかるべき時に削除する。
