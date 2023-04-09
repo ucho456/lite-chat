@@ -18,6 +18,13 @@ $sp: 480px;
   }
 }
 
+@mixin hover {
+  &:hover {
+    cursor: pointer;
+    opacity: 0.6;
+  }
+}
+
 $fontColor: #263238;
 $Blue: #b3e5fc;
 $lightBlue: #e1f5fe;
