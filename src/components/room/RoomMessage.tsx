@@ -1,3 +1,4 @@
+import { Message } from "../../hooks/useMessage";
 import "./RoomMessage.scss";
 
 type Props = {

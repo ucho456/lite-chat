@@ -10,7 +10,7 @@ import useFirestore from "./useFirestore";
 import { useAppSelector } from "../store/hooks";
 import useSubCollection from "./useSubCollection";
 
-type Message = {
+export type Message = {
   id: string;
   uid: string;
   text: string;
