@@ -13,13 +13,6 @@
     margin: 0 auto;
     .user-column {
       grid-column: 1 / 2;
-      padding: 5px 0 0 5px;
-      display: flex;
-      @include hover();
-      .name {
-        line-height: $headerHeight - 10px;
-        margin-left: 5px;
-      }
     }
     .leave-column {
       grid-column: 3 / 4;

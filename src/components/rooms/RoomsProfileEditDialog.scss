@@ -1,0 +1,15 @@
+@import "./Rooms.scss";
+@import "../../assets/variables.scss";
+
+.rooms-profile-edit-dialog {
+  .user-column {
+    height: $headerHeight;
+    padding: 5px;
+    display: flex;
+    @include hover();
+    .name {
+      line-height: 50px - 10px;
+      margin-left: 5px;
+    }
+  }
+}
