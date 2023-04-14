@@ -6,10 +6,9 @@ const Rooms = () => {
   return (
     <div className="rooms">
       <RoomsHeader />
-      <div className="container">
-        <div className="list-column">
-          <RoomsList />
-        </div>
+      <div className="spacer" />
+      <div className="list">
+        <RoomsList />
       </div>
     </div>
   );

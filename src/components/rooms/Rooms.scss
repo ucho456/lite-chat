@@ -1,17 +1,16 @@
 @import "../../assets/variables.scss";
-$headerHeight: 50px;
-$bodyHeight: calc(100vh - $headerHeight);
 
 .rooms {
+  $spacerHeight: 10px;
+  $bodyHeight: calc(100vh - ($headerHeight + $spacerHeight));
   background-color: $ghostwhite;
-  .container {
-    display: grid;
-    grid-template-rows: $headerHeight auto;
+  .spacer {
+    height: $spacerHeight;
+  }
+  .list {
     min-height: $bodyHeight;
-    .list-column {
-      max-width: 1000px;
-      width: 100%;
-      margin: 0 auto;
-    }
+    max-width: $pageMaxWidth;
+    width: 100%;
+    margin: 0 auto;
   }
 }
