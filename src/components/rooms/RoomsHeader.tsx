@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../store/hooks";
 import { auth } from "../../firebase";
 import { signOut } from "../../store/modules/authSlice";
-import RoomsProfileEditDialog from "./RoomsProfileEditDialog";
+import ProfileEditDialog from "./ProfileEditDialog";
 import { resetUser } from "../../store/modules/userSlice";
 
 const RoomsHeader = () => {
@@ -23,7 +23,7 @@ const RoomsHeader = () => {
     <div className="rooms-header">
       <div className="container">
         <div className="user-column">
-          <RoomsProfileEditDialog />
+          <ProfileEditDialog />
         </div>
         <div className="leave-column">
           <IconButton onClick={() => handleSignOut()}>

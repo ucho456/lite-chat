@@ -6,9 +6,9 @@ import ProfileForm from "../commons/ProfileForm";
 import { LoadingButton } from "@mui/lab";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setUserAsync } from "../../store/modules/userSlice";
-import "./RoomsProfileEditDialog.scss";
+import "./ProfileEditDialog.scss";
 
-const RoomsProfileEditDialog = () => {
+const ProfileEditDialog = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -54,7 +54,7 @@ const RoomsProfileEditDialog = () => {
 
   if (!user) return <></>;
   return (
-    <div className="rooms-profile-edit-dialog">
+    <div className="profile-edit-dialog">
       <div className="user-column" onClick={handleOpen}>
         {user.photo ? (
           <Avatar src={user.photo} />
@@ -63,11 +63,7 @@ const RoomsProfileEditDialog = () => {
         )}
         <div className="name">{user.name}</div>
       </div>
-      <Dialog
-        className="rooms-profile-edit-dialog"
-        open={open}
-        onClose={handleClose}
-      >
+      <Dialog className="profile-edit-dialog" open={open} onClose={handleClose}>
         <ProfileForm
           control={control}
           handleFunction={handleUpdateUser}
@@ -87,4 +83,4 @@ const RoomsProfileEditDialog = () => {
   );
 };
 
-export default RoomsProfileEditDialog;
+export default ProfileEditDialog;
