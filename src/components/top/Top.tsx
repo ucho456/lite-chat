@@ -1,4 +1,4 @@
-import TopDialog from "./TopDialog";
+import SignupDialog from "./SignupDialog";
 
 const Top = () => {
   return (
@@ -12,7 +12,7 @@ const Top = () => {
             登録・インストール不要。チャットや通話を気軽に楽しめるサービスです。さぁ始めましょう！
           </p>
         </div>
-        <TopDialog />
+        <SignupDialog />
       </div>
     </div>
   );

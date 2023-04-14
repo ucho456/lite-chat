@@ -8,7 +8,7 @@ import useUser, { InputUser } from "../../hooks/useUser";
 import ProfileForm from "../commons/ProfileForm";
 import { LoadingButton } from "@mui/lab";
 
-const TopDialog = () => {
+const SignupDialog = () => {
   const navigate = useNavigate();
   const { setUserDoc } = useUser();
 
@@ -42,11 +42,11 @@ const TopDialog = () => {
   };
 
   return (
-    <div>
+    <>
       <Button fullWidth size="large" variant="contained" onClick={handleOpen}>
         新規登録
       </Button>
-      <Dialog className="top-dialog" open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleClose}>
         <ProfileForm
           control={control}
           handleFunction={handleSignup}
@@ -64,8 +64,8 @@ const TopDialog = () => {
           </LoadingButton>
         </ProfileForm>
       </Dialog>
-    </div>
+    </>
   );
 };
 
-export default TopDialog;
+export default SignupDialog;
