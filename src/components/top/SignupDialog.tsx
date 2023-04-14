@@ -7,6 +7,7 @@ import { auth, googleAuthProvider } from "../../firebase";
 import useUser, { InputUser } from "../../hooks/useUser";
 import ProfileForm from "../commons/ProfileForm";
 import { LoadingButton } from "@mui/lab";
+import { useSnackbar } from "../../contexts/Snackbar";
 
 const SignupDialog = () => {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ const SignupDialog = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const { openSnackbar } = useSnackbar();
   const handleSignup: SubmitHandler<InputUser> = async (
     inputUser: InputUser
   ) => {
@@ -34,8 +36,9 @@ const SignupDialog = () => {
       const userCredential = await signInWithPopup(auth, googleAuthProvider);
       await setUserDoc(userCredential.user.uid, inputUser);
       navigate("/rooms");
+      openSnackbar("サインアップしました。", "success");
     } catch (error: any) {
-      alert(error.message);
+      openSnackbar("サインアップに失敗しました。", "error");
     } finally {
       setLoading(false);
     }

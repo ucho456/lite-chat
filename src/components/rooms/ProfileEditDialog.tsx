@@ -7,6 +7,7 @@ import { LoadingButton } from "@mui/lab";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setUser } from "../../store/modules/userSlice";
 import "./ProfileEditDialog.scss";
+import { useSnackbar } from "../../contexts/Snackbar";
 
 const ProfileEditDialog = () => {
   /** Dialog switch */
@@ -19,6 +20,7 @@ const ProfileEditDialog = () => {
   const authUid = useAppSelector((state) => state.auth.uid);
   const dispatch = useAppDispatch();
   const { getUserDoc, setUserDoc } = useUser();
+  const { openSnackbar } = useSnackbar();
   useEffect(() => {
     if (user || !authUid) return;
     const setUserToStore = async () => {
@@ -26,7 +28,7 @@ const ProfileEditDialog = () => {
         const user = await getUserDoc(authUid);
         dispatch(setUser(user));
       } catch (error: any) {
-        alert(error.message);
+        openSnackbar("ユーザー情報の取得に失敗しました。", "error");
       }
     };
     setUserToStore();
@@ -59,8 +61,9 @@ const ProfileEditDialog = () => {
       setLoading(true);
       await setUserDoc(authUid, inputUser);
       dispatch(setUser({ uid: authUid, ...inputUser }));
+      openSnackbar("プロフィールを更新しました。", "success");
     } catch (error: any) {
-      alert(error.message);
+      openSnackbar("プロフィールの更新に失敗しました。", "error");
     } finally {
       setLoading(false);
       setOpen(false);

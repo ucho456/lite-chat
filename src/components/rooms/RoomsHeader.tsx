@@ -7,16 +7,19 @@ import { auth } from "../../firebase";
 import { signOut } from "../../store/modules/authSlice";
 import ProfileEditDialog from "./ProfileEditDialog";
 import { resetUser } from "../../store/modules/userSlice";
+import { useSnackbar } from "../../contexts/Snackbar";
 
 const RoomsHeader = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const { openSnackbar } = useSnackbar();
   const handleSignOut = () => {
     auth.signOut();
     dispatch(signOut());
     dispatch(resetUser());
     navigate("/");
+    openSnackbar("サインアウトしました。", "success");
   };
 
   return (
