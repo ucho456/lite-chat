@@ -12,7 +12,7 @@ const RoomsList = () => {
     <List sx={{ margin: "0 auto", width: "96%", bgcolor: "background.paper" }}>
       <ListItem alignItems="flex-start">
         <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+          <Avatar alt="Remy Sharp" src="/avatar.png" />
         </ListItemAvatar>
         <ListItemText primary="Brunch this weekend?" secondary="aaa" />
       </ListItem>
