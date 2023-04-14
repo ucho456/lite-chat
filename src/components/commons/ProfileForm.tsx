@@ -67,12 +67,12 @@ const ProfileForm = ({
                   name="sex"
                   render={({ field }) => (
                     <FormControl>
-                      <InputLabel id="me-sex-label">性別</InputLabel>
+                      <InputLabel id="sex-label">性別</InputLabel>
                       <Select
                         {...field}
                         fullWidth
                         label="性別"
-                        labelId="me-sex-label"
+                        labelId="sex-label"
                         size="small"
                       >
                         <MenuItem value={"man"}>男性</MenuItem>

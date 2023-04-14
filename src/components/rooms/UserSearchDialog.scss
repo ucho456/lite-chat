@@ -1,2 +1,21 @@
 .user-search-dialog {
+  .container {
+    min-width: 310px;
+    display: grid;
+    grid-template-rows: 50px 100px 100px;
+    text-align: center;
+    h3 {
+      grid-row: 1 / 2;
+      padding-top: 20px;
+      height: 30px;
+      line-height: 30px;
+    }
+    .sex-row {
+      padding-top: 30px;
+      grid-row: 2 / 3;
+    }
+    .button-row {
+      grid-row: 3 / 4;
+    }
+  }
 }
