@@ -5,20 +5,31 @@ import useUser, { InputUser } from "../../hooks/useUser";
 import ProfileForm from "../commons/ProfileForm";
 import { LoadingButton } from "@mui/lab";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { setUserAsync } from "../../store/modules/userSlice";
+import { setUser } from "../../store/modules/userSlice";
 import "./ProfileEditDialog.scss";
 
 const ProfileEditDialog = () => {
+  /** Dialog switch */
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  /** Set user to store */
   const user = useAppSelector((state) => state.user.user);
   const authUid = useAppSelector((state) => state.auth.uid);
   const dispatch = useAppDispatch();
+  const { getUserDoc, setUserDoc } = useUser();
   useEffect(() => {
     if (user || !authUid) return;
-    dispatch(setUserAsync({ authUid }));
+    const setUserToStore = async () => {
+      try {
+        const user = await getUserDoc(authUid);
+        dispatch(setUser(user));
+      } catch (error: any) {
+        alert(error.message);
+      }
+    };
+    setUserToStore();
   }, [authUid]);
 
   /** Set default values asynchronously */
@@ -38,17 +49,21 @@ const ProfileEditDialog = () => {
     reset(user);
   }, [user]);
 
-  const {} = useUser();
+  /** Update user profile */
   const [loading, setLoading] = useState(false);
   const handleUpdateUser: SubmitHandler<InputUser> = async (
     inputUser: InputUser
   ) => {
+    if (!authUid) return;
     try {
-      alert("handleUpdateUser");
+      setLoading(true);
+      await setUserDoc(authUid, inputUser);
+      dispatch(setUser({ uid: authUid, ...inputUser }));
     } catch (error: any) {
       alert(error.message);
     } finally {
       setLoading(false);
+      setOpen(false);
     }
   };
 
