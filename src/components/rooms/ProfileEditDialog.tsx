@@ -74,11 +74,7 @@ const ProfileEditDialog = () => {
   return (
     <div className="profile-edit-dialog">
       <div className="user-column" onClick={handleOpen}>
-        {user.photo ? (
-          <Avatar src={user.photo} />
-        ) : (
-          <Avatar src="/avatar.png" />
-        )}
+        <Avatar src={user.photo ?? "/avatar.png"} />
         <div className="name">{user.name}</div>
       </div>
       <Dialog className="profile-edit-dialog" open={open} onClose={handleClose}>
