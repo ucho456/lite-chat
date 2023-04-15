@@ -21,9 +21,10 @@ export type Room = {
   id: string;
   inviteeUser: RoomUser;
   invitedUser: RoomUser;
+  userUids: string[];
   isBlock: boolean;
   lastMessage: string;
-  lastMessageAt?: Timestamp | FieldValue;
+  lastActionAt?: Timestamp | FieldValue;
 };
 
 const useRoom = () => {
@@ -36,7 +37,7 @@ const useRoom = () => {
         invitedUser: r.invitedUser,
         isBlock: r.isBlock,
         lastMessage: r.lastMessage,
-        lastMessageAt: r.lastMessageAt,
+        lastActionAt: r.lastActionAt,
       };
     },
     fromFirestore(snapshot: QueryDocumentSnapshot): Room {
@@ -45,6 +46,7 @@ const useRoom = () => {
         id: snapshot.id,
         inviteeUser: d.inviteeUser,
         invitedUser: d.invitedUser,
+        userUids: d.userUids,
         isBlock: d.isBlock,
         lastMessage: d.lastMessage,
       };
@@ -81,9 +83,10 @@ const useRoom = () => {
       id: roomColRef.id,
       inviteeUser: me,
       invitedUser: you,
+      userUids: [me.uid, you.uid],
       isBlock: false,
       lastMessage: "",
-      lastMessageAt: serverTimestamp(),
+      lastActionAt: serverTimestamp(),
     });
   };
 
