@@ -3,8 +3,10 @@ import {
   FirestoreDataConverter,
   QueryDocumentSnapshot,
   Timestamp,
+  serverTimestamp,
 } from "firebase/firestore";
 import useDocument from "./useDocument";
+import useFirestore from "./useFirestore";
 
 export type RoomUser = {
   uid: string;
@@ -24,6 +26,8 @@ export type Room = {
 };
 
 const useRoom = () => {
+  const { addDoc, getColRef } = useFirestore();
+
   const roomConverter: FirestoreDataConverter<Room> = {
     toFirestore(r: Room): DocumentData {
       return {
@@ -47,6 +51,10 @@ const useRoom = () => {
 
   const collectionName = "rooms";
 
+  const getRoomColRef = () => {
+    return getColRef(collectionName, roomConverter);
+  };
+
   const getReactiveRoomDoc = (roomId: string): Room | null => {
     const { document: room } = useDocument<Room>(
       collectionName,
@@ -56,7 +64,21 @@ const useRoom = () => {
     return room;
   };
 
-  return { getReactiveRoomDoc };
+  const addRoomDoc = async (me: RoomUser, you: RoomUser) => {
+    const roomColRef = getRoomColRef();
+    await addDoc(roomColRef, {
+      id: roomColRef.id,
+      users: {
+        A: me,
+        B: you,
+      },
+      isBlock: false,
+      lastMessage: "",
+      lastMessageAt: serverTimestamp(),
+    });
+  };
+
+  return { addRoomDoc, getReactiveRoomDoc };
 };
 
 export default useRoom;

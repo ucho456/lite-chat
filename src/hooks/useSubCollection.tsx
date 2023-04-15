@@ -22,7 +22,7 @@ const useSubCollection = <T,>(
       return;
     }
 
-    const collectionRef = collection(
+    const colRef = collection(
       db,
       parentCollectionName,
       parentDocumentId,
@@ -30,8 +30,8 @@ const useSubCollection = <T,>(
     ).withConverter(converter);
 
     const q = queryConstraints
-      ? query(collectionRef, ...queryConstraints)
-      : query(collectionRef);
+      ? query(colRef, ...queryConstraints)
+      : query(colRef);
 
     const unsubscribe = onSnapshot(q, (querySnap) => {
       const result: T[] = [];

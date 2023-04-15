@@ -46,14 +46,14 @@ const useMessage = () => {
 
   const addMessageDoc = async (roomId: string, inputText: string) => {
     if (!authUid) return;
-    const colRef = getSubColRef(
+    const messageColRef = getSubColRef(
       parentCollectionName,
       roomId,
       collectionName,
       messageConverter
     );
-    await addDoc(colRef, {
-      id: colRef.id,
+    await addDoc(messageColRef, {
+      id: messageColRef.id,
       uid: authUid,
       text: inputText,
       createdAt: serverTimestamp(),

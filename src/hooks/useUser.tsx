@@ -4,7 +4,10 @@ import {
   FirestoreDataConverter,
   QueryDocumentSnapshot,
   Timestamp,
+  limit,
+  orderBy,
   serverTimestamp,
+  where,
 } from "firebase/firestore";
 import useFirestore from "./useFirestore";
 
@@ -25,7 +28,7 @@ export type InputUser = {
 };
 
 const useUser = () => {
-  const { getDoc, getDocRef, setDoc } = useFirestore();
+  const { getColRef, getDoc, getDocs, getDocRef, setDoc } = useFirestore();
 
   const userConverter: FirestoreDataConverter<User> = {
     toFirestore(u: User): DocumentData {
@@ -54,6 +57,10 @@ const useUser = () => {
     return getDocRef(collectionName, userId, userConverter);
   };
 
+  const getUserColRef = () => {
+    return getColRef(collectionName, userConverter);
+  };
+
   const getUserDoc = async (userId: string): Promise<User | null> => {
     const docRef = getUserDocRef(userId);
     return await getDoc(docRef);
@@ -68,7 +75,16 @@ const useUser = () => {
     });
   };
 
-  return { getUserDoc, getUserDocRef, setUserDoc };
+  const searchUserDocs = async (sex: Sex): Promise<User[]> => {
+    const userColRef = getUserColRef();
+    return await getDocs(userColRef, [
+      where("sex", "==", sex),
+      orderBy("lastSignInAt", "desc"),
+      limit(10),
+    ]);
+  };
+
+  return { getUserDoc, getUserDocRef, searchUserDocs, setUserDoc };
 };
 
 export default useUser;

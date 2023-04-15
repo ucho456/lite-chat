@@ -7,7 +7,10 @@ import {
   DocumentReference,
   FirestoreDataConverter,
   getDoc as _getDoc,
+  getDocs as _getDocs,
   setDoc as _setDoc,
+  QueryConstraint,
+  query,
 } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -20,6 +23,13 @@ const useFirestore = () => {
     converter: FirestoreDataConverter<T>
   ): DocumentReference<T> => {
     return doc(db, collectionName, documentId).withConverter(converter);
+  };
+
+  const getColRef = <T,>(
+    collectionName: CollectionName,
+    converter: FirestoreDataConverter<T>
+  ): CollectionReference<T> => {
+    return collection(db, collectionName).withConverter(converter);
   };
 
   const getSubColRef = <T,>(
@@ -50,6 +60,21 @@ const useFirestore = () => {
     return snapshot.exists() ? snapshot.data() : null;
   };
 
+  const getDocs = async <T,>(
+    colRef: CollectionReference<T>,
+    queryConstraints?: QueryConstraint[]
+  ): Promise<T[]> => {
+    const q = queryConstraints
+      ? query(colRef, ...queryConstraints)
+      : query(colRef);
+    const snapshot = await _getDocs(q);
+    const result: T[] = [];
+    snapshot.forEach((doc) => {
+      result.push(doc.data());
+    });
+    return result;
+  };
+
   const setDoc = async <T,>(
     docRef: DocumentReference<T>,
     data: T
@@ -61,7 +86,16 @@ const useFirestore = () => {
     await _deleteDoc(docRef);
   };
 
-  return { addDoc, deleteDoc, getDoc, getDocRef, getSubColRef, setDoc };
+  return {
+    addDoc,
+    deleteDoc,
+    getColRef,
+    getDoc,
+    getDocs,
+    getDocRef,
+    getSubColRef,
+    setDoc,
+  };
 };
 
 export default useFirestore;

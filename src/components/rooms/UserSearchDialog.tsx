@@ -11,8 +11,10 @@ import { useState } from "react";
 import "./UserSearchDialog.scss";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { LoadingButton } from "@mui/lab";
-import { Sex } from "../../hooks/useUser";
+import useUser, { Sex } from "../../hooks/useUser";
 import { useSnackbar } from "../../contexts/Snackbar";
+import { useAppSelector } from "../../store/hooks";
+import useRoom from "../../hooks/useRoom";
 
 type InputCondition = {
   sex: Sex;
@@ -30,13 +32,27 @@ const UserSearchDialog = () => {
 
   const [loading, setLoading] = useState(false);
   const { openSnackbar } = useSnackbar();
+  const { searchUserDocs } = useUser();
+  const { addRoomDoc } = useRoom();
+  const me = useAppSelector((state) => state.user.user);
   const handleMatching: SubmitHandler<InputCondition> = async (
     inputCondition: InputCondition
   ) => {
+    if (!me) return;
     const { sex } = inputCondition;
     try {
       setLoading(true);
-      openSnackbar(`${sex}さんとマッチしました。`, "success");
+      const users = await searchUserDocs(sex);
+      const you = users.find((u) => u.uid !== me.uid);
+      if (you) {
+        await addRoomDoc(
+          { uid: me.uid, name: me.name, photo: me.photo },
+          { uid: you.uid, name: you.name, photo: you.photo }
+        );
+        openSnackbar(`${you.name}さんとマッチしました。`, "success");
+      } else {
+        openSnackbar("相手が見つかりませんでした。", "error");
+      }
     } catch {
       openSnackbar("マッチに失敗しました。", "error");
     } finally {
@@ -44,6 +60,7 @@ const UserSearchDialog = () => {
       setOpen(false);
     }
   };
+
   return (
     <div className="user-search-dialog">
       <Button className="button" onClick={handleOpen}>
