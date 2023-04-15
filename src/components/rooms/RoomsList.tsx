@@ -1,15 +1,13 @@
-import {
-  Avatar,
-  Divider,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-} from "@mui/material";
+import { List } from "@mui/material";
 import UserSearchDialog from "./UserSearchDialog";
 import "./RoomsList.scss";
+import useRoom from "../../hooks/useRoom";
+import RoomsListItem from "./RoomsListItem";
 
 const RoomsList = () => {
+  const { getReactiveRoomCol } = useRoom();
+  const rooms = getReactiveRoomCol();
+
   return (
     <List
       className="rooms-list"
@@ -18,20 +16,9 @@ const RoomsList = () => {
       <div className="button">
         <UserSearchDialog />
       </div>
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src="/avatar.png" />
-        </ListItemAvatar>
-        <ListItemText primary="Brunch this weekend?" secondary="aaa" />
-      </ListItem>
-      <Divider variant="inset" component="li" />
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src="/avatar.png" />
-        </ListItemAvatar>
-        <ListItemText primary="Brunch this weekend?" secondary="aaa" />
-      </ListItem>
-      <Divider variant="inset" component="li" />
+      {rooms.map((r) => (
+        <RoomsListItem key={r.id} room={r} />
+      ))}
     </List>
   );
 };

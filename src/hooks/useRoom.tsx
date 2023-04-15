@@ -8,6 +8,7 @@ import {
 } from "firebase/firestore";
 import useDocument from "./useDocument";
 import useFirestore from "./useFirestore";
+import useCollection from "./useCollection";
 
 export type RoomUser = {
   uid: string;
@@ -55,6 +56,15 @@ const useRoom = () => {
     return getColRef(collectionName, roomConverter);
   };
 
+  const getReactiveRoomCol = () => {
+    const { collection: rooms } = useCollection(
+      collectionName,
+      roomConverter,
+      [] //Todo: 条件をいれる
+    );
+    return rooms;
+  };
+
   const getReactiveRoomDoc = (roomId: string): Room | null => {
     const { document: room } = useDocument<Room>(
       collectionName,
@@ -78,7 +88,7 @@ const useRoom = () => {
     });
   };
 
-  return { addRoomDoc, getReactiveRoomDoc };
+  return { addRoomDoc, getReactiveRoomCol, getReactiveRoomDoc };
 };
 
 export default useRoom;
