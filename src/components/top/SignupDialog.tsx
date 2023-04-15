@@ -37,7 +37,11 @@ const SignupDialog = () => {
         dispatch(setUser(user));
         openSnackbar("サインインしました。", "success");
       } else {
-        await setUserDoc(userCredential.user.uid, inputUser, 3);
+        await setUserDoc({
+          uid: userCredential.user.uid,
+          ...inputUser,
+          life: 3,
+        });
         const user = await getUserDoc(userCredential.user.uid);
         dispatch(setUser(user));
         openSnackbar("サインアップしました。", "success");

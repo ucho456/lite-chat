@@ -69,16 +69,10 @@ const useUser = () => {
     return await getDoc(docRef);
   };
 
-  const setUserDoc = async (
-    userId: string,
-    inputUser: InputUser,
-    life: number
-  ) => {
-    const docRef = getUserDocRef(userId);
+  const setUserDoc = async (user: User) => {
+    const docRef = getUserDocRef(user.uid);
     await setDoc(docRef, {
-      uid: userId,
-      ...inputUser,
-      life,
+      ...user,
       lastActionAt: serverTimestamp(),
     });
   };

@@ -56,11 +56,12 @@ const ProfileEditDialog = () => {
   const handleUpdateUser: SubmitHandler<InputUser> = async (
     inputUser: InputUser
   ) => {
-    if (!authUid || !user) return;
+    if (!user) return;
     try {
       setLoading(true);
-      await setUserDoc(authUid, inputUser, user.life);
-      dispatch(setUser({ uid: authUid, ...inputUser, life: user.life }));
+      const newUser = { ...user, ...inputUser };
+      await setUserDoc(newUser);
+      dispatch(setUser(newUser));
       openSnackbar("プロフィールを更新しました。", "success");
     } catch (error: any) {
       openSnackbar("プロフィールの更新に失敗しました。", "error");
