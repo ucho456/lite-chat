@@ -14,13 +14,17 @@ import { LoadingButton } from "@mui/lab";
 import useUser, { Sex } from "../../hooks/useUser";
 import { useSnackbar } from "../../contexts/Snackbar";
 import { useAppSelector } from "../../store/hooks";
-import useRoom from "../../hooks/useRoom";
+import useRoom, { Room } from "../../hooks/useRoom";
+
+type Props = {
+  rooms: Room[];
+};
 
 type InputCondition = {
   sex: Sex;
 };
 
-const UserSearchDialog = () => {
+const UserSearchDialog = ({ rooms }: Props) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -43,7 +47,11 @@ const UserSearchDialog = () => {
     try {
       setLoading(true);
       const users = await searchUserDocs(sex);
-      const you = users.find((u) => u.uid !== me.uid);
+      const alreadyMatchUserIds = rooms.map((r) =>
+        r.users.A.uid !== me.uid ? r.users.A.uid : r.users.B.uid
+      );
+      alreadyMatchUserIds.push(me.uid);
+      const you = users.find((u) => !alreadyMatchUserIds.includes(u.uid));
       if (you) {
         await addRoomDoc(
           { uid: me.uid, name: me.name, photo: me.photo },
@@ -51,7 +59,7 @@ const UserSearchDialog = () => {
         );
         openSnackbar(`${you.name}さんとマッチしました。`, "success");
       } else {
-        openSnackbar("相手が見つかりませんでした。", "error");
+        openSnackbar("条件に合う相手が見つかりませんでした。", "error");
       }
     } catch {
       openSnackbar("マッチに失敗しました。", "error");

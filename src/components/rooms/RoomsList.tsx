@@ -14,7 +14,7 @@ const RoomsList = () => {
       sx={{ margin: "0 auto", width: "96%", bgcolor: "background.paper" }}
     >
       <div className="button">
-        <UserSearchDialog />
+        <UserSearchDialog rooms={rooms} />
       </div>
       {rooms.length === 0 ? (
         <div>マッチしたあいてがいません。</div>
