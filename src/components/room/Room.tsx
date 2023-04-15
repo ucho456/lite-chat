@@ -37,8 +37,8 @@ const Room = () => {
   }>(defaultRoomUser);
   useEffect(() => {
     if (!room) return;
-    const userA = room.users.A;
-    const userB = room.users.B;
+    const userA = room.inviteeUser;
+    const userB = room.invitedUser;
     if (userA.uid === authUid) {
       setMe(userA);
       setYou(userB);

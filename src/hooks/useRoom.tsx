@@ -14,14 +14,13 @@ export type RoomUser = {
   uid: string;
   name: string;
   photo: string | null;
+  unread: boolean;
 };
 
 export type Room = {
   id: string;
-  users: {
-    A: RoomUser;
-    B: RoomUser;
-  };
+  inviteeUser: RoomUser;
+  invitedUser: RoomUser;
   isBlock: boolean;
   lastMessage: string;
   lastMessageAt?: Timestamp | FieldValue;
@@ -33,7 +32,8 @@ const useRoom = () => {
   const roomConverter: FirestoreDataConverter<Room> = {
     toFirestore(r: Room): DocumentData {
       return {
-        users: r.users,
+        inviteeUser: r.inviteeUser,
+        invitedUser: r.invitedUser,
         isBlock: r.isBlock,
         lastMessage: r.lastMessage,
         lastMessageAt: r.lastMessageAt,
@@ -43,7 +43,8 @@ const useRoom = () => {
       const d = snapshot.data();
       return {
         id: snapshot.id,
-        users: d.users,
+        inviteeUser: d.inviteeUser,
+        invitedUser: d.invitedUser,
         isBlock: d.isBlock,
         lastMessage: d.lastMessage,
       };
@@ -78,10 +79,8 @@ const useRoom = () => {
     const roomColRef = getRoomColRef();
     await addDoc(roomColRef, {
       id: roomColRef.id,
-      users: {
-        A: me,
-        B: you,
-      },
+      inviteeUser: me,
+      invitedUser: you,
       isBlock: false,
       lastMessage: "",
       lastMessageAt: serverTimestamp(),

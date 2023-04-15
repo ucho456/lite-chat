@@ -6,6 +6,7 @@ import {
   MenuItem,
   Select,
   Stack,
+  Tooltip,
 } from "@mui/material";
 import { useState } from "react";
 import "./UserSearchDialog.scss";
@@ -48,14 +49,14 @@ const UserSearchDialog = ({ rooms }: Props) => {
       setLoading(true);
       const users = await searchUserDocs(sex);
       const alreadyMatchUserIds = rooms.map((r) =>
-        r.users.A.uid !== me.uid ? r.users.A.uid : r.users.B.uid
+        r.inviteeUser.uid !== me.uid ? r.inviteeUser.uid : r.invitedUser.uid
       );
       alreadyMatchUserIds.push(me.uid);
       const you = users.find((u) => !alreadyMatchUserIds.includes(u.uid));
       if (you) {
         await addRoomDoc(
-          { uid: me.uid, name: me.name, photo: me.photo },
-          { uid: you.uid, name: you.name, photo: you.photo }
+          { uid: me.uid, name: me.name, photo: me.photo, unread: false },
+          { uid: you.uid, name: you.name, photo: you.photo, unread: false }
         );
         openSnackbar(`${you.name}さんとマッチしました。`, "success");
       } else {
@@ -69,11 +70,24 @@ const UserSearchDialog = ({ rooms }: Props) => {
     }
   };
 
+  const inviteeRoomNum = rooms.filter((r) => {
+    if (!me) return false;
+    return r.inviteeUser.uid === me.uid;
+  }).length;
+
   return (
     <div className="user-search-dialog">
-      <Button className="button" onClick={handleOpen}>
-        新規マッチング
-      </Button>
+      <Tooltip title={inviteeRoomNum >= 10 ? "" : "ちょっと保留"}>
+        <span>
+          <Button
+            className="button"
+            disabled={inviteeRoomNum >= 10}
+            onClick={handleOpen}
+          >
+            新規マッチング
+          </Button>
+        </span>
+      </Tooltip>
       <Dialog className="user-search-dialog" open={open} onClose={handleClose}>
         <Stack component="form" onSubmit={handleSubmit(handleMatching)}>
           <div className="container">

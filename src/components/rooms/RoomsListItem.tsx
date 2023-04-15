@@ -16,7 +16,8 @@ type Props = {
 
 const RoomsListItem = ({ room }: Props) => {
   const authUid = useAppSelector((state) => state.auth.uid);
-  const you = room.users.A.uid !== authUid ? room.users.A : room.users.B;
+  const you =
+    room.inviteeUser.uid !== authUid ? room.inviteeUser : room.invitedUser;
 
   const navigate = useNavigate();
   const handlePushToRoom = () => {
