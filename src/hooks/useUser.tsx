@@ -1,6 +1,7 @@
 import {
   DocumentData,
   DocumentReference,
+  FieldValue,
   FirestoreDataConverter,
   QueryDocumentSnapshot,
   Timestamp,
@@ -18,7 +19,7 @@ export type User = {
   name: string;
   photo: string | null;
   sex: Sex;
-  lastSignInAt: Timestamp;
+  lastActionAt?: Timestamp | FieldValue;
 };
 
 export type InputUser = {
@@ -36,7 +37,7 @@ const useUser = () => {
         name: u.name,
         photo: u.photo,
         sex: u.sex,
-        lastSignInAt: u.lastSignInAt,
+        lastActionAt: u.lastActionAt,
       };
     },
     fromFirestore(snapshot: QueryDocumentSnapshot): User {
@@ -46,7 +47,6 @@ const useUser = () => {
         name: d.name,
         photo: d.photo,
         sex: d.sex,
-        lastSignInAt: d.lastSignInAt,
       };
     },
   };
@@ -71,7 +71,7 @@ const useUser = () => {
     await setDoc(docRef, {
       uid: userId,
       ...inputUser,
-      lastSignInAt: serverTimestamp(),
+      lastActionAt: serverTimestamp(),
     });
   };
 
@@ -79,7 +79,7 @@ const useUser = () => {
     const userColRef = getUserColRef();
     return await getDocs(userColRef, [
       where("sex", "==", sex),
-      orderBy("lastSignInAt", "desc"),
+      orderBy("lastActionAt", "desc"),
       limit(10),
     ]);
   };

@@ -1,5 +1,6 @@
 import {
   DocumentData,
+  FieldValue,
   FirestoreDataConverter,
   QueryDocumentSnapshot,
   Timestamp,
@@ -14,7 +15,7 @@ export type Message = {
   id: string;
   uid: string;
   text: string;
-  createdAt: Timestamp;
+  createdAt?: Timestamp | FieldValue;
 };
 
 const useMessage = () => {
@@ -36,7 +37,6 @@ const useMessage = () => {
         id: snapshot.id,
         uid: d.uid,
         text: d.text,
-        createdAt: d.createdAt,
       };
     },
   };

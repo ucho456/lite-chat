@@ -1,5 +1,6 @@
 import {
   DocumentData,
+  FieldValue,
   FirestoreDataConverter,
   QueryDocumentSnapshot,
   Timestamp,
@@ -22,7 +23,7 @@ export type Room = {
   };
   isBlock: boolean;
   lastMessage: string;
-  lastMessageAt: Timestamp;
+  lastMessageAt?: Timestamp | FieldValue;
 };
 
 const useRoom = () => {
@@ -44,7 +45,6 @@ const useRoom = () => {
         users: d.users,
         isBlock: d.isBlock,
         lastMessage: d.lastMessage,
-        lastMessageAt: d.lastMessageAt,
       };
     },
   };
