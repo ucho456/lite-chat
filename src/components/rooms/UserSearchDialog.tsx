@@ -15,7 +15,7 @@ import useUser, { Sex } from "../../hooks/useUser";
 import { useSnackbar } from "../../contexts/Snackbar";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import useRoom, { Room } from "../../hooks/useRoom";
-import { setUser } from "../../store/modules/userSlice";
+import { setUserAsync } from "../../store/modules/userSlice";
 
 type Props = {
   rooms: Room[];
@@ -37,7 +37,7 @@ const UserSearchDialog = ({ rooms }: Props) => {
 
   const [loading, setLoading] = useState(false);
   const { openSnackbar } = useSnackbar();
-  const { searchUserDocs, setUserDoc } = useUser();
+  const { searchUserDocs } = useUser();
   const { addRoomDoc } = useRoom();
   const me = useAppSelector((state) => state.user.user);
   const dispatch = useAppDispatch();
@@ -59,9 +59,7 @@ const UserSearchDialog = ({ rooms }: Props) => {
           { uid: me.uid, name: me.name, photo: me.photo, unread: false },
           { uid: you.uid, name: you.name, photo: you.photo, unread: false }
         );
-        const newUser = { ...me, life: me.life - 1 };
-        await setUserDoc(newUser);
-        dispatch(setUser(newUser));
+        dispatch(setUserAsync({ user: { ...me, life: me.life - 1 } }));
         openSnackbar(`${you.name}さんとマッチしました。`, "success");
       } else {
         openSnackbar("条件に合う相手が見つかりませんでした。", "error");

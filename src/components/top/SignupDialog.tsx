@@ -9,7 +9,7 @@ import ProfileForm from "../commons/ProfileForm";
 import { LoadingButton } from "@mui/lab";
 import { useSnackbar } from "../../contexts/Snackbar";
 import { useAppDispatch } from "../../store/hooks";
-import { setUser } from "../../store/modules/userSlice";
+import { setUser, setUserAsync } from "../../store/modules/userSlice";
 
 const SignupDialog = () => {
   const [open, setOpen] = useState(false);
@@ -22,7 +22,7 @@ const SignupDialog = () => {
   });
 
   const [loading, setLoading] = useState(false);
-  const { getUserDoc, setUserDoc } = useUser();
+  const { getUserDoc } = useUser();
   const dispatch = useAppDispatch();
   const { openSnackbar } = useSnackbar();
   const navigate = useNavigate();
@@ -37,13 +37,15 @@ const SignupDialog = () => {
         dispatch(setUser(user));
         openSnackbar("サインインしました。", "success");
       } else {
-        await setUserDoc({
-          uid: userCredential.user.uid,
-          ...inputUser,
-          life: 3,
-        });
-        const user = await getUserDoc(userCredential.user.uid);
-        dispatch(setUser(user));
+        dispatch(
+          setUserAsync({
+            user: {
+              uid: userCredential.user.uid,
+              ...inputUser,
+              life: 3,
+            },
+          })
+        );
         openSnackbar("サインアップしました。", "success");
       }
       navigate("/rooms");

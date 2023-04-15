@@ -5,7 +5,7 @@ import useUser, { InputUser } from "../../hooks/useUser";
 import ProfileForm from "../commons/ProfileForm";
 import { LoadingButton } from "@mui/lab";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { setUser } from "../../store/modules/userSlice";
+import { setUser, setUserAsync } from "../../store/modules/userSlice";
 import "./ProfileEditDialog.scss";
 import { useSnackbar } from "../../contexts/Snackbar";
 
@@ -19,7 +19,7 @@ const ProfileEditDialog = () => {
   const user = useAppSelector((state) => state.user.user);
   const authUid = useAppSelector((state) => state.auth.uid);
   const dispatch = useAppDispatch();
-  const { getUserDoc, setUserDoc } = useUser();
+  const { getUserDoc } = useUser();
   const { openSnackbar } = useSnackbar();
   useEffect(() => {
     if (user || !authUid) return;
@@ -59,9 +59,7 @@ const ProfileEditDialog = () => {
     if (!user) return;
     try {
       setLoading(true);
-      const newUser = { ...user, ...inputUser };
-      await setUserDoc(newUser);
-      dispatch(setUser(newUser));
+      dispatch(setUserAsync({ user: { ...user, ...inputUser } }));
       openSnackbar("プロフィールを更新しました。", "success");
     } catch (error: any) {
       openSnackbar("プロフィールの更新に失敗しました。", "error");

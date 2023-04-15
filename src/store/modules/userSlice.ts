@@ -1,5 +1,11 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User } from "../../hooks/useUser";
+import {
+  AnyAction,
+  createSlice,
+  PayloadAction,
+  ThunkAction,
+} from "@reduxjs/toolkit";
+import useUser, { User } from "../../hooks/useUser";
+import { RootState } from "../store";
 
 type UserState = {
   user: User | null;
@@ -22,5 +28,17 @@ export const userSlice = createSlice({
   },
 });
 
-export const { resetUser, setUser } = userSlice.actions;
+const { resetUser, setUser } = userSlice.actions;
+
+const setUserAsync = (payload: {
+  user: User;
+}): ThunkAction<void, RootState, unknown, AnyAction> => {
+  return async (dispatch) => {
+    const { setUserDoc } = useUser();
+    await setUserDoc(payload.user);
+    dispatch(setUser(payload.user));
+  };
+};
+
+export { resetUser, setUser, setUserAsync };
 export default userSlice.reducer;
