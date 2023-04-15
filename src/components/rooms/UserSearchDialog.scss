@@ -1,3 +1,5 @@
+@import "../../assets/variables.scss";
+
 .user-search-dialog {
   .container {
     min-width: 310px;
@@ -16,6 +18,11 @@
     }
     .button-row {
       grid-row: 3 / 4;
+      p {
+        margin-top: 5px;
+        color: $fontColorGray;
+        font-size: 12px;
+      }
     }
   }
 }

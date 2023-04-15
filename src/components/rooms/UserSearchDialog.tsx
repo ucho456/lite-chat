@@ -6,7 +6,6 @@ import {
   MenuItem,
   Select,
   Stack,
-  Tooltip,
 } from "@mui/material";
 import { useState } from "react";
 import "./UserSearchDialog.scss";
@@ -70,24 +69,12 @@ const UserSearchDialog = ({ rooms }: Props) => {
     }
   };
 
-  const inviteeRoomNum = rooms.filter((r) => {
-    if (!me) return false;
-    return r.inviteeUser.uid === me.uid;
-  }).length;
-
+  if (!me) return <></>;
   return (
     <div className="user-search-dialog">
-      <Tooltip title={inviteeRoomNum >= 10 ? "" : "ちょっと保留"}>
-        <span>
-          <Button
-            className="button"
-            disabled={inviteeRoomNum >= 10}
-            onClick={handleOpen}
-          >
-            新規マッチング
-          </Button>
-        </span>
-      </Tooltip>
+      <Button className="button" onClick={handleOpen}>
+        新規マッチング
+      </Button>
       <Dialog className="user-search-dialog" open={open} onClose={handleClose}>
         <Stack component="form" onSubmit={handleSubmit(handleMatching)}>
           <div className="container">
@@ -115,6 +102,7 @@ const UserSearchDialog = ({ rooms }: Props) => {
             </div>
             <div className="button-row">
               <LoadingButton
+                disabled={me.life === 0}
                 loading={loading}
                 size="large"
                 type="submit"
@@ -122,6 +110,7 @@ const UserSearchDialog = ({ rooms }: Props) => {
               >
                 マッチング開始
               </LoadingButton>
+              <p>本日の残り{me.life}回</p>
             </div>
           </div>
         </Stack>

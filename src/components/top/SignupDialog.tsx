@@ -8,18 +8,13 @@ import useUser, { InputUser } from "../../hooks/useUser";
 import ProfileForm from "../commons/ProfileForm";
 import { LoadingButton } from "@mui/lab";
 import { useSnackbar } from "../../contexts/Snackbar";
+import { useAppDispatch } from "../../store/hooks";
+import { setUser } from "../../store/modules/userSlice";
 
 const SignupDialog = () => {
-  const navigate = useNavigate();
-  const { setUserDoc } = useUser();
-
   const [open, setOpen] = useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const { control, handleSubmit } = useForm<InputUser>({
     shouldUnregister: false,
@@ -27,17 +22,28 @@ const SignupDialog = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const { getUserDoc, setUserDoc } = useUser();
+  const dispatch = useAppDispatch();
   const { openSnackbar } = useSnackbar();
+  const navigate = useNavigate();
   const handleSignup: SubmitHandler<InputUser> = async (
     inputUser: InputUser
   ) => {
     try {
       setLoading(true);
       const userCredential = await signInWithPopup(auth, googleAuthProvider);
-      await setUserDoc(userCredential.user.uid, inputUser);
+      const user = await getUserDoc(userCredential.user.uid);
+      if (user) {
+        dispatch(setUser(user));
+        openSnackbar("サインインしました。", "success");
+      } else {
+        await setUserDoc(userCredential.user.uid, inputUser, 3);
+        const user = await getUserDoc(userCredential.user.uid);
+        dispatch(setUser(user));
+        openSnackbar("サインアップしました。", "success");
+      }
       navigate("/rooms");
-      openSnackbar("サインアップしました。", "success");
-    } catch (error: any) {
+    } catch {
       openSnackbar("サインアップに失敗しました。", "error");
     } finally {
       setLoading(false);

@@ -19,6 +19,7 @@ export type User = {
   name: string;
   photo: string | null;
   sex: Sex;
+  life: number;
   lastActionAt?: Timestamp | FieldValue;
 };
 
@@ -37,6 +38,7 @@ const useUser = () => {
         name: u.name,
         photo: u.photo,
         sex: u.sex,
+        life: u.life,
         lastActionAt: u.lastActionAt,
       };
     },
@@ -47,6 +49,7 @@ const useUser = () => {
         name: d.name,
         photo: d.photo,
         sex: d.sex,
+        life: d.life,
       };
     },
   };
@@ -66,11 +69,16 @@ const useUser = () => {
     return await getDoc(docRef);
   };
 
-  const setUserDoc = async (userId: string, inputUser: InputUser) => {
+  const setUserDoc = async (
+    userId: string,
+    inputUser: InputUser,
+    life: number
+  ) => {
     const docRef = getUserDocRef(userId);
     await setDoc(docRef, {
       uid: userId,
       ...inputUser,
+      life,
       lastActionAt: serverTimestamp(),
     });
   };
