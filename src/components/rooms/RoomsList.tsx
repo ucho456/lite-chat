@@ -16,9 +16,11 @@ const RoomsList = () => {
       <div className="button">
         <UserSearchDialog />
       </div>
-      {rooms.map((r) => (
-        <RoomsListItem key={r.id} room={r} />
-      ))}
+      {rooms.length === 0 ? (
+        <div>マッチしたあいてがいません。</div>
+      ) : (
+        rooms.map((r) => <RoomsListItem key={r.id} room={r} />)
+      )}
     </List>
   );
 };
