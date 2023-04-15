@@ -24,7 +24,7 @@ const AppSnackbar = ({ open, message, severity = "info", onClose }: Props) => {
         open={open}
         onClose={onClose}
         autoHideDuration={3 * 1000}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
       >
         <Alert severity={severity}>{message}</Alert>
       </Snackbar>

@@ -18,8 +18,9 @@ export type Room = {
     A: RoomUser;
     B: RoomUser;
   };
-  isLeave: boolean;
-  limitAt: Timestamp;
+  isBlock: boolean;
+  lastMessage: string;
+  lastMessageAt: Timestamp;
 };
 
 const useRoom = () => {
@@ -27,8 +28,9 @@ const useRoom = () => {
     toFirestore(r: Room): DocumentData {
       return {
         users: r.users,
-        isLeave: r.isLeave,
-        limitAt: r.limitAt,
+        isBlock: r.isBlock,
+        lastMessage: r.lastMessage,
+        lastMessageAt: r.lastMessageAt,
       };
     },
     fromFirestore(snapshot: QueryDocumentSnapshot): Room {
@@ -36,8 +38,9 @@ const useRoom = () => {
       return {
         id: snapshot.id,
         users: d.users,
-        isLeave: d.isLeave,
-        limitAt: d.limitAt,
+        isBlock: d.isBlock,
+        lastMessage: d.lastMessage,
+        lastMessageAt: d.lastMessageAt,
       };
     },
   };

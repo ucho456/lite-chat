@@ -3,6 +3,8 @@ import {
   DocumentReference,
   FirestoreDataConverter,
   QueryDocumentSnapshot,
+  Timestamp,
+  serverTimestamp,
 } from "firebase/firestore";
 import useFirestore from "./useFirestore";
 
@@ -13,6 +15,7 @@ export type User = {
   name: string;
   photo: string | null;
   sex: Sex;
+  lastSignInAt: Timestamp;
 };
 
 export type InputUser = {
@@ -30,6 +33,7 @@ const useUser = () => {
         name: u.name,
         photo: u.photo,
         sex: u.sex,
+        lastSignInAt: u.lastSignInAt,
       };
     },
     fromFirestore(snapshot: QueryDocumentSnapshot): User {
@@ -39,6 +43,7 @@ const useUser = () => {
         name: d.name,
         photo: d.photo,
         sex: d.sex,
+        lastSignInAt: d.lastSignInAt,
       };
     },
   };
@@ -56,7 +61,11 @@ const useUser = () => {
 
   const setUserDoc = async (userId: string, inputUser: InputUser) => {
     const docRef = getUserDocRef(userId);
-    await setDoc(docRef, { uid: userId, ...inputUser });
+    await setDoc(docRef, {
+      uid: userId,
+      ...inputUser,
+      lastSignInAt: serverTimestamp(),
+    });
   };
 
   return { getUserDoc, getUserDocRef, setUserDoc };
