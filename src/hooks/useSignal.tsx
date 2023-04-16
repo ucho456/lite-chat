@@ -3,8 +3,11 @@ import {
   DocumentReference,
   FirestoreDataConverter,
   QueryDocumentSnapshot,
+  deleteDoc,
+  doc,
+  setDoc,
 } from "firebase/firestore";
-import useFirestore from "./useFirestore";
+import { db } from "../firebase";
 
 export type SignalType = "offer" | "answer" | "candidate";
 
@@ -20,46 +23,42 @@ export type Signal = {
   candidate: RTCIceCandidateInit | null;
 };
 
+const converter: FirestoreDataConverter<Signal> = {
+  toFirestore(s: Signal): DocumentData {
+    return {
+      type: s.type,
+      sender: s.sender,
+      sessionDescription: s.sessionDescription,
+      candidate: s.candidate,
+    };
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot): Signal {
+    const d = snapshot.data();
+    return {
+      type: d.type,
+      sender: d.sender,
+      sessionDescription: d.sessionDescription,
+      candidate: d.candidate,
+    };
+  },
+};
+
 const useSignal = () => {
-  const { deleteDoc, getDocRef, setDoc } = useFirestore();
-
-  const signalConverter: FirestoreDataConverter<Signal> = {
-    toFirestore(s: Signal): DocumentData {
-      return {
-        type: s.type,
-        sender: s.sender,
-        sessionDescription: s.sessionDescription,
-        candidate: s.candidate,
-      };
-    },
-    fromFirestore(snapshot: QueryDocumentSnapshot): Signal {
-      const d = snapshot.data();
-      return {
-        type: d.type,
-        sender: d.sender,
-        sessionDescription: d.sessionDescription,
-        candidate: d.candidate,
-      };
-    },
-  };
-
-  const collectionName = "signals";
-
   const getSignalDocRef = (signalId: string): DocumentReference<Signal> => {
-    return getDocRef(collectionName, signalId, signalConverter);
-  };
-
-  const deleteSignalDoc = async (signalId: string): Promise<void> => {
-    const signalRef = getSignalDocRef(signalId);
-    await deleteDoc<Signal>(signalRef);
+    return doc(db, signalId).withConverter(converter);
   };
 
   const setSignalDoc = async (
     signalId: string,
     signal: Signal
   ): Promise<void> => {
-    const signalRef = getSignalDocRef(signalId);
-    await setDoc<Signal>(signalRef, signal);
+    const docRef = doc(db, signalId).withConverter(converter);
+    await setDoc(docRef, signal);
+  };
+
+  const deleteSignalDoc = async (signalId: string): Promise<void> => {
+    const docRef = doc(db, signalId).withConverter(converter);
+    await deleteDoc(docRef);
   };
 
   return { deleteSignalDoc, getSignalDocRef, setSignalDoc };
