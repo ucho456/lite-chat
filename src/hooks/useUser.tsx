@@ -1,16 +1,21 @@
 import {
   DocumentData,
-  DocumentReference,
   FieldValue,
   FirestoreDataConverter,
   QueryDocumentSnapshot,
   Timestamp,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
   limit,
   orderBy,
+  query,
   serverTimestamp,
+  setDoc,
   where,
 } from "firebase/firestore";
-import useFirestore from "./useFirestore";
+import { db } from "../firebase";
 
 export type Sex = "man" | "woman";
 
@@ -29,64 +34,63 @@ export type InputUser = {
   sex: Sex;
 };
 
+export type Condition = {
+  sex: Sex;
+};
+
+const converter: FirestoreDataConverter<User> = {
+  toFirestore(u: User): DocumentData {
+    return {
+      name: u.name,
+      photo: u.photo,
+      sex: u.sex,
+      life: u.life,
+      lastActionAt: u.lastActionAt,
+    };
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot): User {
+    const d = snapshot.data();
+    return {
+      uid: snapshot.id,
+      name: d.name,
+      photo: d.photo,
+      sex: d.sex,
+      life: d.life,
+    };
+  },
+};
+
 const useUser = () => {
-  const { getColRef, getDoc, getDocs, getDocRef, setDoc } = useFirestore();
-
-  const userConverter: FirestoreDataConverter<User> = {
-    toFirestore(u: User): DocumentData {
-      return {
-        name: u.name,
-        photo: u.photo,
-        sex: u.sex,
-        life: u.life,
-        lastActionAt: u.lastActionAt,
-      };
-    },
-    fromFirestore(snapshot: QueryDocumentSnapshot): User {
-      const d = snapshot.data();
-      return {
-        uid: snapshot.id,
-        name: d.name,
-        photo: d.photo,
-        sex: d.sex,
-        life: d.life,
-      };
-    },
-  };
-
-  const collectionName = "users";
-
-  const getUserDocRef = (userId: string): DocumentReference<User> => {
-    return getDocRef(collectionName, userId, userConverter);
-  };
-
-  const getUserColRef = () => {
-    return getColRef(collectionName, userConverter);
-  };
-
   const getUserDoc = async (userId: string): Promise<User | null> => {
-    const docRef = getUserDocRef(userId);
-    return await getDoc(docRef);
+    const docRef = doc(db, "users", userId).withConverter(converter);
+    const snapshot = await getDoc(docRef);
+    return snapshot.exists() ? snapshot.data() : null;
   };
 
-  const setUserDoc = async (user: User) => {
-    const docRef = getUserDocRef(user.uid);
+  const getRandomUserDocs = async (condition: Condition): Promise<User[]> => {
+    const { sex } = condition;
+    const colRef = collection(db, "users").withConverter(converter);
+    const q = query(
+      colRef,
+      where("sex", "==", sex),
+      orderBy("lastActionAt", "desc"),
+      limit(10)
+    );
+    const snapshot = await getDocs(q);
+    const users: User[] = [];
+    snapshot.forEach((doc) => users.push(doc.data()));
+    return users;
+  };
+
+  const setUserDoc = async (user: User): Promise<void> => {
+    const docRef = doc(db, "users", user.uid).withConverter(converter);
     await setDoc(docRef, {
       ...user,
       lastActionAt: serverTimestamp(),
     });
   };
 
-  const searchUserDocs = async (sex: Sex): Promise<User[]> => {
-    const userColRef = getUserColRef();
-    return await getDocs(userColRef, [
-      where("sex", "==", sex),
-      orderBy("lastActionAt", "desc"),
-      limit(10),
-    ]);
-  };
-
-  return { getUserDoc, getUserDocRef, searchUserDocs, setUserDoc };
+  return { getUserDoc, getRandomUserDocs, setUserDoc };
 };
 
 export default useUser;

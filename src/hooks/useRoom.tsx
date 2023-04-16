@@ -82,7 +82,7 @@ const useRoom = () => {
     return () => unsubscribe();
   }, [page]);
   const addPage = 10;
-  const getRoomsNextPage = () => setPage((pre) => pre + addPage);
+  const getRoomsNextPage = (): void => setPage((pre) => pre + addPage);
 
   /** Get reactive room document */
   const [room, setRoom] = useState<Room | null>(null);

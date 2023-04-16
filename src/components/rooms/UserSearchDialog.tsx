@@ -37,7 +37,7 @@ const UserSearchDialog = ({ rooms }: Props) => {
 
   const [loading, setLoading] = useState(false);
   const { openSnackbar } = useSnackbar();
-  const { searchUserDocs } = useUser();
+  const { getRandomUserDocs } = useUser();
   const { addRoomDoc } = useRoom();
   const me = useAppSelector((state) => state.user.user);
   const dispatch = useAppDispatch();
@@ -48,7 +48,7 @@ const UserSearchDialog = ({ rooms }: Props) => {
     const { sex } = inputCondition;
     try {
       setLoading(true);
-      const users = await searchUserDocs(sex);
+      const users = await getRandomUserDocs({ sex });
       const alreadyMatchUserIds = rooms.map((r) =>
         r.inviteeUser.uid !== me.uid ? r.inviteeUser.uid : r.invitedUser.uid
       );

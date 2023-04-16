@@ -60,7 +60,7 @@ const useMessage = () => {
   }, [roomId]);
 
   const authUid = useAppSelector((state) => state.auth.uid);
-  const addMessageDoc = async (inputText: string) => {
+  const addMessageDoc = async (inputText: string): Promise<void> => {
     if (!authUid || !roomId) return;
     const colRef = collection(db, "rooms", roomId, "messages").withConverter(
       converter
