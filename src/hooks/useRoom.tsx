@@ -65,7 +65,7 @@ const useRoom = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [roomCount, setRoomCount] = useState(0);
   const [isMax, setIsMax] = useState(false);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(10);
   const authUid = useAppSelector((state) => state.auth.uid);
   useEffect(() => {
     const colRef = collection(db, "rooms").withConverter(converter);
@@ -85,7 +85,7 @@ const useRoom = () => {
     });
     return () => unsubscribe();
   }, [page]);
-  const addPage = 1;
+  const addPage = 10;
   const getRoomsNextPage = (): void => setPage((pre) => pre + addPage);
 
   /** Get reactive room document */
