@@ -4,12 +4,17 @@ import {
   FirestoreDataConverter,
   QueryDocumentSnapshot,
   Timestamp,
+  addDoc,
+  collection,
+  onSnapshot,
   orderBy,
+  query,
   serverTimestamp,
 } from "firebase/firestore";
-import useFirestore from "./useFirestore";
 import { useAppSelector } from "../store/hooks";
-import useSubCollection from "./useSubCollection";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { db } from "../firebase";
 
 export type Message = {
   id: string;
@@ -18,60 +23,57 @@ export type Message = {
   createdAt?: Timestamp | FieldValue;
 };
 
+const converter: FirestoreDataConverter<Message> = {
+  toFirestore(m: Message): DocumentData {
+    return {
+      uid: m.uid,
+      text: m.text,
+      createdAt: m.createdAt,
+    };
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot): Message {
+    const d = snapshot.data();
+    return {
+      id: snapshot.id,
+      uid: d.uid,
+      text: d.text,
+    };
+  },
+};
+
 const useMessage = () => {
-  const { addDoc, getSubColRef } = useFirestore();
+  /** Get reactive messages collection. */
+  const [messages, setMessages] = useState<Message[]>([]);
+  const { roomId } = useParams<{ roomId: string }>();
+  useEffect(() => {
+    if (!roomId) return;
+    const colRef = collection(db, "rooms", roomId, "messages").withConverter(
+      converter
+    );
+    const q = query(colRef, orderBy("createdAt", "asc"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const _messages: Message[] = [];
+      querySnapshot.forEach((doc) => _messages.push(doc.data()));
+      setMessages(_messages);
+    });
+    return () => unsubscribe();
+  }, [roomId]);
 
   const authUid = useAppSelector((state) => state.auth.uid);
-
-  const messageConverter: FirestoreDataConverter<Message> = {
-    toFirestore(m: Message): DocumentData {
-      return {
-        uid: m.uid,
-        text: m.text,
-        createdAt: m.createdAt,
-      };
-    },
-    fromFirestore(snapshot: QueryDocumentSnapshot): Message {
-      const d = snapshot.data();
-      return {
-        id: snapshot.id,
-        uid: d.uid,
-        text: d.text,
-      };
-    },
-  };
-
-  const parentCollectionName = "rooms";
-  const collectionName = "messages";
-
-  const addMessageDoc = async (roomId: string, inputText: string) => {
-    if (!authUid) return;
-    const messageColRef = getSubColRef(
-      parentCollectionName,
-      roomId,
-      collectionName,
-      messageConverter
+  const addMessageDoc = async (inputText: string) => {
+    if (!authUid || !roomId) return;
+    const colRef = collection(db, "rooms", roomId, "messages").withConverter(
+      converter
     );
-    await addDoc(messageColRef, {
-      id: messageColRef.id,
+    await addDoc(colRef, {
+      id: colRef.id,
       uid: authUid,
       text: inputText,
       createdAt: serverTimestamp(),
     });
   };
 
-  const getReactiveMessageCol = (roomId: string) => {
-    const { subCollection: messages } = useSubCollection<Message>(
-      parentCollectionName,
-      roomId,
-      collectionName,
-      messageConverter,
-      [orderBy("createdAt", "asc")]
-    );
-    return messages;
-  };
-
-  return { addMessageDoc, getReactiveMessageCol };
+  return { addMessageDoc, messages };
 };
 
 export default useMessage;

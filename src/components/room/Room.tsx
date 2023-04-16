@@ -16,13 +16,8 @@ const defaultRoomUser: { uid: string; name: string; photo: string | null } = {
 
 const Room = () => {
   const { roomId } = useParams<{ roomId: string }>();
-  const { addMessageDoc, getReactiveMessageCol } = useMessage();
+  const { addMessageDoc, messages } = useMessage();
   const { room } = useRoom();
-
-  // Todo: routerを修正してundefinedにならないようにする。
-  // const room = getReactiveRoomDoc(roomId as string);
-
-  const messages = getReactiveMessageCol(roomId as string);
 
   const authUid = useAppSelector((state) => state.auth.uid);
   const [me, setMe] = useState<{
@@ -58,7 +53,7 @@ const Room = () => {
       return;
     }
 
-    await addMessageDoc(roomId, inputText);
+    await addMessageDoc(inputText);
     setInputText("");
     bodyRef.current.scrollTo(
       0,
