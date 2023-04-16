@@ -3,18 +3,9 @@ import UserSearchDialog from "./UserSearchDialog";
 import "./RoomsList.scss";
 import useRoom from "../../hooks/useRoom";
 import RoomsListItem from "./RoomsListItem";
-import { useAppSelector } from "../../store/hooks";
-import { useState } from "react";
 
 const RoomsList = () => {
-  const { getReactiveRoomCol } = useRoom();
-  const [limitNum, setLimitNum] = useState(1);
-  const authUid = useAppSelector((state) => state.auth.uid);
-  const rooms = getReactiveRoomCol(authUid, limitNum);
-
-  const handleNextPage = () => {
-    setLimitNum((preLimit) => preLimit + 1);
-  };
+  const { getRoomsNextPage, rooms } = useRoom();
 
   return (
     <List
@@ -29,7 +20,7 @@ const RoomsList = () => {
       ) : (
         rooms.map((r) => <RoomsListItem key={r.id} room={r} />)
       )}
-      <Button onClick={handleNextPage}>ose</Button>
+      <Button onClick={getRoomsNextPage}>ose</Button>
     </List>
   );
 };

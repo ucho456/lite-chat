@@ -1,19 +1,23 @@
 import {
-  CollectionReference,
   DocumentData,
   FieldValue,
   FirestoreDataConverter,
   QueryDocumentSnapshot,
   Timestamp,
+  addDoc,
+  collection,
+  doc,
   limit,
+  onSnapshot,
   orderBy,
+  query,
   serverTimestamp,
   where,
 } from "firebase/firestore";
-import useDocument from "./useDocument";
-import useFirestore from "./useFirestore";
-import useCollection from "./useCollection";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAppSelector } from "../store/hooks";
+import { useParams } from "react-router-dom";
+import { db } from "../firebase";
 
 export type RoomUser = {
   uid: string;
@@ -32,70 +36,70 @@ export type Room = {
   lastActionAt?: Timestamp | FieldValue;
 };
 
+const converter: FirestoreDataConverter<Room> = {
+  toFirestore(r: Room): DocumentData {
+    return {
+      inviteeUser: r.inviteeUser,
+      invitedUser: r.invitedUser,
+      userUids: r.userUids,
+      isBlock: r.isBlock,
+      lastMessage: r.lastMessage,
+      lastActionAt: r.lastActionAt,
+    };
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot): Room {
+    const d = snapshot.data();
+    return {
+      id: snapshot.id,
+      inviteeUser: d.inviteeUser,
+      invitedUser: d.invitedUser,
+      userUids: d.userUids,
+      isBlock: d.isBlock,
+      lastMessage: d.lastMessage,
+    };
+  },
+};
+
 const useRoom = () => {
-  const { addDoc, getColRef } = useFirestore();
-
-  const roomConverter: FirestoreDataConverter<Room> = {
-    toFirestore(r: Room): DocumentData {
-      return {
-        inviteeUser: r.inviteeUser,
-        invitedUser: r.invitedUser,
-        userUids: r.userUids,
-        isBlock: r.isBlock,
-        lastMessage: r.lastMessage,
-        lastActionAt: r.lastActionAt,
-      };
-    },
-    fromFirestore(snapshot: QueryDocumentSnapshot): Room {
-      const d = snapshot.data();
-      return {
-        id: snapshot.id,
-        inviteeUser: d.inviteeUser,
-        invitedUser: d.invitedUser,
-        userUids: d.userUids,
-        isBlock: d.isBlock,
-        lastMessage: d.lastMessage,
-      };
-    },
-  };
-
-  const collectionName = "rooms";
-
-  const getRoomColRef = (): CollectionReference<Room> => {
-    return getColRef(collectionName, roomConverter);
-  };
-
-  const getReactiveRoomCol = (
-    authUid: string | null,
-    limitNum: number
-  ): Room[] => {
-    if (!authUid) return [];
-    const { collection: rooms } = useCollection(
-      collectionName,
-      roomConverter,
-      [
-        where("userUids", "array-contains", authUid),
-        orderBy("lastActionAt", "desc"),
-        limit(limitNum),
-      ],
-      limitNum
+  /** Get reactive rooms collection. pagenation function. */
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const [page, setPage] = useState(10);
+  const authUid = useAppSelector((state) => state.auth.uid);
+  useEffect(() => {
+    const colRef = collection(db, "rooms").withConverter(converter);
+    const q = query(
+      colRef,
+      where("isBlock", "==", false),
+      where("userUids", "array-contains", authUid),
+      orderBy("lastActionAt", "desc"),
+      limit(page)
     );
-    return rooms;
-  };
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const _rooms: Room[] = [];
+      querySnapshot.forEach((doc) => _rooms.push(doc.data()));
+      setRooms(_rooms);
+    });
+    return () => unsubscribe();
+  }, [page]);
+  const addPage = 10;
+  const getRoomsNextPage = () => setPage((pre) => pre + addPage);
 
-  const getReactiveRoomDoc = (roomId: string): Room | null => {
-    const { document: room } = useDocument<Room>(
-      collectionName,
-      roomId,
-      roomConverter
-    );
-    return room;
-  };
+  /** Get reactive room document */
+  const [room, setRoom] = useState<Room | null>(null);
+  const { roomId } = useParams<{ roomId: string }>();
+  useEffect(() => {
+    if (!roomId) return;
+    const docRef = doc(db, "rooms", roomId).withConverter(converter);
+    const unsubscribe = onSnapshot(docRef, (doc) => {
+      if (doc.exists()) setRoom(doc.data());
+    });
+    return () => unsubscribe();
+  }, [roomId]);
 
   const addRoomDoc = async (me: RoomUser, you: RoomUser): Promise<void> => {
-    const roomColRef = getRoomColRef();
-    await addDoc(roomColRef, {
-      id: roomColRef.id,
+    const colRef = collection(db, "rooms").withConverter(converter);
+    await addDoc(colRef, {
+      id: colRef.id,
       inviteeUser: me,
       invitedUser: you,
       userUids: [me.uid, you.uid],
@@ -105,7 +109,12 @@ const useRoom = () => {
     });
   };
 
-  return { addRoomDoc, getReactiveRoomCol, getReactiveRoomDoc };
+  return {
+    addRoomDoc,
+    getRoomsNextPage,
+    room,
+    rooms,
+  };
 };
 
 export default useRoom;

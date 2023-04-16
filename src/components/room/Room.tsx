@@ -17,10 +17,10 @@ const defaultRoomUser: { uid: string; name: string; photo: string | null } = {
 const Room = () => {
   const { roomId } = useParams<{ roomId: string }>();
   const { addMessageDoc, getReactiveMessageCol } = useMessage();
-  const { getReactiveRoomDoc } = useRoom();
+  const { room } = useRoom();
 
   // Todo: routerを修正してundefinedにならないようにする。
-  const room = getReactiveRoomDoc(roomId as string);
+  // const room = getReactiveRoomDoc(roomId as string);
 
   const messages = getReactiveMessageCol(roomId as string);
 
