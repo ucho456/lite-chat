@@ -4,6 +4,24 @@ import {
   QueryDocumentSnapshot,
 } from "firebase/firestore";
 
+export const messageConverter: FirestoreDataConverter<Message> = {
+  toFirestore(m: Message): DocumentData {
+    return {
+      uid: m.uid,
+      text: m.text,
+      createdAt: m.createdAt,
+    };
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot): Message {
+    const d = snapshot.data();
+    return {
+      id: snapshot.id,
+      uid: d.uid,
+      text: d.text,
+    };
+  },
+};
+
 export const roomConverter: FirestoreDataConverter<Room> = {
   toFirestore(r: Room): DocumentData {
     return {
@@ -24,6 +42,26 @@ export const roomConverter: FirestoreDataConverter<Room> = {
       userUids: d.userUids,
       isBlock: d.isBlock,
       lastMessage: d.lastMessage,
+    };
+  },
+};
+
+export const signalConverter: FirestoreDataConverter<Signal> = {
+  toFirestore(s: Signal): DocumentData {
+    return {
+      type: s.type,
+      sender: s.sender,
+      sessionDescription: s.sessionDescription,
+      candidate: s.candidate,
+    };
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot): Signal {
+    const d = snapshot.data();
+    return {
+      type: d.type,
+      sender: d.sender,
+      sessionDescription: d.sessionDescription,
+      candidate: d.candidate,
     };
   },
 };

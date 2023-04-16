@@ -1,5 +1,5 @@
 import { onSnapshot } from "firebase/firestore";
-import useSignal, { SessionDescription } from "../hooks/useSignal";
+import useSignal from "../hooks/useSignal";
 const { deleteSignalDoc, getSignalDocRef, setSignalDoc } = useSignal();
 
 export type SetRtcClient = (rtcClient: RtcClient) => void;

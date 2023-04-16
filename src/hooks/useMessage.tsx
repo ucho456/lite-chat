@@ -1,9 +1,4 @@
 import {
-  DocumentData,
-  FieldValue,
-  FirestoreDataConverter,
-  QueryDocumentSnapshot,
-  Timestamp,
   addDoc,
   collection,
   onSnapshot,
@@ -15,31 +10,7 @@ import { useAppSelector } from "../store/hooks";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { db } from "../firebase";
-
-export type Message = {
-  id: string;
-  uid: string;
-  text: string;
-  createdAt?: Timestamp | FieldValue;
-};
-
-const converter: FirestoreDataConverter<Message> = {
-  toFirestore(m: Message): DocumentData {
-    return {
-      uid: m.uid,
-      text: m.text,
-      createdAt: m.createdAt,
-    };
-  },
-  fromFirestore(snapshot: QueryDocumentSnapshot): Message {
-    const d = snapshot.data();
-    return {
-      id: snapshot.id,
-      uid: d.uid,
-      text: d.text,
-    };
-  },
-};
+import { messageConverter } from "../utils/converters";
 
 const useMessage = () => {
   /** Get reactive messages collection. */
@@ -48,7 +19,7 @@ const useMessage = () => {
   useEffect(() => {
     if (!roomId) return;
     const colRef = collection(db, "rooms", roomId, "messages").withConverter(
-      converter
+      messageConverter
     );
     const q = query(colRef, orderBy("createdAt", "asc"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -63,7 +34,7 @@ const useMessage = () => {
   const addMessageDoc = async (inputText: string): Promise<void> => {
     if (!authUid || !roomId) return;
     const colRef = collection(db, "rooms", roomId, "messages").withConverter(
-      converter
+      messageConverter
     );
     await addDoc(colRef, {
       id: colRef.id,
