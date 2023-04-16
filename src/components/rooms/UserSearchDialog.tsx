@@ -14,7 +14,7 @@ import { LoadingButton } from "@mui/lab";
 import useUser from "../../hooks/useUser";
 import { useSnackbar } from "../../contexts/Snackbar";
 import { useAppSelector } from "../../store/hooks";
-import { addRoomDoc, setUserDoc } from "../../utils/writeToFirestore";
+import { createRoom } from "../../utils/writeToFirestore";
 
 type Props = {
   rooms: Room[];
@@ -52,12 +52,7 @@ const UserSearchDialog = ({ rooms }: Props) => {
       alreadyMatchUserIds.push(me.uid);
       const you = users.find((u) => !alreadyMatchUserIds.includes(u.uid));
       if (you) {
-        // Todo batch
-        await addRoomDoc(
-          { uid: me.uid, name: me.name, photo: me.photo, unread: false },
-          { uid: you.uid, name: you.name, photo: you.photo, unread: false }
-        );
-        await setUserDoc({ ...me, life: me.life - 1 });
+        await createRoom(me, you);
         openSnackbar(`${you.name}さんとマッチしました。`, "success");
       } else {
         openSnackbar("条件に合う相手が見つかりませんでした。", "error");

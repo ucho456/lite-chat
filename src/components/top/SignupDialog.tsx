@@ -8,7 +8,7 @@ import useUser from "../../hooks/useUser";
 import ProfileForm from "../commons/ProfileForm";
 import { LoadingButton } from "@mui/lab";
 import { useSnackbar } from "../../contexts/Snackbar";
-import { setUserDoc } from "../../utils/writeToFirestore";
+import { createUser } from "../../utils/writeToFirestore";
 import { useAppDispatch } from "../../store/hooks";
 import { signIn } from "../../store/modules/authSlice";
 
@@ -38,7 +38,7 @@ const SignupDialog = () => {
       if (user) {
         openSnackbar("サインインしました。", "success");
       } else {
-        await setUserDoc({
+        await createUser({
           uid: userCredential.user.uid,
           ...inputUser,
           life: 3,

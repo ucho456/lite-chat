@@ -6,7 +6,7 @@ import { LoadingButton } from "@mui/lab";
 import { useAppSelector } from "../../store/hooks";
 import "./ProfileEditDialog.scss";
 import { useSnackbar } from "../../contexts/Snackbar";
-import { setUserDoc } from "../../utils/writeToFirestore";
+import { updateUser } from "../../utils/writeToFirestore";
 
 const ProfileEditDialog = () => {
   /** Dialog switch */
@@ -41,7 +41,7 @@ const ProfileEditDialog = () => {
     if (!user) return;
     try {
       setLoading(true);
-      await setUserDoc({ ...user, ...inputUser });
+      await updateUser({ ...user, ...inputUser });
       openSnackbar("プロフィールを更新しました。", "success");
     } catch (error: any) {
       openSnackbar("プロフィールの更新に失敗しました。", "error");
