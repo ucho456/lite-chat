@@ -1,19 +1,10 @@
-import {
-  addDoc,
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  serverTimestamp,
-} from "firebase/firestore";
-import { useAppSelector } from "../store/hooks";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { db } from "../firebase";
 import { messageConverter } from "../utils/converters";
 
 const useMessage = () => {
-  /** Get reactive messages collection. */
   const [messages, setMessages] = useState<Message[]>([]);
   const { roomId } = useParams<{ roomId: string }>();
   useEffect(() => {
@@ -30,21 +21,7 @@ const useMessage = () => {
     return () => unsubscribe();
   }, [roomId]);
 
-  const authUid = useAppSelector((state) => state.auth.uid);
-  const addMessageDoc = async (inputText: string): Promise<void> => {
-    if (!authUid || !roomId) return;
-    const colRef = collection(db, "rooms", roomId, "messages").withConverter(
-      messageConverter
-    );
-    await addDoc(colRef, {
-      id: colRef.id,
-      uid: authUid,
-      text: inputText,
-      createdAt: serverTimestamp(),
-    });
-  };
-
-  return { addMessageDoc, messages };
+  return { messages };
 };
 
 export default useMessage;

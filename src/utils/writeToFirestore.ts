@@ -8,7 +8,7 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import { roomConverter, userConverter } from "./converters";
+import { messageConverter, roomConverter, userConverter } from "./converters";
 
 export const createUser = async (user: User): Promise<void> => {
   const docRef = doc(db, "users", user.uid).withConverter(userConverter);
@@ -28,6 +28,7 @@ export const updateUser = async (user: User): Promise<void> => {
 
 export const createRoom = async (me: User, you: User): Promise<void> => {
   const batch = writeBatch(db);
+
   const roomColRef = collection(db, "rooms").withConverter(roomConverter);
   const roomId = doc(roomColRef).id;
   const roomDocRef = doc(db, "rooms", roomId).withConverter(roomConverter);
@@ -56,6 +57,49 @@ export const createRoom = async (me: User, you: User): Promise<void> => {
     ...me,
     life: me.life - 1,
     lastActionAt: serverTimestamp(),
+  });
+
+  await batch.commit();
+};
+
+export const createMessage = async (
+  roomId: string,
+  authUid: string,
+  inputText: string,
+  room: Room
+) => {
+  const batch = writeBatch(db);
+
+  const messageColRef = collection(
+    db,
+    "rooms",
+    roomId,
+    "messages"
+  ).withConverter(messageConverter);
+  const messageId = doc(messageColRef).id;
+  const messageDocRef = doc(
+    db,
+    "rooms",
+    roomId,
+    "messages",
+    messageId
+  ).withConverter(messageConverter);
+  batch.set(messageDocRef, {
+    id: messageId,
+    uid: authUid,
+    text: inputText,
+    createdAt: serverTimestamp(),
+  });
+
+  const roomDocRef = doc(db, "rooms", roomId).withConverter(roomConverter);
+  const updateRoomUser =
+    room.inviteeUser.uid === authUid
+      ? { ["invitedUser.unread"]: true }
+      : { ["inviteeUser.unread"]: true };
+  batch.update(roomDocRef, {
+    ...updateRoomUser,
+    ["lastMessage"]: inputText,
+    ["lastActionAt"]: serverTimestamp(),
   });
 
   await batch.commit();

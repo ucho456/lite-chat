@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "../../store/hooks";
 import useMessage from "../../hooks/useMessage";
+import { createMessage } from "../../utils/writeToFirestore";
 
 const defaultRoomUser: { uid: string; name: string; photo: string | null } = {
   uid: "",
@@ -17,7 +18,7 @@ const Room = () => {
   const { roomId } = useParams<{ roomId: string }>();
   const rooms = useAppSelector((state) => state.rooms.rooms);
   const room = rooms.find((r) => r.id === roomId);
-  const { addMessageDoc, messages } = useMessage();
+  const { messages } = useMessage();
 
   const authUid = useAppSelector((state) => state.auth.uid);
   const [me, setMe] = useState<{
@@ -49,11 +50,18 @@ const Room = () => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    if (!roomId || !bodyRef || !bodyRef.current || inputText === "") {
+    if (
+      !authUid ||
+      !roomId ||
+      !bodyRef ||
+      !bodyRef.current ||
+      !room ||
+      inputText === ""
+    ) {
       return;
     }
 
-    await addMessageDoc(inputText);
+    await createMessage(roomId, authUid, inputText, room);
     setInputText("");
     bodyRef.current.scrollTo(
       0,
