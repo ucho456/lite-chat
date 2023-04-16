@@ -4,12 +4,11 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { auth, googleAuthProvider } from "../../firebase";
-import useUser, { InputUser } from "../../hooks/useUser";
+import useUser from "../../hooks/useUser";
 import ProfileForm from "../commons/ProfileForm";
 import { LoadingButton } from "@mui/lab";
 import { useSnackbar } from "../../contexts/Snackbar";
-import { useAppDispatch } from "../../store/hooks";
-import { setUser, setUserAsync } from "../../store/modules/userSlice";
+import { setUserDoc } from "../../utils/writeToFirestore";
 
 const SignupDialog = () => {
   const [open, setOpen] = useState(false);
@@ -23,7 +22,6 @@ const SignupDialog = () => {
 
   const [loading, setLoading] = useState(false);
   const { getUserDoc } = useUser();
-  const dispatch = useAppDispatch();
   const { openSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const handleSignup: SubmitHandler<InputUser> = async (
@@ -34,18 +32,13 @@ const SignupDialog = () => {
       const userCredential = await signInWithPopup(auth, googleAuthProvider);
       const user = await getUserDoc(userCredential.user.uid);
       if (user) {
-        dispatch(setUser(user));
         openSnackbar("サインインしました。", "success");
       } else {
-        dispatch(
-          setUserAsync({
-            user: {
-              uid: userCredential.user.uid,
-              ...inputUser,
-              life: 3,
-            },
-          })
-        );
+        await setUserDoc({
+          uid: userCredential.user.uid,
+          ...inputUser,
+          life: 3,
+        });
         openSnackbar("サインアップしました。", "success");
       }
       navigate("/rooms");

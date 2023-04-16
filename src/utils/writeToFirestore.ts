@@ -1,6 +1,12 @@
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
 import { db } from "../firebase";
-import { roomConverter } from "./converters";
+import { roomConverter, userConverter } from "./converters";
 
 export const addRoomDoc = async (
   me: RoomUser,
@@ -14,6 +20,14 @@ export const addRoomDoc = async (
     userUids: [me.uid, you.uid],
     isBlock: false,
     lastMessage: "",
+    lastActionAt: serverTimestamp(),
+  });
+};
+
+export const setUserDoc = async (user: User): Promise<void> => {
+  const docRef = doc(db, "users", user.uid).withConverter(userConverter);
+  await setDoc(docRef, {
+    ...user,
     lastActionAt: serverTimestamp(),
   });
 };

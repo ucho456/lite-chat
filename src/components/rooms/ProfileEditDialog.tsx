@@ -1,13 +1,12 @@
 import { Avatar, Dialog } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import useUser, { InputUser } from "../../hooks/useUser";
 import ProfileForm from "../commons/ProfileForm";
 import { LoadingButton } from "@mui/lab";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { setUser, setUserAsync } from "../../store/modules/userSlice";
+import { useAppSelector } from "../../store/hooks";
 import "./ProfileEditDialog.scss";
 import { useSnackbar } from "../../contexts/Snackbar";
+import { setUserDoc } from "../../utils/writeToFirestore";
 
 const ProfileEditDialog = () => {
   /** Dialog switch */
@@ -15,26 +14,8 @@ const ProfileEditDialog = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  /** Set user to store */
-  const user = useAppSelector((state) => state.user.user);
-  const authUid = useAppSelector((state) => state.auth.uid);
-  const dispatch = useAppDispatch();
-  const { getUserDoc } = useUser();
-  const { openSnackbar } = useSnackbar();
-  useEffect(() => {
-    if (user || !authUid) return;
-    const setUserToStore = async () => {
-      try {
-        const user = await getUserDoc(authUid);
-        dispatch(setUser(user));
-      } catch (error: any) {
-        openSnackbar("ユーザー情報の取得に失敗しました。", "error");
-      }
-    };
-    setUserToStore();
-  }, [authUid]);
-
   /** Set default values asynchronously */
+  const user = useAppSelector((state) => state.user.user);
   const { control, handleSubmit, reset } = useForm<InputUser>({
     shouldUnregister: false,
     defaultValues: useMemo(() => {
@@ -53,13 +34,14 @@ const ProfileEditDialog = () => {
 
   /** Update user profile */
   const [loading, setLoading] = useState(false);
+  const { openSnackbar } = useSnackbar();
   const handleUpdateUser: SubmitHandler<InputUser> = async (
     inputUser: InputUser
   ) => {
     if (!user) return;
     try {
       setLoading(true);
-      dispatch(setUserAsync({ user: { ...user, ...inputUser } }));
+      await setUserDoc({ ...user, ...inputUser });
       openSnackbar("プロフィールを更新しました。", "success");
     } catch (error: any) {
       openSnackbar("プロフィールの更新に失敗しました。", "error");

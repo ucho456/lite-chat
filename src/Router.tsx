@@ -15,6 +15,7 @@ import { useEffect } from "react";
 import { auth } from "./firebase";
 import { isFirstAuthChecked } from "./store/modules/authSlice";
 import useRooms from "./hooks/useRooms";
+import useUser from "./hooks/useUser";
 
 const IsAuth = () => {
   const dispatch = useAppDispatch();
@@ -39,6 +40,7 @@ const IsAuth = () => {
 };
 
 const Router = () => {
+  useUser();
   useRooms();
   return (
     <BrowserRouter>

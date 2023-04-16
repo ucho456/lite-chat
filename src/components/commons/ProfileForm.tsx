@@ -14,7 +14,6 @@ import {
   SubmitHandler,
   UseFormHandleSubmit,
 } from "react-hook-form";
-import { InputUser } from "../../hooks/useUser";
 
 type Props = {
   control: Control<InputUser, any>;

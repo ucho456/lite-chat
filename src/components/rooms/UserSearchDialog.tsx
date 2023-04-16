@@ -11,11 +11,10 @@ import { useState } from "react";
 import "./UserSearchDialog.scss";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { LoadingButton } from "@mui/lab";
-import useUser, { Sex } from "../../hooks/useUser";
+import useUser from "../../hooks/useUser";
 import { useSnackbar } from "../../contexts/Snackbar";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { setUserAsync } from "../../store/modules/userSlice";
-import { addRoomDoc } from "../../utils/writeToFirestore";
+import { useAppSelector } from "../../store/hooks";
+import { addRoomDoc, setUserDoc } from "../../utils/writeToFirestore";
 
 type Props = {
   rooms: Room[];
@@ -39,7 +38,6 @@ const UserSearchDialog = ({ rooms }: Props) => {
   const { openSnackbar } = useSnackbar();
   const { getRandomUserDocs } = useUser();
   const me = useAppSelector((state) => state.user.user);
-  const dispatch = useAppDispatch();
   const handleMatching: SubmitHandler<InputCondition> = async (
     inputCondition: InputCondition
   ) => {
@@ -54,11 +52,12 @@ const UserSearchDialog = ({ rooms }: Props) => {
       alreadyMatchUserIds.push(me.uid);
       const you = users.find((u) => !alreadyMatchUserIds.includes(u.uid));
       if (you) {
+        // Todo batch
         await addRoomDoc(
           { uid: me.uid, name: me.name, photo: me.photo, unread: false },
           { uid: you.uid, name: you.name, photo: you.photo, unread: false }
         );
-        dispatch(setUserAsync({ user: { ...me, life: me.life - 1 } }));
+        await setUserDoc({ ...me, life: me.life - 1 });
         openSnackbar(`${you.name}さんとマッチしました。`, "success");
       } else {
         openSnackbar("条件に合う相手が見つかりませんでした。", "error");

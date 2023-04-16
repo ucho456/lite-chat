@@ -27,3 +27,25 @@ export const roomConverter: FirestoreDataConverter<Room> = {
     };
   },
 };
+
+export const userConverter: FirestoreDataConverter<User> = {
+  toFirestore(u: User): DocumentData {
+    return {
+      name: u.name,
+      photo: u.photo,
+      sex: u.sex,
+      life: u.life,
+      lastActionAt: u.lastActionAt,
+    };
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot): User {
+    const d = snapshot.data();
+    return {
+      uid: snapshot.id,
+      name: d.name,
+      photo: d.photo,
+      sex: d.sex,
+      life: d.life,
+    };
+  },
+};

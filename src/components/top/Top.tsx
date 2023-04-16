@@ -2,8 +2,6 @@ import { signInWithPopup } from "firebase/auth";
 import SignupDialog from "./SignupDialog";
 import { auth, googleAuthProvider } from "../../firebase";
 import useUser from "../../hooks/useUser";
-import { useAppDispatch } from "../../store/hooks";
-import { setUser } from "../../store/modules/userSlice";
 import { useSnackbar } from "../../contexts/Snackbar";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -11,7 +9,6 @@ import { LoadingButton } from "@mui/lab";
 
 const Top = () => {
   const { getUserDoc } = useUser();
-  const dispatch = useAppDispatch();
   const { openSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
@@ -22,7 +19,6 @@ const Top = () => {
       const userCredential = await signInWithPopup(auth, googleAuthProvider);
       const user = await getUserDoc(userCredential.user.uid);
       if (user) {
-        dispatch(setUser(user));
         openSnackbar("サインインしました。", "success");
         navigate("/rooms");
       } else {

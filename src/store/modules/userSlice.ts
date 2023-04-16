@@ -1,11 +1,4 @@
-import {
-  AnyAction,
-  createSlice,
-  PayloadAction,
-  ThunkAction,
-} from "@reduxjs/toolkit";
-import useUser, { User } from "../../hooks/useUser";
-import { RootState } from "../store";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type UserState = {
   user: User | null;
@@ -28,17 +21,5 @@ export const userSlice = createSlice({
   },
 });
 
-const { resetUser, setUser } = userSlice.actions;
-
-const setUserAsync = (payload: {
-  user: User;
-}): ThunkAction<void, RootState, unknown, AnyAction> => {
-  return async (dispatch) => {
-    const { setUserDoc } = useUser();
-    await setUserDoc(payload.user);
-    dispatch(setUser(payload.user));
-  };
-};
-
-export { resetUser, setUser, setUserAsync };
+export const { resetUser, setUser } = userSlice.actions;
 export default userSlice.reducer;
