@@ -5,7 +5,6 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@mui/material";
-import { Room } from "../../hooks/useRoom";
 import { useAppSelector } from "../../store/hooks";
 import "./RoomsListItem.scss";
 import { useNavigate } from "react-router-dom";

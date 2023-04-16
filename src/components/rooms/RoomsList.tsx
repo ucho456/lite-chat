@@ -1,11 +1,11 @@
-import { Button, List } from "@mui/material";
+import { List } from "@mui/material";
 import UserSearchDialog from "./UserSearchDialog";
 import "./RoomsList.scss";
-import useRoom from "../../hooks/useRoom";
 import RoomsListItem from "./RoomsListItem";
+import { useAppSelector } from "../../store/hooks";
 
 const RoomsList = () => {
-  const { getRoomsNextPage, isMax, rooms } = useRoom();
+  const rooms = useAppSelector((state) => state.rooms.rooms);
 
   return (
     <List
@@ -20,11 +20,6 @@ const RoomsList = () => {
       ) : (
         rooms.map((r) => <RoomsListItem key={r.id} room={r} />)
       )}
-      <div className="next-button">
-        <Button disabled={isMax} variant="contained" onClick={getRoomsNextPage}>
-          さらに読み込む
-        </Button>
-      </div>
     </List>
   );
 };

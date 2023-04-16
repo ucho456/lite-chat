@@ -14,8 +14,8 @@ import { LoadingButton } from "@mui/lab";
 import useUser, { Sex } from "../../hooks/useUser";
 import { useSnackbar } from "../../contexts/Snackbar";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import useRoom, { Room } from "../../hooks/useRoom";
 import { setUserAsync } from "../../store/modules/userSlice";
+import { addRoomDoc } from "../../utils/writeToFirestore";
 
 type Props = {
   rooms: Room[];
@@ -38,7 +38,6 @@ const UserSearchDialog = ({ rooms }: Props) => {
   const [loading, setLoading] = useState(false);
   const { openSnackbar } = useSnackbar();
   const { getRandomUserDocs } = useUser();
-  const { addRoomDoc } = useRoom();
   const me = useAppSelector((state) => state.user.user);
   const dispatch = useAppDispatch();
   const handleMatching: SubmitHandler<InputCondition> = async (

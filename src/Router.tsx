@@ -14,6 +14,7 @@ import Phone from "./components/room/phone/Phone";
 import { useEffect } from "react";
 import { auth } from "./firebase";
 import { isFirstAuthChecked } from "./store/modules/authSlice";
+import useRooms from "./hooks/useRooms";
 
 const IsAuth = () => {
   const dispatch = useAppDispatch();
@@ -38,6 +39,7 @@ const IsAuth = () => {
 };
 
 const Router = () => {
+  useRooms();
   return (
     <BrowserRouter>
       <Routes>

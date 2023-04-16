@@ -5,7 +5,6 @@ import RoomMessage from "./RoomMessage";
 import { useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "../../store/hooks";
-import useRoom from "../../hooks/useRoom";
 import useMessage from "../../hooks/useMessage";
 
 const defaultRoomUser: { uid: string; name: string; photo: string | null } = {
@@ -16,8 +15,9 @@ const defaultRoomUser: { uid: string; name: string; photo: string | null } = {
 
 const Room = () => {
   const { roomId } = useParams<{ roomId: string }>();
+  const rooms = useAppSelector((state) => state.rooms.rooms);
+  const room = rooms.find((r) => r.id === roomId);
   const { addMessageDoc, messages } = useMessage();
-  const { room } = useRoom();
 
   const authUid = useAppSelector((state) => state.auth.uid);
   const [me, setMe] = useState<{
