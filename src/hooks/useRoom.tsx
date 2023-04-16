@@ -63,7 +63,9 @@ const converter: FirestoreDataConverter<Room> = {
 const useRoom = () => {
   /** Get reactive rooms collection. pagenation function. */
   const [rooms, setRooms] = useState<Room[]>([]);
-  const [page, setPage] = useState(10);
+  const [roomCount, setRoomCount] = useState(0);
+  const [isMax, setIsMax] = useState(false);
+  const [page, setPage] = useState(1);
   const authUid = useAppSelector((state) => state.auth.uid);
   useEffect(() => {
     const colRef = collection(db, "rooms").withConverter(converter);
@@ -78,10 +80,12 @@ const useRoom = () => {
       const _rooms: Room[] = [];
       querySnapshot.forEach((doc) => _rooms.push(doc.data()));
       setRooms(_rooms);
+      setIsMax(_rooms.length === roomCount && roomCount !== 0);
+      setRoomCount(_rooms.length);
     });
     return () => unsubscribe();
   }, [page]);
-  const addPage = 10;
+  const addPage = 1;
   const getRoomsNextPage = (): void => setPage((pre) => pre + addPage);
 
   /** Get reactive room document */
@@ -112,6 +116,7 @@ const useRoom = () => {
   return {
     addRoomDoc,
     getRoomsNextPage,
+    isMax,
     room,
     rooms,
   };

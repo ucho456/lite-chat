@@ -1,7 +1,11 @@
 @import "../../assets/variables.scss";
 
 .rooms-list {
-  .button {
+  .matching-button {
     text-align: right;
+  }
+  .next-button {
+    text-align: center;
+    margin: 20px 0;
   }
 }

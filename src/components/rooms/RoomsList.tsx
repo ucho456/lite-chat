@@ -5,14 +5,14 @@ import useRoom from "../../hooks/useRoom";
 import RoomsListItem from "./RoomsListItem";
 
 const RoomsList = () => {
-  const { getRoomsNextPage, rooms } = useRoom();
+  const { getRoomsNextPage, isMax, rooms } = useRoom();
 
   return (
     <List
       className="rooms-list"
       sx={{ margin: "0 auto", width: "96%", bgcolor: "background.paper" }}
     >
-      <div className="button">
+      <div className="matching-button">
         <UserSearchDialog rooms={rooms} />
       </div>
       {rooms.length === 0 ? (
@@ -20,7 +20,11 @@ const RoomsList = () => {
       ) : (
         rooms.map((r) => <RoomsListItem key={r.id} room={r} />)
       )}
-      <Button onClick={getRoomsNextPage}>ose</Button>
+      <div className="next-button">
+        <Button disabled={isMax} variant="contained" onClick={getRoomsNextPage}>
+          さらに読み込む
+        </Button>
+      </div>
     </List>
   );
 };
