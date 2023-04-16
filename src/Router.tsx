@@ -15,14 +15,7 @@ import { useEffect } from "react";
 import { auth } from "./firebase";
 import { isFirstAuthChecked } from "./store/modules/authSlice";
 
-type Props = {
-  needAuth: boolean;
-  redirect: string;
-};
-
-const IsAuth = (props: Props) => {
-  const { needAuth, redirect } = props;
-
+const IsAuth = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((loginUser) => {
@@ -37,10 +30,10 @@ const IsAuth = (props: Props) => {
   const { uid, checked } = useAppSelector((state) => state.auth);
   if (!checked) {
     return <></>;
-  } else if ((needAuth && uid) || (!needAuth && !uid)) {
+  } else if (uid) {
     return <Outlet />;
   } else {
-    return <Navigate to={redirect} />;
+    return <Navigate to="/" />;
   }
 };
 
@@ -49,10 +42,8 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path="*" element={<ErrorPage />} />
-        <Route path="/" element={<IsAuth needAuth={false} redirect="/rooms" />}>
-          <Route path="/" element={<Top />} />
-        </Route>
-        <Route path="/rooms" element={<IsAuth needAuth redirect="/" />}>
+        <Route path="/" element={<Top />} />
+        <Route path="/rooms" element={<IsAuth />}>
           <Route path="" element={<Rooms />} />
           <Route path=":roomId" element={<Room />} />
           <Route path=":roomId/phone" element={<Phone />} />
