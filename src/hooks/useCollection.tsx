@@ -11,7 +11,8 @@ import {
 const useCollection = <T,>(
   collectionName: string,
   converter: FirestoreDataConverter<T>,
-  queryConstraints?: QueryConstraint[]
+  queryConstraints?: QueryConstraint[],
+  limitNum?: number
 ) => {
   const [collection, setCollection] = useState<T[]>([]);
 
@@ -33,7 +34,7 @@ const useCollection = <T,>(
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [limitNum]);
 
   return { collection, setCollection };
 };

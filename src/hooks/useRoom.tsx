@@ -1,14 +1,19 @@
 import {
+  CollectionReference,
   DocumentData,
   FieldValue,
   FirestoreDataConverter,
   QueryDocumentSnapshot,
   Timestamp,
+  limit,
+  orderBy,
   serverTimestamp,
+  where,
 } from "firebase/firestore";
 import useDocument from "./useDocument";
 import useFirestore from "./useFirestore";
 import useCollection from "./useCollection";
+import { useState } from "react";
 
 export type RoomUser = {
   uid: string;
@@ -35,6 +40,7 @@ const useRoom = () => {
       return {
         inviteeUser: r.inviteeUser,
         invitedUser: r.invitedUser,
+        userUids: r.userUids,
         isBlock: r.isBlock,
         lastMessage: r.lastMessage,
         lastActionAt: r.lastActionAt,
@@ -55,15 +61,24 @@ const useRoom = () => {
 
   const collectionName = "rooms";
 
-  const getRoomColRef = () => {
+  const getRoomColRef = (): CollectionReference<Room> => {
     return getColRef(collectionName, roomConverter);
   };
 
-  const getReactiveRoomCol = () => {
+  const getReactiveRoomCol = (
+    authUid: string | null,
+    limitNum: number
+  ): Room[] => {
+    if (!authUid) return [];
     const { collection: rooms } = useCollection(
       collectionName,
       roomConverter,
-      [] //Todo: 条件をいれる
+      [
+        where("userUids", "array-contains", authUid),
+        orderBy("lastActionAt", "desc"),
+        limit(limitNum),
+      ],
+      limitNum
     );
     return rooms;
   };
@@ -77,7 +92,7 @@ const useRoom = () => {
     return room;
   };
 
-  const addRoomDoc = async (me: RoomUser, you: RoomUser) => {
+  const addRoomDoc = async (me: RoomUser, you: RoomUser): Promise<void> => {
     const roomColRef = getRoomColRef();
     await addDoc(roomColRef, {
       id: roomColRef.id,
