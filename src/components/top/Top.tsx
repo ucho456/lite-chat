@@ -6,6 +6,8 @@ import { useSnackbar } from "../../contexts/Snackbar";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
+import { useAppDispatch } from "../../store/hooks";
+import { signIn } from "../../store/modules/authSlice";
 
 const Top = () => {
   const { getUserDoc } = useUser();
@@ -13,10 +15,12 @@ const Top = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
   const handleLogin = async () => {
     try {
       setLoading(true);
       const userCredential = await signInWithPopup(auth, googleAuthProvider);
+      dispatch(signIn(userCredential.user.uid));
       const user = await getUserDoc(userCredential.user.uid);
       if (user) {
         openSnackbar("サインインしました。", "success");

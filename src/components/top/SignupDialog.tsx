@@ -9,6 +9,8 @@ import ProfileForm from "../commons/ProfileForm";
 import { LoadingButton } from "@mui/lab";
 import { useSnackbar } from "../../contexts/Snackbar";
 import { setUserDoc } from "../../utils/writeToFirestore";
+import { useAppDispatch } from "../../store/hooks";
+import { signIn } from "../../store/modules/authSlice";
 
 const SignupDialog = () => {
   const [open, setOpen] = useState(false);
@@ -24,12 +26,14 @@ const SignupDialog = () => {
   const { getUserDoc } = useUser();
   const { openSnackbar } = useSnackbar();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const handleSignup: SubmitHandler<InputUser> = async (
     inputUser: InputUser
   ) => {
     try {
       setLoading(true);
       const userCredential = await signInWithPopup(auth, googleAuthProvider);
+      dispatch(signIn(userCredential.user.uid));
       const user = await getUserDoc(userCredential.user.uid);
       if (user) {
         openSnackbar("サインインしました。", "success");
