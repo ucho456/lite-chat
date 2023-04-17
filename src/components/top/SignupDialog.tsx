@@ -19,7 +19,7 @@ const SignupDialog = () => {
 
   const { control, handleSubmit } = useForm<InputUser>({
     shouldUnregister: false,
-    defaultValues: { name: "test", photo: null, sex: "man" },
+    defaultValues: { name: "", photo: null, sex: "man", era: "early 20's" },
   });
 
   const [loading, setLoading] = useState(false);
@@ -41,6 +41,7 @@ const SignupDialog = () => {
         await createUser({
           uid: userCredential.user.uid,
           ...inputUser,
+          roomCount: 0,
           life: 3,
         });
         openSnackbar("サインアップしました。", "success");

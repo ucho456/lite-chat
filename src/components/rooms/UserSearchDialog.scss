@@ -4,7 +4,8 @@
   .container {
     min-width: 310px;
     display: grid;
-    grid-template-rows: 50px 100px 100px;
+    grid-template-rows: 50px 50px 50px 100px;
+    gap: 20px;
     text-align: center;
     h3 {
       grid-row: 1 / 2;
@@ -13,11 +14,13 @@
       line-height: 30px;
     }
     .sex-row {
-      padding-top: 30px;
       grid-row: 2 / 3;
     }
-    .button-row {
+    .era-row {
       grid-row: 3 / 4;
+    }
+    .button-row {
+      grid-row: 4 / 5;
       p {
         margin-top: 5px;
         color: $fontColorGray;

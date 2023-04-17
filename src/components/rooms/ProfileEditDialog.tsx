@@ -24,6 +24,7 @@ const ProfileEditDialog = () => {
         name: user.name,
         photo: user.photo,
         sex: user.sex,
+        era: user.era,
       };
     }, [user]),
   });

@@ -37,11 +37,14 @@ const useUser = () => {
   };
 
   const getRandomUserDocs = async (condition: Condition): Promise<User[]> => {
-    const { sex } = condition;
+    const { era, sex } = condition;
     const colRef = collection(db, "users").withConverter(userConverter);
     const q = query(
       colRef,
+      where("era", "==", era),
       where("sex", "==", sex),
+      where("roomCount", "<", 30),
+      orderBy("roomCount", "asc"),
       orderBy("lastActionAt", "desc"),
       limit(10),
     );

@@ -13,6 +13,7 @@ import {
 import { useSnackbar } from "@/contexts/Snackbar";
 import useUser from "@/hooks/useUser";
 import { useAppSelector } from "@/store/hooks";
+import { ERAS } from "@/utils/constants";
 import { createRoom } from "@/utils/writeToFirestore";
 import "./UserSearchDialog.scss";
 
@@ -22,6 +23,7 @@ type Props = {
 
 type InputCondition = {
   sex: Sex;
+  era: Era;
 };
 
 const UserSearchDialog = ({ rooms }: Props) => {
@@ -31,7 +33,7 @@ const UserSearchDialog = ({ rooms }: Props) => {
 
   const { control, handleSubmit } = useForm<InputCondition>({
     shouldUnregister: false,
-    defaultValues: { sex: "man" },
+    defaultValues: { sex: "man", era: "early 20's" },
   });
 
   const [loading, setLoading] = useState(false);
@@ -42,10 +44,10 @@ const UserSearchDialog = ({ rooms }: Props) => {
     inputCondition: InputCondition,
   ) => {
     if (!me) return;
-    const { sex } = inputCondition;
+    const { sex, era } = inputCondition;
     try {
       setLoading(true);
-      const users = await getRandomUserDocs({ sex });
+      const users = await getRandomUserDocs({ sex, era });
       const alreadyMatchUserIds = rooms.map((r) =>
         r.inviteeUser.uid !== me.uid ? r.inviteeUser.uid : r.invitedUser.uid,
       );
@@ -88,9 +90,35 @@ const UserSearchDialog = ({ rooms }: Props) => {
                       label="性別"
                       labelId="sex-label"
                       size="small"
+                      sx={{ width: "120px" }}
                     >
                       <MenuItem value={"man"}>男性</MenuItem>
                       <MenuItem value={"woman"}>女性</MenuItem>
+                    </Select>
+                  </FormControl>
+                )}
+              />
+            </div>
+            <div className="era-row">
+              <Controller
+                control={control}
+                name="era"
+                render={({ field }) => (
+                  <FormControl>
+                    <InputLabel id="era-label">年代</InputLabel>
+                    <Select
+                      {...field}
+                      fullWidth
+                      label="年代"
+                      labelId="era-label"
+                      size="small"
+                      sx={{ width: "120px" }}
+                    >
+                      {ERAS.map((e) => (
+                        <MenuItem key={e.value} value={e.value}>
+                          {e.name}
+                        </MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 )}

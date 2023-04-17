@@ -12,5 +12,5 @@ type Room = {
   userUids: string[];
   isBlock: boolean;
   lastMessage: string;
-  lastActionAt?: Timestamp | FieldValue;
+  lastActionAt?: import("firebase/firestore").Timestamp;
 };

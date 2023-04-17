@@ -13,10 +13,10 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
+import { ERAS } from "@/utils/constants";
 import "./ProfileForm.scss";
 
 type Props = {
-  /** ts-ignore */
   control: Control<InputUser, any>;
   handleSubmit: UseFormHandleSubmit<InputUser>;
   handleFunction: SubmitHandler<InputUser>;
@@ -61,7 +61,7 @@ const ProfileForm = ({
                   )}
                 />
               </div>
-              <div className="sex-column">
+              <div className="select-column">
                 <Controller
                   control={control}
                   name="sex"
@@ -74,9 +74,34 @@ const ProfileForm = ({
                         label="性別"
                         labelId="sex-label"
                         size="small"
+                        sx={{ width: "70px" }}
                       >
                         <MenuItem value={"man"}>男性</MenuItem>
                         <MenuItem value={"woman"}>女性</MenuItem>
+                      </Select>
+                    </FormControl>
+                  )}
+                />
+                <div className="spacer" />
+                <Controller
+                  control={control}
+                  name="era"
+                  render={({ field }) => (
+                    <FormControl>
+                      <InputLabel id="era-label">年代</InputLabel>
+                      <Select
+                        {...field}
+                        fullWidth
+                        label="年代"
+                        labelId="era-label"
+                        size="small"
+                        sx={{ width: "100px" }}
+                      >
+                        {ERAS.map((e) => (
+                          <MenuItem key={e.value} value={e.value}>
+                            {e.name}
+                          </MenuItem>
+                        ))}
                       </Select>
                     </FormControl>
                   )}

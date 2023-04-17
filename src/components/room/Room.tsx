@@ -8,41 +8,27 @@ import { createMessage } from "@/utils/writeToFirestore";
 import RoomMessage from "@/components/room/RoomMessage";
 import "./Room.scss";
 
-const defaultRoomUser: { uid: string; name: string; photo: string | null } = {
-  uid: "",
-  name: "",
-  photo: null,
-};
-
 const Room = () => {
   const { roomId } = useParams<{ roomId: string }>();
   const rooms = useAppSelector((state) => state.rooms.rooms);
   const room = rooms.find((r) => r.id === roomId);
   const { messages } = useMessage();
 
-  const authUid = useAppSelector((state) => state.auth.uid);
-  const [me, setMe] = useState<{
-    uid: string;
-    name: string;
-    photo: string | null;
-  }>(defaultRoomUser);
-  const [you, setYou] = useState<{
-    uid: string;
-    name: string;
-    photo: string | null;
-  }>(defaultRoomUser);
+  const user = useAppSelector((state) => state.user.user);
+  const [me, setMe] = useState<RoomUser | null>(null);
+  const [you, setYou] = useState<RoomUser | null>(null);
   useEffect(() => {
-    if (!room) return;
+    if (!room || !user) return;
     const userA = room.inviteeUser;
     const userB = room.invitedUser;
-    if (userA.uid === authUid) {
+    if (userA.uid === user.uid) {
       setMe(userA);
       setYou(userB);
     } else {
       setMe(userB);
       setYou(userA);
     }
-  }, [room, authUid]);
+  }, [room, user]);
 
   const [inputText, setInputText] = useState<string>("");
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -51,7 +37,7 @@ const Room = () => {
   ) => {
     e.preventDefault();
     if (
-      !authUid ||
+      !user ||
       !roomId ||
       !bodyRef ||
       !bodyRef.current ||
@@ -61,7 +47,7 @@ const Room = () => {
       return;
     }
 
-    await createMessage(roomId, authUid, inputText, room);
+    await createMessage(roomId, user, inputText, room);
     setInputText("");
     bodyRef.current.scrollTo(
       0,
@@ -74,9 +60,11 @@ const Room = () => {
     navigate("/");
   };
   const handlePhone = () => {
+    if (!me || !you) return;
     navigate(`/room/${roomId}/phone?meUid=${me.uid}&youUid=${you.uid}`);
   };
 
+  if (!me || !you) return <></>;
   return (
     <div className="room">
       <div className="header">

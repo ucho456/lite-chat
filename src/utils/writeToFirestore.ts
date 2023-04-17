@@ -1,6 +1,7 @@
 import {
   collection,
   doc,
+  increment,
   serverTimestamp,
   setDoc,
   updateDoc,
@@ -55,19 +56,23 @@ export const createRoom = async (me: User, you: User): Promise<void> => {
     lastActionAt: serverTimestamp(),
   });
 
-  const userDocRef = doc(db, "users", me.uid).withConverter(userConverter);
-  batch.update(userDocRef, {
+  const meDocRef = doc(db, "users", me.uid).withConverter(userConverter);
+  batch.update(meDocRef, {
     ...me,
-    life: me.life - 1,
+    life: increment(-1),
+    roomCount: increment(1),
     lastActionAt: serverTimestamp(),
   });
+
+  const youDocRef = doc(db, "users", you.uid).withConverter(userConverter);
+  batch.update(youDocRef, { roomCount: increment(1) });
 
   await batch.commit();
 };
 
 export const createMessage = async (
   roomId: string,
-  authUid: string,
+  user: User,
   inputText: string,
   room: Room,
 ) => {
@@ -89,20 +94,28 @@ export const createMessage = async (
   ).withConverter(messageConverter);
   batch.set(messageDocRef, {
     id: messageId,
-    uid: authUid,
+    uid: user.uid,
     text: inputText,
     createdAt: serverTimestamp(),
   });
 
   const roomDocRef = doc(db, "rooms", roomId).withConverter(roomConverter);
   const updateRoomUser =
-    room.inviteeUser.uid === authUid
-      ? { ["invitedUser.unread"]: true }
-      : { ["inviteeUser.unread"]: true };
+    room.inviteeUser.uid === user.uid
+      ? {
+          ["invitedUser.unread"]: true,
+          ["inviteeUser.name"]: user.name,
+          ["inviteeUser.photo"]: user.photo,
+        }
+      : {
+          ["inviteeUser.unread"]: true,
+          ["invitedUser.name"]: user.name,
+          ["invitedUser.photo"]: user.photo,
+        };
   batch.update(roomDocRef, {
     ...updateRoomUser,
-    ["lastMessage"]: inputText,
-    ["lastActionAt"]: serverTimestamp(),
+    lastMessage: inputText,
+    lastActionAt: serverTimestamp(),
   });
 
   await batch.commit();
