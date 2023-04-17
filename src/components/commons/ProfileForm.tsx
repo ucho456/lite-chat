@@ -1,4 +1,9 @@
-import "./ProfileForm.scss";
+import {
+  Control,
+  Controller,
+  SubmitHandler,
+  UseFormHandleSubmit,
+} from "react-hook-form";
 import {
   Avatar,
   FormControl,
@@ -8,14 +13,10 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-import {
-  Control,
-  Controller,
-  SubmitHandler,
-  UseFormHandleSubmit,
-} from "react-hook-form";
+import "./ProfileForm.scss";
 
 type Props = {
+  /** ts-ignore */
   control: Control<InputUser, any>;
   handleSubmit: UseFormHandleSubmit<InputUser>;
   handleFunction: SubmitHandler<InputUser>;

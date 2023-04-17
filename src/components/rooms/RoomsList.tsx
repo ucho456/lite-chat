@@ -1,8 +1,8 @@
 import { List } from "@mui/material";
-import UserSearchDialog from "./UserSearchDialog";
+import { useAppSelector } from "@/store/hooks";
+import RoomsListItem from "@/components/rooms/RoomsListItem";
+import UserSearchDialog from "@/components/rooms/UserSearchDialog";
 import "./RoomsList.scss";
-import RoomsListItem from "./RoomsListItem";
-import { useAppSelector } from "../../store/hooks";
 
 const RoomsList = () => {
   const rooms = useAppSelector((state) => state.rooms.rooms);

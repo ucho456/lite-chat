@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { LoadingButton } from "@mui/lab";
 import {
   Button,
   Dialog,
@@ -7,14 +10,11 @@ import {
   Select,
   Stack,
 } from "@mui/material";
-import { useState } from "react";
+import { useSnackbar } from "@/contexts/Snackbar";
+import useUser from "@/hooks/useUser";
+import { useAppSelector } from "@/store/hooks";
+import { createRoom } from "@/utils/writeToFirestore";
 import "./UserSearchDialog.scss";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { LoadingButton } from "@mui/lab";
-import useUser from "../../hooks/useUser";
-import { useSnackbar } from "../../contexts/Snackbar";
-import { useAppSelector } from "../../store/hooks";
-import { createRoom } from "../../utils/writeToFirestore";
 
 type Props = {
   rooms: Room[];
@@ -39,7 +39,7 @@ const UserSearchDialog = ({ rooms }: Props) => {
   const { getRandomUserDocs } = useUser();
   const me = useAppSelector((state) => state.user.user);
   const handleMatching: SubmitHandler<InputCondition> = async (
-    inputCondition: InputCondition
+    inputCondition: InputCondition,
   ) => {
     if (!me) return;
     const { sex } = inputCondition;
@@ -47,7 +47,7 @@ const UserSearchDialog = ({ rooms }: Props) => {
       setLoading(true);
       const users = await getRandomUserDocs({ sex });
       const alreadyMatchUserIds = rooms.map((r) =>
-        r.inviteeUser.uid !== me.uid ? r.inviteeUser.uid : r.invitedUser.uid
+        r.inviteeUser.uid !== me.uid ? r.inviteeUser.uid : r.invitedUser.uid,
       );
       alreadyMatchUserIds.push(me.uid);
       const you = users.find((u) => !alreadyMatchUserIds.includes(u.uid));

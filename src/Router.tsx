@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   BrowserRouter,
   Navigate,
@@ -5,17 +6,16 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "./store/hooks";
-import Room from "./components/room/Room";
-import Rooms from "./components/rooms/Rooms";
-import ErrorPage from "./components/error/ErrorPage";
-import Top from "./components/top/Top";
-import Phone from "./components/room/phone/Phone";
-import { useEffect } from "react";
-import { auth } from "./firebase";
-import { isFirstAuthChecked } from "./store/modules/authSlice";
-import useRooms from "./hooks/useRooms";
-import useUser from "./hooks/useUser";
+import useRooms from "@/hooks/useRooms";
+import useUser from "@/hooks/useUser";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { isFirstAuthChecked } from "@/store/modules/authSlice";
+import { auth } from "@/firebase";
+import ErrorPage from "@/components/error/ErrorPage";
+import Phone from "@/components/room/phone/Phone";
+import Room from "@/components/room/Room";
+import Rooms from "@/components/rooms/Rooms";
+import Top from "@/components/top/Top";
 
 const IsAuth = () => {
   const dispatch = useAppDispatch();
@@ -27,7 +27,7 @@ const IsAuth = () => {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [dispatch]);
 
   const { uid, checked } = useAppSelector((state) => state.auth);
   if (!checked) {

@@ -1,8 +1,8 @@
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { db } from "../firebase";
-import { messageConverter } from "../utils/converters";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { messageConverter } from "@/utils/converters";
+import { db } from "@/firebase";
 
 const useMessage = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -10,7 +10,7 @@ const useMessage = () => {
   useEffect(() => {
     if (!roomId) return;
     const colRef = collection(db, "rooms", roomId, "messages").withConverter(
-      messageConverter
+      messageConverter,
     );
     const q = query(colRef, orderBy("createdAt", "asc"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {

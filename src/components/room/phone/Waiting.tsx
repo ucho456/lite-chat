@@ -1,6 +1,6 @@
-import RtcClient from "../../../utils/RtcClient";
-import WaitingLocal from "./WaitingLocal";
-import WaitingRemote from "./WaitingRemote";
+import RtcClient from "@/utils/RtcClient";
+import WaitingLocal from "@/components/room/phone/WaitingLocal";
+import WaitingRemote from "@/components/room/phone/WaitingRemote";
 
 type Props = {
   rtcClient: RtcClient;

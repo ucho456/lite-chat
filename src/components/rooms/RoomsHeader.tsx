@@ -1,13 +1,13 @@
-import { IconButton } from "@mui/material";
-import "./RoomsHeader.scss";
-import { Logout } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../store/hooks";
-import { auth } from "../../firebase";
-import { signOut } from "../../store/modules/authSlice";
-import ProfileEditDialog from "./ProfileEditDialog";
-import { resetUser } from "../../store/modules/userSlice";
-import { useSnackbar } from "../../contexts/Snackbar";
+import { Logout } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
+import { useSnackbar } from "@/contexts/Snackbar";
+import { useAppDispatch } from "@/store/hooks";
+import { signOut } from "@/store/modules/authSlice";
+import { resetUser } from "@/store/modules/userSlice";
+import { auth } from "@/firebase";
+import ProfileEditDialog from "@/components/rooms/ProfileEditDialog";
+import "./RoomsHeader.scss";
 
 const RoomsHeader = () => {
   const dispatch = useAppDispatch();

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   collection,
   limit,
@@ -6,9 +7,8 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { db } from "../firebase";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { setRooms } from "../store/modules/roomsSlice";
 import { roomConverter } from "../utils/converters";
 

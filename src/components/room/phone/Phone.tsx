@@ -1,9 +1,9 @@
-import Waiting from "./Waiting";
-import VideoArea from "./VideoArea";
 import { useReducer, useRef, useState } from "react";
-import RtcClient, { SetRtcClient } from "../../../utils/RtcClient";
-import { useAppSelector } from "../../../store/hooks";
-import useOneTimeMountEffect from "../../../hooks/useOneTimeMountEffect";
+import useOneTimeMountEffect from "@/hooks/useOneTimeMountEffect";
+import { useAppSelector } from "@/store/hooks";
+import RtcClient, { SetRtcClient } from "@/utils/RtcClient";
+import VideoArea from "@/components/room/phone/VideoArea";
+import Waiting from "@/components/room/phone/Waiting";
 
 const VideoPhone = () => {
   const authUid = useAppSelector((state) => state.auth.uid);

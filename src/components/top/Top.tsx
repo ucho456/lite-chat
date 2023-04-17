@@ -1,13 +1,13 @@
-import { signInWithPopup } from "firebase/auth";
-import SignupDialog from "./SignupDialog";
-import { auth, googleAuthProvider } from "../../firebase";
-import useUser from "../../hooks/useUser";
-import { useSnackbar } from "../../contexts/Snackbar";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { LoadingButton } from "@mui/lab";
-import { useAppDispatch } from "../../store/hooks";
-import { signIn } from "../../store/modules/authSlice";
+import { signInWithPopup } from "firebase/auth";
+import { useSnackbar } from "@/contexts/Snackbar";
+import useUser from "@/hooks/useUser";
+import { useAppDispatch } from "@/store/hooks";
+import { signIn } from "@/store/modules/authSlice";
+import { auth, googleAuthProvider } from "@/firebase";
+import SignupDialog from "@/components/top/SignupDialog";
 
 const Top = () => {
   const { getUserDoc } = useUser();

@@ -1,6 +1,6 @@
-import RtcClient from "../../../utils/RtcClient";
-import VideoLocal from "./VideoLocal";
-import VideoRemote from "./VideoRemote";
+import RtcClient from "@/utils/RtcClient";
+import VideoLocal from "@/components/room/phone/VideoLocal";
+import VideoRemote from "@/components/room/phone/VideoRemote";
 
 type Props = {
   rtcClient: RtcClient;

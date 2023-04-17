@@ -1,10 +1,10 @@
 import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
-import { store } from "./store/store";
-import Router from "./Router";
+import { createRoot } from "react-dom/client";
+import { SnackbarContextProvider } from "@/contexts/Snackbar";
+import { store } from "@/store/store";
+import Router from "@/Router";
 import "./index.scss";
-import { SnackbarContextProvider } from "./contexts/Snackbar";
 
 createRoot(document.getElementById("root") as HTMLElement).render(
   <StrictMode>
@@ -13,5 +13,5 @@ createRoot(document.getElementById("root") as HTMLElement).render(
         <Router />
       </SnackbarContextProvider>
     </Provider>
-  </StrictMode>
+  </StrictMode>,
 );

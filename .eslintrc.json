@@ -1,0 +1,105 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "overrides": [],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "react-hooks",
+    "unused-imports",
+    "import"
+  ],
+  "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/react-in-jsx-scope": "off",
+    "no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "parent",
+          "sibling",
+          "index",
+          "object",
+          "type"
+        ],
+        "newlines-between": "never",
+        "pathGroupsExcludedImportTypes": ["builtin"],
+        "alphabetize": { "order": "asc", "caseInsensitive": true },
+        "pathGroups": [
+          {
+            "pattern": "react**",
+            "group": "builtin",
+            "position": "before"
+          },
+          {
+            "pattern": "@/assets/**",
+            "group": "parent",
+            "position": "before"
+          },
+          {
+            "pattern": "@/contexts/**",
+            "group": "parent",
+            "position": "before"
+          },
+          {
+            "pattern": "@/hooks/**",
+            "group": "parent",
+            "position": "before"
+          },
+          {
+            "pattern": "@/store/**",
+            "group": "parent",
+            "position": "before"
+          },
+          {
+            "pattern": "@/utils/**",
+            "group": "parent",
+            "position": "before"
+          },
+          {
+            "pattern": "@/components/**",
+            "group": "parent",
+            "position": "after"
+          },
+          {
+            "pattern": "@/**",
+            "group": "parent",
+            "position": "before"
+          },
+          {
+            "pattern": "*.scss",
+            "group": "index",
+            "position": "before"
+          }
+        ]
+      }
+    ]
+  }
+}

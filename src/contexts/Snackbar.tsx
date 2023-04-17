@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import { AlertColor } from "@mui/material";
-import AppSnackbar from "../components/commons/AppSnackbar";
+import AppSnackbar from "@/components/commons/AppSnackbar";
 
 export type SnackbarContextType = {
   message: string;
@@ -41,12 +41,12 @@ export const SnackbarContextProvider = ({
         setOpen(true);
       },
     }),
-    [message, severity, setMessage, setSeverity]
+    [message, severity, setMessage, setSeverity],
   );
 
   const handleClose = useCallback(() => {
     setOpen(false);
-  }, [setMessage]);
+  }, []);
 
   return (
     <SnackbarContext.Provider value={newContext}>

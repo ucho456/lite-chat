@@ -1,6 +1,5 @@
+import { useEffect } from "react";
 import {
-  FieldValue,
-  Timestamp,
   collection,
   doc,
   getDoc,
@@ -13,7 +12,6 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { useEffect } from "react";
 import { resetUser, setUser } from "../store/modules/userSlice";
 import { userConverter } from "../utils/converters";
 
@@ -30,7 +28,7 @@ const useUser = () => {
       if (doc.exists()) dispatch(setUser(doc.data()));
     });
     return () => unsubscribe();
-  }, [authUid]);
+  }, [authUid, dispatch]);
 
   const getUserDoc = async (userId: string): Promise<User | null> => {
     const docRef = doc(db, "users", userId).withConverter(userConverter);
@@ -45,7 +43,7 @@ const useUser = () => {
       colRef,
       where("sex", "==", sex),
       orderBy("lastActionAt", "desc"),
-      limit(10)
+      limit(10),
     );
     const snapshot = await getDocs(q);
     const users: User[] = [];

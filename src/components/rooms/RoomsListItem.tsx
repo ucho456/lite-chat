@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   Avatar,
   Divider,
@@ -5,9 +6,8 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@mui/material";
-import { useAppSelector } from "../../store/hooks";
+import { useAppSelector } from "@/store/hooks";
 import "./RoomsListItem.scss";
-import { useNavigate } from "react-router-dom";
 
 type Props = {
   room: Room;

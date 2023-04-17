@@ -1,6 +1,6 @@
+import RoomsHeader from "@/components/rooms/RoomsHeader";
+import RoomsList from "@/components/rooms/RoomsList";
 import "./Rooms.scss";
-import RoomsHeader from "./RoomsHeader";
-import RoomsList from "./RoomsList";
 
 const Rooms = () => {
   return (

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import RtcClient from "../../../utils/RtcClient";
+import RtcClient from "@/utils/RtcClient";
 
 type Props = {
   rtcClient: RtcClient;

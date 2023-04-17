@@ -1,12 +1,12 @@
-import { Avatar, Dialog } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import ProfileForm from "../commons/ProfileForm";
 import { LoadingButton } from "@mui/lab";
-import { useAppSelector } from "../../store/hooks";
+import { Avatar, Dialog } from "@mui/material";
+import { useSnackbar } from "@/contexts/Snackbar";
+import { useAppSelector } from "@/store/hooks";
+import { updateUser } from "@/utils/writeToFirestore";
+import ProfileForm from "@/components/commons/ProfileForm";
 import "./ProfileEditDialog.scss";
-import { useSnackbar } from "../../contexts/Snackbar";
-import { updateUser } from "../../utils/writeToFirestore";
 
 const ProfileEditDialog = () => {
   /** Dialog switch */
@@ -30,20 +30,20 @@ const ProfileEditDialog = () => {
   useEffect(() => {
     if (!user) return;
     reset(user);
-  }, [user]);
+  }, [user, reset]);
 
   /** Update user profile */
   const [loading, setLoading] = useState(false);
   const { openSnackbar } = useSnackbar();
   const handleUpdateUser: SubmitHandler<InputUser> = async (
-    inputUser: InputUser
+    inputUser: InputUser,
   ) => {
     if (!user) return;
     try {
       setLoading(true);
       await updateUser({ ...user, ...inputUser });
       openSnackbar("プロフィールを更新しました。", "success");
-    } catch (error: any) {
+    } catch {
       openSnackbar("プロフィールの更新に失敗しました。", "error");
     } finally {
       setLoading(false);

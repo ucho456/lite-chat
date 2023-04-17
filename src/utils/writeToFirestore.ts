@@ -1,5 +1,4 @@
 import {
-  addDoc,
   collection,
   doc,
   serverTimestamp,
@@ -7,8 +6,12 @@ import {
   updateDoc,
   writeBatch,
 } from "firebase/firestore";
-import { db } from "../firebase";
-import { messageConverter, roomConverter, userConverter } from "./converters";
+import {
+  messageConverter,
+  roomConverter,
+  userConverter,
+} from "@/utils/converters";
+import { db } from "@/firebase";
 
 export const createUser = async (user: User): Promise<void> => {
   const docRef = doc(db, "users", user.uid).withConverter(userConverter);
@@ -66,7 +69,7 @@ export const createMessage = async (
   roomId: string,
   authUid: string,
   inputText: string,
-  room: Room
+  room: Room,
 ) => {
   const batch = writeBatch(db);
 
@@ -74,7 +77,7 @@ export const createMessage = async (
     db,
     "rooms",
     roomId,
-    "messages"
+    "messages",
   ).withConverter(messageConverter);
   const messageId = doc(messageColRef).id;
   const messageDocRef = doc(
@@ -82,7 +85,7 @@ export const createMessage = async (
     "rooms",
     roomId,
     "messages",
-    messageId
+    messageId,
   ).withConverter(messageConverter);
   batch.set(messageDocRef, {
     id: messageId,

@@ -1,16 +1,16 @@
-import { Button, Dialog } from "@mui/material";
-import { signInWithPopup } from "firebase/auth";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { auth, googleAuthProvider } from "../../firebase";
-import useUser from "../../hooks/useUser";
-import ProfileForm from "../commons/ProfileForm";
 import { LoadingButton } from "@mui/lab";
-import { useSnackbar } from "../../contexts/Snackbar";
-import { createUser } from "../../utils/writeToFirestore";
-import { useAppDispatch } from "../../store/hooks";
-import { signIn } from "../../store/modules/authSlice";
+import { Button, Dialog } from "@mui/material";
+import { signInWithPopup } from "firebase/auth";
+import { useSnackbar } from "@/contexts/Snackbar";
+import useUser from "@/hooks/useUser";
+import { useAppDispatch } from "@/store/hooks";
+import { signIn } from "@/store/modules/authSlice";
+import { createUser } from "@/utils/writeToFirestore";
+import { auth, googleAuthProvider } from "@/firebase";
+import ProfileForm from "@/components/commons/ProfileForm";
 
 const SignupDialog = () => {
   const [open, setOpen] = useState(false);
@@ -28,7 +28,7 @@ const SignupDialog = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const handleSignup: SubmitHandler<InputUser> = async (
-    inputUser: InputUser
+    inputUser: InputUser,
   ) => {
     try {
       setLoading(true);

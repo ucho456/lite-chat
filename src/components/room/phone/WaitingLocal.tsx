@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import RtcClient from "../../../utils/RtcClient";
-import { useAppSelector } from "../../../store/hooks";
+import { useAppSelector } from "@/store/hooks";
+import RtcClient from "@/utils/RtcClient";
 
 type Props = {
   rtcClient: RtcClient;

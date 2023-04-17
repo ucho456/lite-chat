@@ -1,12 +1,12 @@
-import { Avatar, IconButton } from "@mui/material";
-import { Logout, Phone, Send } from "@mui/icons-material";
-import "./Room.scss";
-import RoomMessage from "./RoomMessage";
-import { useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useRef, useState } from "react";
-import { useAppSelector } from "../../store/hooks";
-import useMessage from "../../hooks/useMessage";
-import { createMessage } from "../../utils/writeToFirestore";
+import { useNavigate, useParams } from "react-router-dom";
+import { Logout, Phone, Send } from "@mui/icons-material";
+import { Avatar, IconButton } from "@mui/material";
+import useMessage from "@/hooks/useMessage";
+import { useAppSelector } from "@/store/hooks";
+import { createMessage } from "@/utils/writeToFirestore";
+import RoomMessage from "@/components/room/RoomMessage";
+import "./Room.scss";
 
 const defaultRoomUser: { uid: string; name: string; photo: string | null } = {
   uid: "",
@@ -42,12 +42,12 @@ const Room = () => {
       setMe(userB);
       setYou(userA);
     }
-  }, [room]);
+  }, [room, authUid]);
 
   const [inputText, setInputText] = useState<string>("");
   const bodyRef = useRef<HTMLDivElement>(null);
   const sendMessage = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     e.preventDefault();
     if (
@@ -65,7 +65,7 @@ const Room = () => {
     setInputText("");
     bodyRef.current.scrollTo(
       0,
-      bodyRef.current.scrollHeight - bodyRef.current.clientHeight
+      bodyRef.current.scrollHeight - bodyRef.current.clientHeight,
     );
   };
 

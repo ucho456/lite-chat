@@ -1,6 +1,6 @@
-import RtcClient from "../../../utils/RtcClient";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "@mui/material";
+import RtcClient from "@/utils/RtcClient";
 
 type Props = {
   rtcClient: RtcClient;
