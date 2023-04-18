@@ -1,9 +1,10 @@
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import useMessage from "@/hooks/useMessage";
 import { useAppSelector } from "@/store/hooks";
 import { createMessage } from "@/utils/writeToFirestore";
+import Body from "@/components/room/Body";
 import Header from "@/components/room/Header";
-import RoomBody from "@/components/room/RoomBody";
 import RoomFooter from "@/components/room/RoomFooter";
 import "./index.scss";
 
@@ -38,6 +39,9 @@ const Room = () => {
     navigate(`/room/${roomId}/phone?meUid=${me.uid}&youUid=${you.uid}`);
   };
 
+  /** messages */
+  const { messages } = useMessage();
+
   /** Send message */
   const [inputText, setInputText] = useState<string>("");
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -65,15 +69,15 @@ const Room = () => {
 
   if (!me || !you) return <></>;
   return (
-    <div className="room">
+    <>
       <Header you={you} onClickLeave={onLeave} onClickPhone={onPushToPhone} />
-      <RoomBody me={me} bodyRef={bodyRef} />
+      <Body bodyRef={bodyRef} me={me} messages={messages} />
       <RoomFooter
         value={inputText}
         onChange={setInputText}
         onClick={sendMessage}
       />
-    </div>
+    </>
   );
 };
 
