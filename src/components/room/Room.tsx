@@ -1,10 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Send } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
 import { useAppSelector } from "@/store/hooks";
 import { createMessage } from "@/utils/writeToFirestore";
 import RoomBody from "@/components/room/RoomBody";
+import RoomFooter from "@/components/room/RoomFooter";
 import RoomHeader from "@/components/room/RoomHeader";
 import "./Room.scss";
 
@@ -32,7 +31,7 @@ const Room = () => {
   const [inputText, setInputText] = useState<string>("");
   const bodyRef = useRef<HTMLDivElement>(null);
   const sendMessage = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
   ) => {
     e.preventDefault();
     if (
@@ -59,30 +58,11 @@ const Room = () => {
     <div className="room">
       <RoomHeader me={me} you={you} />
       <RoomBody me={me} bodyRef={bodyRef} />
-      <div className="footer">
-        <form>
-          <div className="container">
-            <div className="input-column">
-              <textarea
-                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                  setInputText(e.target.value)
-                }
-                value={inputText}
-              />
-            </div>
-            <div className="button-column">
-              <IconButton
-                type="submit"
-                onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
-                  sendMessage(e)
-                }
-              >
-                <Send fontSize="large" />
-              </IconButton>
-            </div>
-          </div>
-        </form>
-      </div>
+      <RoomFooter
+        value={inputText}
+        onChange={setInputText}
+        onClick={sendMessage}
+      />
     </div>
   );
 };
