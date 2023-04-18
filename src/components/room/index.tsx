@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useRef, useState } from "react";
+import { MouseEvent, useEffect, useReducer, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useMessage from "@/hooks/useMessage";
 import { useAppSelector } from "@/store/hooks";
@@ -7,6 +7,10 @@ import Body from "@/components/room/Body";
 import Footer from "@/components/room/Footer";
 import Header from "@/components/room/Header";
 import "./index.scss";
+
+export type State = { text: string; height: number };
+
+export type Action = { type: "input"; payload: State } | { type: "reset" };
 
 const Room = () => {
   /** Get room */
@@ -42,8 +46,28 @@ const Room = () => {
   /** messages */
   const { messages } = useMessage();
 
+  /** Input text */
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const defaultTextarea = { text: "", height: 70 };
+  const [textarea, setTextarea] = useReducer(
+    (_state: State, action: Action): State => {
+      const textareaHeight = textareaRef.current?.scrollHeight as number;
+      const paddingHeight = 20;
+      const footerHeight = textareaHeight + paddingHeight;
+      const maxHeight = 170;
+      if (action.type === "input") {
+        return {
+          text: action.payload.text,
+          height: footerHeight <= maxHeight ? footerHeight : maxHeight,
+        };
+      } else {
+        return { ...defaultTextarea };
+      }
+    },
+    defaultTextarea,
+  );
+
   /** Send message */
-  const [inputText, setInputText] = useState<string>("");
   const bodyRef = useRef<HTMLDivElement>(null);
   const sendMessage = async (
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
@@ -55,12 +79,12 @@ const Room = () => {
       !bodyRef ||
       !bodyRef.current ||
       !room ||
-      inputText === ""
+      textarea.text === ""
     ) {
       return;
     }
-    await createMessage(roomId, user, inputText, room);
-    setInputText("");
+    await createMessage(roomId, user, textarea.text, room);
+    setTextarea({ type: "reset" });
     bodyRef.current.scrollTo(
       0,
       bodyRef.current.scrollHeight - bodyRef.current.clientHeight,
@@ -72,7 +96,13 @@ const Room = () => {
     <>
       <Header you={you} onClickLeave={onLeave} onClickPhone={onPushToPhone} />
       <Body bodyRef={bodyRef} me={me} messages={messages} />
-      <Footer value={inputText} onChange={setInputText} onClick={sendMessage} />
+      <Footer
+        height={textarea.height}
+        textareaRef={textareaRef}
+        value={textarea.text}
+        onChange={setTextarea}
+        onClick={sendMessage}
+      />
     </>
   );
 };

@@ -4,38 +4,34 @@
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: $footerHeight;
   background-color: $Blue;
+  padding-top: 10px;
   form {
-    padding-top: 10px;
-    .container {
-      display: grid;
-      grid-template-columns: auto 50px;
-      grid-template-rows: 50px;
-      width: 94%;
-      max-width: 1000px;
-      background-color: $lightBlue;
-      margin: 0 auto;
-      border-radius: 5px;
-      .input-column {
-        grid-column: 1 / 2;
-        padding: 5px;
-        textarea {
-          box-sizing: border-box;
-          resize: none;
-          height: 40px;
-          width: 100%;
-          padding: 7px;
-          overflow: hidden;
-          background: transparent;
-          border: none;
-          outline: none;
-          font-size: large;
-        }
-      }
-      .button-column {
-        grid-column: 2 / 3;
-      }
+    width: 94%;
+    max-width: $pageMaxWidth;
+    margin: 0 auto;
+    background-color: $lightBlue;
+    border-radius: 5px;
+    position: relative;
+    display: flex;
+    textarea {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      box-sizing: border-box;
+      resize: none;
+      padding: 10px 50px 10px 7px;
+      overflow: hidden;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-size: large;
+    }
+    .button-column {
+      margin: 0 0 0 auto;
     }
   }
 }
