@@ -1,28 +1,19 @@
-import { useNavigate, useParams } from "react-router-dom";
 import { ChevronLeft, Phone } from "@mui/icons-material";
 import { Avatar, IconButton } from "@mui/material";
-import "./RoomHeader.scss";
+import "./Header.scss";
 
 type Props = {
-  me: RoomUser;
   you: RoomUser;
+  onClickLeave: () => void;
+  onClickPhone: () => void;
 };
 
-const RoomHeader = ({ me, you }: Props) => {
-  const { roomId } = useParams<{ roomId: string }>();
-  const navigate = useNavigate();
-  const handleLeave = () => {
-    navigate("/rooms");
-  };
-  const handlePhone = () => {
-    if (!me || !you) return;
-    navigate(`/room/${roomId}/phone?meUid=${me.uid}&youUid=${you.uid}`);
-  };
+const Header = ({ you, onClickLeave, onClickPhone }: Props) => {
   return (
     <div className="room-header">
       <div className="container">
         <div className="leave-column">
-          <IconButton onClick={handleLeave}>
+          <IconButton onClick={onClickLeave}>
             <ChevronLeft fontSize="large" />
           </IconButton>
         </div>
@@ -31,7 +22,7 @@ const RoomHeader = ({ me, you }: Props) => {
         </div>
         <div className="name-column">{you.name}</div>
         <div className="phone-column">
-          <IconButton onClick={handlePhone}>
+          <IconButton onClick={onClickPhone}>
             <Phone fontSize="large" />
           </IconButton>
         </div>
@@ -40,4 +31,4 @@ const RoomHeader = ({ me, you }: Props) => {
   );
 };
 
-export default RoomHeader;
+export default Header;

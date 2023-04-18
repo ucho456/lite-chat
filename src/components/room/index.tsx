@@ -1,17 +1,19 @@
 import { MouseEvent, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "@/store/hooks";
 import { createMessage } from "@/utils/writeToFirestore";
+import Header from "@/components/room/Header";
 import RoomBody from "@/components/room/RoomBody";
 import RoomFooter from "@/components/room/RoomFooter";
-import RoomHeader from "@/components/room/RoomHeader";
-import "./Room.scss";
+import "./index.scss";
 
 const Room = () => {
+  /** Get room */
   const { roomId } = useParams<{ roomId: string }>();
   const rooms = useAppSelector((state) => state.rooms.rooms);
   const room = rooms.find((r) => r.id === roomId);
 
+  /** Set me and you */
   const user = useAppSelector((state) => state.user.user);
   const [me, setMe] = useState<RoomUser | null>(null);
   const [you, setYou] = useState<RoomUser | null>(null);
@@ -28,11 +30,20 @@ const Room = () => {
     }
   }, [room, user]);
 
+  /** Routing */
+  const navigate = useNavigate();
+  const onLeave = () => navigate("/rooms");
+  const onPushToPhone = () => {
+    if (!me || !you || !roomId) return;
+    navigate(`/room/${roomId}/phone?meUid=${me.uid}&youUid=${you.uid}`);
+  };
+
+  /** Send message */
   const [inputText, setInputText] = useState<string>("");
   const bodyRef = useRef<HTMLDivElement>(null);
   const sendMessage = async (
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
-  ) => {
+  ): Promise<void> => {
     e.preventDefault();
     if (
       !user ||
@@ -44,7 +55,6 @@ const Room = () => {
     ) {
       return;
     }
-
     await createMessage(roomId, user, inputText, room);
     setInputText("");
     bodyRef.current.scrollTo(
@@ -56,7 +66,7 @@ const Room = () => {
   if (!me || !you) return <></>;
   return (
     <div className="room">
-      <RoomHeader me={me} you={you} />
+      <Header you={you} onClickLeave={onLeave} onClickPhone={onPushToPhone} />
       <RoomBody me={me} bodyRef={bodyRef} />
       <RoomFooter
         value={inputText}
