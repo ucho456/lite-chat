@@ -1,0 +1,29 @@
+@import "../../assets/variables.scss";
+
+.room-header {
+  height: $headerHeight;
+  background-color: $lightBlue;
+  .container {
+    display: grid;
+    grid-template-columns: 50px 50px 160px auto 50px;
+    grid-template-rows: 50px;
+    max-width: 1000px;
+    height: 100%;
+    margin: 0 auto;
+    .leave-column {
+      grid-column: 1 / 2;
+    }
+    .photo-column {
+      grid-column: 2 / 3;
+      padding: 5px 0 0 5px;
+    }
+    .name-column {
+      grid-column: 3 / 4;
+      line-height: 50px;
+      font-size: 15px;
+    }
+    .phone-column {
+      grid-column: 5 / 6;
+    }
+  }
+}

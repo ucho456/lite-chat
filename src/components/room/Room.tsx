@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Logout, Phone, Send } from "@mui/icons-material";
-import { Avatar, IconButton } from "@mui/material";
+import { useParams } from "react-router-dom";
+import { Send } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
 import useMessage from "@/hooks/useMessage";
 import { useAppSelector } from "@/store/hooks";
 import { createMessage } from "@/utils/writeToFirestore";
+import RoomHeader from "@/components/room/RoomHeader";
 import RoomMessage from "@/components/room/RoomMessage";
 import "./Room.scss";
 
@@ -55,40 +56,10 @@ const Room = () => {
     );
   };
 
-  const navigate = useNavigate();
-  const handleLeave = () => {
-    navigate("/");
-  };
-  const handlePhone = () => {
-    if (!me || !you) return;
-    navigate(`/room/${roomId}/phone?meUid=${me.uid}&youUid=${you.uid}`);
-  };
-
   if (!me || !you) return <></>;
   return (
     <div className="room">
-      <div className="header">
-        <div className="container">
-          <div className="photo-column">
-            {you.photo ? (
-              <Avatar src={you.photo} />
-            ) : (
-              <Avatar src="/avatar.png" />
-            )}
-          </div>
-          <div className="name-column">{you.name}</div>
-          <div className="phone-column">
-            <IconButton onClick={() => handlePhone()}>
-              <Phone fontSize="large" />
-            </IconButton>
-          </div>
-          <div className="leave-column">
-            <IconButton onClick={() => handleLeave()}>
-              <Logout fontSize="large" />
-            </IconButton>
-          </div>
-        </div>
-      </div>
+      <RoomHeader me={me} you={you} />
       <div className="body">
         <div className="container" ref={bodyRef}>
           {messages.map((m) => (
