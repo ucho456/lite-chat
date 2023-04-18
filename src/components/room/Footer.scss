@@ -1,8 +1,6 @@
-@import "../../assets/variables.scss";
+@import "./index.scss";
 
 .room-footer {
-  $footerHeight: 70px;
-  $betweenFooterAndTextarea: 10px;
   position: absolute;
   bottom: 0;
   width: 100%;

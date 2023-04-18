@@ -1,7 +1,7 @@
 import { Dispatch, MouseEvent, SetStateAction } from "react";
 import { Send } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
-import "./RoomFooter.scss";
+import "./Footer.scss";
 
 type Props = {
   value: string;
@@ -11,7 +11,7 @@ type Props = {
   ) => Promise<void>;
 };
 
-const RoomFooter = ({ value, onChange, onClick }: Props) => {
+const Footer = ({ value, onChange, onClick }: Props) => {
   return (
     <div className="room-footer">
       <form>
@@ -33,4 +33,4 @@ const RoomFooter = ({ value, onChange, onClick }: Props) => {
   );
 };
 
-export default RoomFooter;
+export default Footer;

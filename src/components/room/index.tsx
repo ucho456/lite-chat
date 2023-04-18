@@ -4,8 +4,8 @@ import useMessage from "@/hooks/useMessage";
 import { useAppSelector } from "@/store/hooks";
 import { createMessage } from "@/utils/writeToFirestore";
 import Body from "@/components/room/Body";
+import Footer from "@/components/room/Footer";
 import Header from "@/components/room/Header";
-import RoomFooter from "@/components/room/RoomFooter";
 import "./index.scss";
 
 const Room = () => {
@@ -72,11 +72,7 @@ const Room = () => {
     <>
       <Header you={you} onClickLeave={onLeave} onClickPhone={onPushToPhone} />
       <Body bodyRef={bodyRef} me={me} messages={messages} />
-      <RoomFooter
-        value={inputText}
-        onChange={setInputText}
-        onClick={sendMessage}
-      />
+      <Footer value={inputText} onChange={setInputText} onClick={sendMessage} />
     </>
   );
 };
