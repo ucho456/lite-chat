@@ -2,18 +2,16 @@ import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Send } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
-import useMessage from "@/hooks/useMessage";
 import { useAppSelector } from "@/store/hooks";
 import { createMessage } from "@/utils/writeToFirestore";
+import RoomBody from "@/components/room/RoomBody";
 import RoomHeader from "@/components/room/RoomHeader";
-import RoomMessage from "@/components/room/RoomMessage";
 import "./Room.scss";
 
 const Room = () => {
   const { roomId } = useParams<{ roomId: string }>();
   const rooms = useAppSelector((state) => state.rooms.rooms);
   const room = rooms.find((r) => r.id === roomId);
-  const { messages } = useMessage();
 
   const user = useAppSelector((state) => state.user.user);
   const [me, setMe] = useState<RoomUser | null>(null);
@@ -60,13 +58,7 @@ const Room = () => {
   return (
     <div className="room">
       <RoomHeader me={me} you={you} />
-      <div className="body">
-        <div className="container" ref={bodyRef}>
-          {messages.map((m) => (
-            <RoomMessage key={m.id} message={m} meUid={me.uid} />
-          ))}
-        </div>
-      </div>
+      <RoomBody me={me} bodyRef={bodyRef} />
       <div className="footer">
         <form>
           <div className="container">
