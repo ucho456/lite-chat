@@ -5,14 +5,9 @@ type Props = {
   meUid: string;
 };
 
-const RoomMessage = (props: Props) => {
-  const { message, meUid } = props;
+const RoomMessage = ({ message, meUid }: Props) => {
   return (
-    <div
-      className={
-        meUid === message.uid ? "room-message right" : "room-message left"
-      }
-    >
+    <div className={`room-message ${meUid === message.uid ? "right" : "left"}`}>
       <p>{message.text}</p>
     </div>
   );
