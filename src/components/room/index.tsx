@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useReducer, useRef, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useMessage from "@/hooks/useMessage";
 import { useAppSelector } from "@/store/hooks";
@@ -37,8 +37,8 @@ const Room = () => {
 
   /** Routing */
   const navigate = useNavigate();
-  const onLeave = () => navigate("/rooms");
-  const onPushToPhone = () => {
+  const pushToRooms = (): void => navigate("/rooms");
+  const pushToPhone = (): void => {
     if (!me || !you || !roomId) return;
     navigate(`/room/${roomId}/phone?meUid=${me.uid}&youUid=${you.uid}`);
   };
@@ -70,31 +70,22 @@ const Room = () => {
   /** Send message */
   const bodyRef = useRef<HTMLDivElement>(null);
   const sendMessage = async (
-    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+    e: React.MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
   ): Promise<void> => {
     e.preventDefault();
-    if (
-      !user ||
-      !roomId ||
-      !bodyRef ||
-      !bodyRef.current ||
-      !room ||
-      textarea.text === ""
-    ) {
-      return;
-    }
+    if (!user || !roomId || !room || textarea.text === "") return;
     await createMessage(roomId, user, textarea.text, room);
     setTextarea({ type: "reset" });
-    bodyRef.current.scrollTo(
+    bodyRef.current?.scrollTo(
       0,
-      bodyRef.current.scrollHeight - bodyRef.current.clientHeight,
+      bodyRef.current?.scrollHeight - bodyRef.current?.clientHeight,
     );
   };
 
   if (!me || !you) return <></>;
   return (
     <>
-      <Header you={you} onClickLeave={onLeave} onClickPhone={onPushToPhone} />
+      <Header you={you} onClickLeave={pushToRooms} onClickPhone={pushToPhone} />
       <Body bodyRef={bodyRef} me={me} messages={messages} />
       <Footer
         height={textarea.height}

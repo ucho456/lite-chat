@@ -1,4 +1,3 @@
-import { MouseEvent } from "react";
 import { Send } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import { Action } from "@/components/room";
@@ -10,7 +9,7 @@ type Props = {
   value: string;
   onChange: React.Dispatch<Action>;
   onClick: (
-    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+    e: React.MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
   ) => Promise<void>;
 };
 
