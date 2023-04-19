@@ -12,7 +12,7 @@ import { createUser } from "@/utils/writeToFirestore";
 import { auth, googleAuthProvider } from "@/firebase";
 import ProfileForm from "@/components/commons/ProfileForm";
 
-const SignupDialog = () => {
+const DialogSignup = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -81,4 +81,4 @@ const SignupDialog = () => {
   );
 };
 
-export default SignupDialog;
+export default DialogSignup;

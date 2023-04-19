@@ -11,11 +11,11 @@ import useUser from "@/hooks/useUser";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { isFirstAuthChecked } from "@/store/modules/authSlice";
 import { auth } from "@/firebase";
-import ErrorPage from "@/components/error/ErrorPage";
+import Error from "@/components/error";
 import Room from "@/components/room";
 import Phone from "@/components/room/phone/Phone";
 import Rooms from "@/components/rooms";
-import Top from "@/components/top/Top";
+import Top from "@/components/top";
 
 const IsAuth = () => {
   const dispatch = useAppDispatch();
@@ -47,7 +47,7 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="*" element={<ErrorPage />} />
+        <Route path="*" element={<Error />} />
         <Route path="/" element={<Top />} />
         <Route path="/rooms" element={<IsAuth />}>
           <Route path="" element={<Rooms />} />

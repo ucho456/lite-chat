@@ -7,7 +7,8 @@ import useUser from "@/hooks/useUser";
 import { useAppDispatch } from "@/store/hooks";
 import { signIn } from "@/store/modules/authSlice";
 import { auth, googleAuthProvider } from "@/firebase";
-import SignupDialog from "@/components/top/SignupDialog";
+import DialogSignup from "@/components/top/DialogSignup";
+import "./index.scss";
 
 const Top = () => {
   const { getUserDoc } = useUser();
@@ -45,7 +46,7 @@ const Top = () => {
             登録・インストール不要。チャットや通話を気軽に楽しめるサービスです。さぁ始めましょう！
           </p>
         </div>
-        <SignupDialog />
+        <DialogSignup />
         <LoadingButton
           loading={loading}
           variant="contained"
