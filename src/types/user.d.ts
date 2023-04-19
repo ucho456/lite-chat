@@ -22,8 +22,10 @@ type User = {
   photo: string | null;
   sex: Sex;
   era: Era;
+  selfIntroduction: string;
   life: number;
   roomCount: number;
+  blocks: string[];
   lastActionAt?: import("firebase/firestore").Timestamp;
 };
 
@@ -32,6 +34,7 @@ type InputUser = {
   photo: string | null;
   sex: Sex;
   era: Era;
+  selfIntroduction: string;
 };
 
 type Condition = {

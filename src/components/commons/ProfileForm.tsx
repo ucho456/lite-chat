@@ -110,6 +110,24 @@ const ProfileForm = ({
               </div>
             </div>
           </div>
+          <div className="self-introduction-row">
+            <Controller
+              control={control}
+              name="selfIntroduction"
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  inputProps={{ maxLength: 140 }}
+                  label="自己紹介"
+                  type="text"
+                  multiline
+                  rows={4}
+                />
+              )}
+            />
+          </div>
           <div className="button-row">{children}</div>
         </div>
       </Stack>

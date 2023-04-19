@@ -21,7 +21,13 @@ const DialogSignup = () => {
   /** User form */
   const { control, handleSubmit } = useForm<InputUser>({
     shouldUnregister: false,
-    defaultValues: { name: "", photo: null, sex: "man", era: "early 20's" },
+    defaultValues: {
+      name: "",
+      photo: null,
+      sex: "man",
+      era: "early 20's",
+      selfIntroduction: "",
+    },
   });
 
   /** Sign up */
@@ -44,8 +50,9 @@ const DialogSignup = () => {
         await createUser({
           uid: userCredential.user.uid,
           ...inputUser,
-          roomCount: 0,
           life: 3,
+          roomCount: 0,
+          blocks: [],
         });
         openSnackbar("サインアップしました。", "success");
       }

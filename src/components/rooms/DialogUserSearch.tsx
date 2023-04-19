@@ -55,7 +55,10 @@ const UserSearchDialog = ({ rooms }: Props) => {
         r.inviteeUser.uid !== me.uid ? r.inviteeUser.uid : r.invitedUser.uid,
       );
       alreadyMatchUserIds.push(me.uid);
-      const you = users.find((u) => !alreadyMatchUserIds.includes(u.uid));
+      const you = users.find(
+        (u) =>
+          !alreadyMatchUserIds.includes(u.uid) && !me.blocks.includes(u.uid),
+      );
       if (you) {
         await createRoom(me, you);
         openSnackbar(`${you.name}さんとマッチしました。`, "success");

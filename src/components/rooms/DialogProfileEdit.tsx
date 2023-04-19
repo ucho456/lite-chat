@@ -25,6 +25,7 @@ const DialogProfileEdit = () => {
         photo: user.photo,
         sex: user.sex,
         era: user.era,
+        selfIntroduction: user.selfIntroduction,
       };
     }, [user]),
   });

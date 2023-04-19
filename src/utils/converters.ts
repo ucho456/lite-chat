@@ -73,8 +73,10 @@ export const userConverter: FirestoreDataConverter<User> = {
       photo: u.photo,
       sex: u.sex,
       era: u.era,
+      selfIntroduction: u.selfIntroduction,
       life: u.life,
       roomCount: u.roomCount,
+      blocks: u.blocks,
       lastActionAt: u.lastActionAt,
     };
   },
@@ -86,7 +88,9 @@ export const userConverter: FirestoreDataConverter<User> = {
       photo: d.photo,
       sex: d.sex,
       era: d.era,
+      selfIntroduction: d.selfIntroduction,
       life: d.life,
+      blocks: d.blocks,
       roomCount: d.roomCount,
     };
   },

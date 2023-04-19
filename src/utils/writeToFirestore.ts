@@ -1,4 +1,5 @@
 import {
+  arrayUnion,
   collection,
   doc,
   increment,
@@ -122,7 +123,18 @@ export const createMessage = async (
   await batch.commit();
 };
 
-export const blockRoom = async (roomId: string) => {
-  const docRef = doc(db, "rooms", roomId).withConverter(roomConverter);
-  await updateDoc(docRef, { isBlock: true });
+export const blockRoom = async (
+  roomId: string,
+  meUid: string,
+  youUid: string,
+) => {
+  const batch = writeBatch(db);
+
+  const roomDocRef = doc(db, "rooms", roomId).withConverter(roomConverter);
+  batch.update(roomDocRef, { isBlock: true });
+
+  const userDocRef = doc(db, "users", meUid).withConverter(userConverter);
+  batch.update(userDocRef, { blocks: arrayUnion(youUid) });
+
+  await batch.commit();
 };

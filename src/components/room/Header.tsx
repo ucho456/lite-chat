@@ -20,12 +20,13 @@ const Header = ({ me, you }: Props) => {
   };
 
   const { openSnackbar } = useSnackbar();
-  const handleBlock = async (): Promise<void> => {
+  const handleBlock = (): void => {
     if (!roomId) return;
     const result = confirm(`${you.name}さんをブロックしますか？`);
     if (result) {
       try {
-        await blockRoom(roomId);
+        /** Exit the room before waiting for block results. */
+        blockRoom(roomId, me.uid, you.uid);
         openSnackbar(`${you.name}さんをブロックしました。`, "success");
         handleNavigateRooms();
       } catch {
