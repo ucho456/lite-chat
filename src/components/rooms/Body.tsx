@@ -10,7 +10,7 @@ type Props = {
 const Body = ({ rooms }: Props) => {
   return (
     <List
-      className="rooms-list"
+      className="rooms-body"
       sx={{ margin: "0 auto", width: "96%", bgcolor: "background.paper" }}
     >
       <div className="matching-button">
