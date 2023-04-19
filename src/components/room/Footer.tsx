@@ -11,9 +11,17 @@ type Props = {
   onClick: (
     e: React.MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
   ) => Promise<void>;
+  onKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
 };
 
-const Footer = ({ height, textareaRef, value, onChange, onClick }: Props) => {
+const Footer = ({
+  height,
+  textareaRef,
+  value,
+  onChange,
+  onClick,
+  onKeyDown,
+}: Props) => {
   return (
     <div className="room-footer" style={{ height: height + "px" }}>
       <form style={{ height: height - 20 + "px" }}>
@@ -26,6 +34,7 @@ const Footer = ({ height, textareaRef, value, onChange, onClick }: Props) => {
               payload: { text: e.target.value, height },
             })
           }
+          onKeyDown={(e) => onKeyDown(e)}
         />
         <div className="button-column">
           <IconButton type="submit" onClick={(e) => onClick(e)}>

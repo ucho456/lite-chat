@@ -81,13 +81,19 @@ const Room = () => {
 
   /** Send message */
   const sendMessage = async (
-    e: React.MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+    e:
+      | React.MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+      | React.KeyboardEvent<HTMLTextAreaElement>,
   ): Promise<void> => {
     e.preventDefault();
     if (!user || !roomId || !room || textarea.text === "") return;
     await createMessage(roomId, user, textarea.text, room);
     setTextarea({ type: "reset" });
     scrollBotton(bodyCurrent);
+  };
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
+    if (e.nativeEvent.isComposing || e.key !== "Enter") return;
+    sendMessage(e);
   };
 
   if (!me || !you) return <></>;
@@ -101,6 +107,7 @@ const Room = () => {
         value={textarea.text}
         onChange={setTextarea}
         onClick={sendMessage}
+        onKeyDown={handleKeyDown}
       />
     </>
   );
