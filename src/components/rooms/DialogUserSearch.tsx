@@ -27,19 +27,22 @@ type InputCondition = {
 };
 
 const UserSearchDialog = ({ rooms }: Props) => {
+  /** Dialog switch */
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  /** Search form */
   const { control, handleSubmit } = useForm<InputCondition>({
     shouldUnregister: false,
     defaultValues: { sex: "man", era: "early 20's" },
   });
 
-  const [loading, setLoading] = useState(false);
-  const { openSnackbar } = useSnackbar();
-  const { getRandomUserDocs } = useUser();
+  /** Matching */
   const me = useAppSelector((state) => state.user.user);
+  const [loading, setLoading] = useState(false);
+  const { getRandomUserDocs } = useUser();
+  const { openSnackbar } = useSnackbar();
   const handleMatching: SubmitHandler<InputCondition> = async (
     inputCondition: InputCondition,
   ) => {

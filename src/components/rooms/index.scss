@@ -1,8 +1,9 @@
 @import "../../index.scss";
 
+$spacerHeight: 10px;
+$bodyHeight: calc(100vh - ($headerHeight + $spacerHeight));
+
 .rooms {
-  $spacerHeight: 10px;
-  $bodyHeight: calc(100vh - ($headerHeight + $spacerHeight));
   background-color: $ghostwhite;
   .spacer {
     height: $spacerHeight;

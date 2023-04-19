@@ -1,13 +1,12 @@
 import { List as MuiList } from "@mui/material";
+import { useAppSelector } from "@/store/hooks";
 import DialogUserSearch from "@/components/rooms/DialogUserSearch";
 import ListItem from "@/components/rooms/ListItem";
 import "./List.scss";
 
-type Props = {
-  rooms: Room[];
-};
+const List = () => {
+  const rooms = useAppSelector((state) => state.rooms.rooms);
 
-const List = ({ rooms }: Props) => {
   return (
     <MuiList
       className="rooms-body"

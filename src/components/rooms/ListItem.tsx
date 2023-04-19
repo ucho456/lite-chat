@@ -19,12 +19,12 @@ const ListItem = ({ room }: Props) => {
     room.inviteeUser.uid !== authUid ? room.inviteeUser : room.invitedUser;
 
   const navigate = useNavigate();
-  const handlePushToRoom = () => {
+  const handleNavigateRoom = () => {
     navigate(`/rooms/${room.id}`);
   };
 
   return (
-    <div className="rooms-list-item" onClick={handlePushToRoom}>
+    <div className="rooms-list-item" onClick={handleNavigateRoom}>
       <MuiListItem alignItems="flex-start">
         <ListItemAvatar>
           <Avatar alt={you.name} src={you.photo ?? "/avatar.png"} />

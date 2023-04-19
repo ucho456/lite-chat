@@ -14,7 +14,7 @@ const DialogProfileEdit = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  /** Set default values asynchronously */
+  /** User form */
   const user = useAppSelector((state) => state.user.user);
   const { control, handleSubmit, reset } = useForm<InputUser>({
     shouldUnregister: false,
