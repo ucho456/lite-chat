@@ -114,7 +114,8 @@ export const createMessage = async (
         };
   batch.update(roomDocRef, {
     ...updateRoomUser,
-    lastMessage: inputText,
+    lastMessage:
+      inputText.length <= 17 ? inputText : inputText.substring(0, 17) + "...",
     lastActionAt: serverTimestamp(),
   });
 
