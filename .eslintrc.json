@@ -59,11 +59,6 @@
             "position": "before"
           },
           {
-            "pattern": "@/assets/**",
-            "group": "parent",
-            "position": "before"
-          },
-          {
             "pattern": "@/contexts/**",
             "group": "parent",
             "position": "before"

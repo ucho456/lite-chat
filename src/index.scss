@@ -1,4 +1,39 @@
-@import "./assets/variables.scss";
+$fontColor: #263238;
+$fontColorLight: gray;
+$primary: #b3e5fc;
+$primaryLight: #e1f5fe;
+$ghostwhite: #f8f8ff;
+$white: white;
+
+$headerHeight: 50px;
+$pageMaxWidth: 1000px;
+
+$pc: 1024px;
+$tab: 680px;
+$sp: 480px;
+
+@mixin pc {
+  @media (max-width: ($pc)) {
+    @content;
+  }
+}
+@mixin tab {
+  @media (max-width: ($tab)) {
+    @content;
+  }
+}
+@mixin sp {
+  @media (max-width: ($sp)) {
+    @content;
+  }
+}
+
+@mixin hover {
+  &:hover {
+    cursor: pointer;
+    opacity: 0.6;
+  }
+}
 
 * {
   margin: 0;

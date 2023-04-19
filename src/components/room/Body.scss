@@ -1,7 +1,7 @@
 @import "./index.scss";
 
 .room-body {
-  background-color: $lightBlue;
+  background-color: $primaryLight;
   height: $bodyHeight;
   .container {
     margin: 0 auto;
@@ -15,7 +15,7 @@
       background-color: $ghostwhite;
     }
     &::-webkit-scrollbar-thumb {
-      background-color: $Blue;
+      background-color: $primary;
       border-radius: 10px;
     }
     .room-message {
@@ -26,7 +26,7 @@
     }
     .right {
       margin: 10px 15px 10px auto;
-      background-color: $Blue;
+      background-color: $primary;
       position: relative;
       p {
         &::before {
@@ -36,7 +36,7 @@
           display: block;
           width: 10px;
           height: 8px;
-          background-color: $Blue;
+          background-color: $primary;
           position: absolute;
         }
       }
