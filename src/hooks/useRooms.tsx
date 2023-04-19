@@ -22,7 +22,7 @@ const useRooms = () => {
       where("isBlock", "==", false),
       where("userUids", "array-contains", authUid),
       orderBy("lastActionAt", "desc"),
-      limit(30)
+      limit(30),
     );
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const _rooms: Room[] = [];
@@ -30,7 +30,7 @@ const useRooms = () => {
       dispatch(setRooms(_rooms));
     });
     return () => unsubscribe();
-  }, [authUid]);
+  }, [authUid, dispatch]);
 };
 
 export default useRooms;

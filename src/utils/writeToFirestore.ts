@@ -121,3 +121,8 @@ export const createMessage = async (
 
   await batch.commit();
 };
+
+export const blockRoom = async (roomId: string) => {
+  const docRef = doc(db, "rooms", roomId).withConverter(roomConverter);
+  await updateDoc(docRef, { isBlock: true });
+};
