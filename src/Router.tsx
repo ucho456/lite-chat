@@ -40,8 +40,10 @@ const IsAuth = () => {
 };
 
 const Router = () => {
+  /** Loading at the root to persist reactive data to the store */
   useUser();
   useRooms();
+
   return (
     <BrowserRouter>
       <Routes>
