@@ -6,9 +6,9 @@ import { useSnackbar } from "@/contexts/Snackbar";
 import { useAppSelector } from "@/store/hooks";
 import { updateUser } from "@/utils/writeToFirestore";
 import ProfileForm from "@/components/commons/ProfileForm";
-import "./ProfileEditDialog.scss";
+import "./DialogProfileEdit.scss";
 
-const ProfileEditDialog = () => {
+const DialogProfileEdit = () => {
   /** Dialog switch */
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -54,12 +54,12 @@ const ProfileEditDialog = () => {
 
   if (!user) return <></>;
   return (
-    <div className="profile-edit-dialog">
+    <div className="dialog-profile-edit">
       <div className="user-column" onClick={handleOpen}>
         <Avatar src={user.photo ?? "/avatar.png"} />
         <div className="name">{user.name}</div>
       </div>
-      <Dialog className="profile-edit-dialog" open={open} onClose={handleClose}>
+      <Dialog className="dialog-profile-edit" open={open} onClose={handleClose}>
         <ProfileForm
           control={control}
           handleFunction={handleUpdateUser}
@@ -79,4 +79,4 @@ const ProfileEditDialog = () => {
   );
 };
 
-export default ProfileEditDialog;
+export default DialogProfileEdit;

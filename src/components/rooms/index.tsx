@@ -4,8 +4,8 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { signOut } from "@/store/modules/authSlice";
 import { resetUser } from "@/store/modules/userSlice";
 import { auth } from "@/firebase";
-import Body from "@/components/rooms/Body";
 import Header from "@/components/rooms/Header";
+import List from "@/components/rooms/List";
 import "./index.scss";
 
 const Rooms = () => {
@@ -27,7 +27,7 @@ const Rooms = () => {
       <Header onClick={handleSignOut} />
       <div className="spacer" />
       <div className="list">
-        <Body rooms={rooms} />
+        <List rooms={rooms} />
       </div>
     </div>
   );

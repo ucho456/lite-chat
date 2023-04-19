@@ -15,7 +15,7 @@ import useUser from "@/hooks/useUser";
 import { useAppSelector } from "@/store/hooks";
 import { ERAS } from "@/utils/constants";
 import { createRoom } from "@/utils/writeToFirestore";
-import "./UserSearchDialog.scss";
+import "./DialogUserSearch.scss";
 
 type Props = {
   rooms: Room[];
@@ -69,11 +69,11 @@ const UserSearchDialog = ({ rooms }: Props) => {
 
   if (!me) return <></>;
   return (
-    <div className="user-search-dialog">
+    <div className="dialog-user-search">
       <Button className="button" onClick={handleOpen}>
         新規マッチング
       </Button>
-      <Dialog className="user-search-dialog" open={open} onClose={handleClose}>
+      <Dialog className="dialog-user-search" open={open} onClose={handleClose}>
         <Stack component="form" onSubmit={handleSubmit(handleMatching)}>
           <div className="container">
             <h3>- あいての条件 -</h3>
