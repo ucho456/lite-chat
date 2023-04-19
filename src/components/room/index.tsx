@@ -35,6 +35,18 @@ const Room = () => {
     }
   }, [room, user]);
 
+  /** Scroll bottom after mounted */
+  const scrollBotton = (_bodyCurrent: HTMLDivElement | null): void => {
+    if (!_bodyCurrent) return;
+    const diffHeight = _bodyCurrent.scrollHeight - _bodyCurrent.clientHeight;
+    _bodyCurrent.scrollTo(0, diffHeight);
+  };
+  const bodyRef = useRef<HTMLDivElement>(null);
+  const bodyCurrent = bodyRef.current;
+  useEffect(() => {
+    scrollBotton(bodyCurrent);
+  }, [bodyCurrent]);
+
   /** Routing */
   const navigate = useNavigate();
   const pushToRooms = (): void => navigate("/rooms");
@@ -68,7 +80,6 @@ const Room = () => {
   );
 
   /** Send message */
-  const bodyRef = useRef<HTMLDivElement>(null);
   const sendMessage = async (
     e: React.MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
   ): Promise<void> => {
@@ -76,10 +87,7 @@ const Room = () => {
     if (!user || !roomId || !room || textarea.text === "") return;
     await createMessage(roomId, user, textarea.text, room);
     setTextarea({ type: "reset" });
-    bodyRef.current?.scrollTo(
-      0,
-      bodyRef.current?.scrollHeight - bodyRef.current?.clientHeight,
-    );
+    scrollBotton(bodyCurrent);
   };
 
   if (!me || !you) return <></>;
