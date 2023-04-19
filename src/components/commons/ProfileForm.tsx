@@ -17,10 +17,11 @@ import { ERAS } from "@/utils/constants";
 import "./ProfileForm.scss";
 
 type Props = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: Control<InputUser, any>;
   handleSubmit: UseFormHandleSubmit<InputUser>;
   handleFunction: SubmitHandler<InputUser>;
-  children: any;
+  children: JSX.Element;
 };
 
 const ProfileForm = ({
