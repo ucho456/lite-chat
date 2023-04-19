@@ -11,13 +11,13 @@ import DialogSignup from "@/components/top/DialogSignup";
 import "./index.scss";
 
 const Top = () => {
+  /** Sign in */
+  const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
   const { getUserDoc } = useUser();
   const { openSnackbar } = useSnackbar();
   const navigate = useNavigate();
-
-  const [loading, setLoading] = useState(false);
-  const dispatch = useAppDispatch();
-  const handleLogin = async () => {
+  const handleSignIn = async (): Promise<void> => {
     try {
       setLoading(true);
       const userCredential = await signInWithPopup(auth, googleAuthProvider);
@@ -35,6 +35,7 @@ const Top = () => {
       setLoading(false);
     }
   };
+
   return (
     <div className="top">
       <div className="container">
@@ -50,9 +51,9 @@ const Top = () => {
         <LoadingButton
           loading={loading}
           variant="contained"
-          onClick={handleLogin}
+          onClick={handleSignIn}
         >
-          ログイン
+          サインイン
         </LoadingButton>
       </div>
     </div>

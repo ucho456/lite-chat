@@ -13,20 +13,23 @@ import { auth, googleAuthProvider } from "@/firebase";
 import ProfileForm from "@/components/commons/ProfileForm";
 
 const DialogSignup = () => {
+  /** Dialog switch */
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  /** User form */
   const { control, handleSubmit } = useForm<InputUser>({
     shouldUnregister: false,
     defaultValues: { name: "", photo: null, sex: "man", era: "early 20's" },
   });
 
+  /** Sign up */
   const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
   const { getUserDoc } = useUser();
   const { openSnackbar } = useSnackbar();
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   const handleSignup: SubmitHandler<InputUser> = async (
     inputUser: InputUser,
   ) => {
