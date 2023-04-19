@@ -1,16 +1,10 @@
-import { useEffect, useReducer, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import useMessage from "@/hooks/useMessage";
+import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useAppSelector } from "@/store/hooks";
-import { createMessage } from "@/utils/writeToFirestore";
-import Body from "@/components/room/Body";
-import Footer from "@/components/room/Footer";
+import Form from "@/components/room/Form";
 import Header from "@/components/room/Header";
+import List from "@/components/room/List";
 import "./index.scss";
-
-export type State = { text: string; height: number };
-
-export type Action = { type: "input"; payload: State } | { type: "reset" };
 
 const Room = () => {
   /** Get room */
@@ -35,80 +29,15 @@ const Room = () => {
     }
   }, [room, user]);
 
-  /** Scroll bottom after mounted */
-  const scrollBotton = (_bodyCurrent: HTMLDivElement | null): void => {
-    if (!_bodyCurrent) return;
-    const diffHeight = _bodyCurrent.scrollHeight - _bodyCurrent.clientHeight;
-    _bodyCurrent.scrollTo(0, diffHeight);
-  };
+  /** Messages body ref */
   const bodyRef = useRef<HTMLDivElement>(null);
-  const bodyCurrent = bodyRef.current;
-  useEffect(() => {
-    scrollBotton(bodyCurrent);
-  }, [bodyCurrent]);
 
-  /** Routing */
-  const navigate = useNavigate();
-  const pushToRooms = (): void => navigate("/rooms");
-  const pushToPhone = (): void => {
-    if (!me || !you || !roomId) return;
-    navigate(`/room/${roomId}/phone?meUid=${me.uid}&youUid=${you.uid}`);
-  };
-
-  /** messages */
-  const { messages } = useMessage();
-
-  /** Input text */
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const defaultTextarea = { text: "", height: 70 };
-  const [textarea, setTextarea] = useReducer(
-    (_state: State, action: Action): State => {
-      const textareaHeight = textareaRef.current?.scrollHeight as number;
-      const paddingHeight = 20;
-      const footerHeight = textareaHeight + paddingHeight;
-      const maxHeight = 170;
-      if (action.type === "input") {
-        return {
-          text: action.payload.text,
-          height: footerHeight <= maxHeight ? footerHeight : maxHeight,
-        };
-      } else {
-        return { ...defaultTextarea };
-      }
-    },
-    defaultTextarea,
-  );
-
-  /** Send message */
-  const sendMessage = async (
-    e:
-      | React.MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
-      | React.KeyboardEvent<HTMLTextAreaElement>,
-  ): Promise<void> => {
-    e.preventDefault();
-    if (!user || !roomId || !room || textarea.text === "") return;
-    await createMessage(roomId, user, textarea.text, room);
-    setTextarea({ type: "reset" });
-    scrollBotton(bodyCurrent);
-  };
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
-    if (e.nativeEvent.isComposing || e.key !== "Enter") return;
-    sendMessage(e);
-  };
-
-  if (!me || !you) return <></>;
+  if (!me || !you || !user || !room) return <></>;
   return (
     <>
-      <Header you={you} onClickLeave={pushToRooms} onClickPhone={pushToPhone} />
-      <Body bodyRef={bodyRef} me={me} messages={messages} />
-      <Footer
-        height={textarea.height}
-        textareaRef={textareaRef}
-        value={textarea.text}
-        onChange={setTextarea}
-        onClick={sendMessage}
-        onKeyDown={handleKeyDown}
-      />
+      <Header me={me} you={you} />
+      <List bodyRef={bodyRef} me={me} />
+      <Form user={user} room={room} bodyRef={bodyRef} />
     </>
   );
 };

@@ -18,7 +18,7 @@ export type SnackbarContextType = {
 export const SnackbarContext = createContext<SnackbarContextType>({
   message: "",
   severity: "error",
-  openSnackbar: (_message: string, _severity: AlertColor) => {},
+  openSnackbar: () => ({}),
 });
 
 export const SnackbarContextProvider = ({
