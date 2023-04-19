@@ -14,7 +14,7 @@ import { auth } from "@/firebase";
 import ErrorPage from "@/components/error/ErrorPage";
 import Room from "@/components/room";
 import Phone from "@/components/room/phone/Phone";
-import Rooms from "@/components/rooms/Rooms";
+import Rooms from "@/components/rooms";
 import Top from "@/components/top/Top";
 
 const IsAuth = () => {

@@ -1,12 +1,13 @@
 import { List } from "@mui/material";
-import { useAppSelector } from "@/store/hooks";
 import RoomsListItem from "@/components/rooms/RoomsListItem";
 import UserSearchDialog from "@/components/rooms/UserSearchDialog";
-import "./RoomsList.scss";
+import "./Body.scss";
 
-const RoomsList = () => {
-  const rooms = useAppSelector((state) => state.rooms.rooms);
+type Props = {
+  rooms: Room[];
+};
 
+const Body = ({ rooms }: Props) => {
   return (
     <List
       className="rooms-list"
@@ -24,4 +25,4 @@ const RoomsList = () => {
   );
 };
 
-export default RoomsList;
+export default Body;
