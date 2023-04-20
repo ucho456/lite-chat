@@ -12,8 +12,8 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { isFirstAuthChecked } from "@/store/modules/authSlice";
 import { auth } from "@/firebase";
 import Error from "@/components/error";
+import Phone from "@/components/phone";
 import Room from "@/components/room";
-import Phone from "@/components/room/phone/Phone";
 import Rooms from "@/components/rooms";
 import Top from "@/components/top";
 
