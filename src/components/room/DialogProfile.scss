@@ -10,4 +10,20 @@
       font-size: 15px;
     }
   }
+  .container {
+    width: 300px;
+    grid-template-rows: 120px 300px;
+    .photo-row {
+      padding-top: 20px;
+      height: 120px;
+      grid-row: 1 / 2;
+    }
+    .profile-row {
+      grid-row: 2 / 3;
+      padding: 20px;
+      .name {
+        font-weight: bold;
+      }
+    }
+  }
 }
