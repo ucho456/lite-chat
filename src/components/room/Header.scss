@@ -5,7 +5,7 @@
   background-color: $primaryLight;
   .container {
     display: grid;
-    grid-template-columns: 50px 50px 160px auto 50px 50px;
+    grid-template-columns: 50px 210px auto 50px 50px;
     grid-template-rows: 50px;
     max-width: 1000px;
     height: 100%;
@@ -17,16 +17,11 @@
       grid-column: 2 / 3;
       padding: 5px 0 0 5px;
     }
-    .name-column {
-      grid-column: 3 / 4;
-      line-height: 50px;
-      font-size: 15px;
-    }
     .phone-column {
-      grid-column: 5 / 6;
+      grid-column: 4 / 5;
     }
     .block-column {
-      grid-column: 6 / 7;
+      grid-column: 5 / 6;
     }
   }
 }

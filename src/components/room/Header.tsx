@@ -1,9 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Block, ChevronLeft, Phone } from "@mui/icons-material";
-import { Avatar, IconButton } from "@mui/material";
-import "./Header.scss";
+import { IconButton } from "@mui/material";
 import { useSnackbar } from "@/contexts/Snackbar";
 import { blockRoom } from "@/utils/writeToFirestore";
+import DialogProfile from "@/components/room/DialogProfile";
+import "./Header.scss";
 
 type Props = {
   me: RoomUser;
@@ -44,9 +45,8 @@ const Header = ({ me, you }: Props) => {
           </IconButton>
         </div>
         <div className="photo-column">
-          <Avatar src={you.photo ?? "/avatar.png"} />
+          <DialogProfile you={you} />
         </div>
-        <div className="name-column">{you.name}</div>
         <div className="phone-column">
           <IconButton onClick={handleNavigatePhone}>
             <Phone fontSize="large" />
