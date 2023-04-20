@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useSnackbar } from "@/contexts/Snackbar";
+import { useParams } from "react-router-dom";
 import { useAppSelector } from "@/store/hooks";
 import Form from "@/components/room/Form";
 import Header from "@/components/room/Header";
@@ -12,16 +11,6 @@ const Room = () => {
   const { roomId } = useParams<{ roomId: string }>();
   const rooms = useAppSelector((state) => state.rooms.rooms);
   const room = rooms.find((r) => r.id === roomId);
-
-  /** Blocked */
-  const navigate = useNavigate();
-  const { openSnackbar } = useSnackbar();
-  useEffect(() => {
-    if (!room) {
-      navigate("/rooms");
-      openSnackbar("ブロックされました。", "warning");
-    }
-  }, [room, navigate, openSnackbar]);
 
   /** Set me and you */
   const user = useAppSelector((state) => state.user.user);
