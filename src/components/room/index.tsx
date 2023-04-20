@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "@/store/hooks";
+import { readMessage } from "@/utils/writeToFirestore";
 import Form from "@/components/room/Form";
 import Header from "@/components/room/Header";
 import List from "@/components/room/List";
@@ -28,6 +29,11 @@ const Room = () => {
       setYou(userA);
     }
   }, [room, user]);
+
+  useEffect(() => {
+    if (!me || !room) return;
+    if (me.unread) readMessage(me, room);
+  }, [me, room]);
 
   /** Messages body ref */
   const bodyRef = useRef<HTMLDivElement>(null);

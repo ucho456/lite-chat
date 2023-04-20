@@ -15,8 +15,14 @@ type Props = {
 
 const ListItem = ({ room }: Props) => {
   const authUid = useAppSelector((state) => state.auth.uid);
-  const you =
-    room.inviteeUser.uid !== authUid ? room.inviteeUser : room.invitedUser;
+  let me, you;
+  if (room.inviteeUser.uid === authUid) {
+    me = room.inviteeUser;
+    you = room.invitedUser;
+  } else {
+    me = room.invitedUser;
+    you = room.inviteeUser;
+  }
 
   const navigate = useNavigate();
   const handleNavigateRoom = () => {
@@ -29,7 +35,25 @@ const ListItem = ({ room }: Props) => {
         <ListItemAvatar>
           <Avatar alt={you.name} src={you.photo ?? "/avatar.png"} />
         </ListItemAvatar>
-        <ListItemText primary={you.name} secondary={room.lastMessage} />
+        <ListItemText
+          primary={you.name}
+          secondary={
+            <p style={{ display: "flex" }}>
+              <div
+                style={{
+                  height: "20px",
+                  lineHeight: "20px",
+                  fontSize: "5px",
+                  color: "orange",
+                  marginRight: `${me.unread ? "5px" : "0px"}`,
+                }}
+              >
+                {me.unread ? "●" : ""}
+              </div>
+              <div style={{ color: "gray" }}>{room.lastMessage}</div>
+            </p>
+          }
+        />
       </MuiListItem>
       <Divider variant="inset" component="li" />
     </div>

@@ -135,6 +135,15 @@ export const createMessage = async (
   await batch.commit();
 };
 
+export const readMessage = async (me: RoomUser, room: Room) => {
+  const updateRoom =
+    room.inviteeUser.uid === me.uid
+      ? { "inviteeUser.unread": false }
+      : { "invitedUser.unread": false };
+  const roomDocRef = doc(db, "rooms", room.id).withConverter(roomConverter);
+  await updateDoc(roomDocRef, updateRoom);
+};
+
 export const blockRoom = async (
   roomId: string,
   meUid: string,
