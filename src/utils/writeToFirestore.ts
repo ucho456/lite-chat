@@ -43,12 +43,18 @@ export const createRoom = async (me: User, you: User): Promise<void> => {
       uid: me.uid,
       name: me.name,
       photo: me.photo,
+      sex: me.sex,
+      era: me.era,
+      selfIntroduction: me.selfIntroduction,
       unread: false,
     },
     invitedUser: {
       uid: you.uid,
       name: you.name,
       photo: you.photo,
+      sex: you.sex,
+      era: you.era,
+      selfIntroduction: you.selfIntroduction,
       unread: false,
     },
     userUids: [me.uid, you.uid],
@@ -107,11 +113,17 @@ export const createMessage = async (
           ["invitedUser.unread"]: true,
           ["inviteeUser.name"]: user.name,
           ["inviteeUser.photo"]: user.photo,
+          ["inviteeUser.sex"]: user.sex,
+          ["inviteeUser.era"]: user.era,
+          ["inviteeUser.selfIntroduction"]: user.selfIntroduction,
         }
       : {
           ["inviteeUser.unread"]: true,
           ["invitedUser.name"]: user.name,
           ["invitedUser.photo"]: user.photo,
+          ["invitedUser.sex"]: user.sex,
+          ["invitedUser.era"]: user.era,
+          ["invitedUser.selfIntroduction"]: user.selfIntroduction,
         };
   batch.update(roomDocRef, {
     ...updateRoomUser,

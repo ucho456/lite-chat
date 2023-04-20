@@ -2,6 +2,9 @@ type RoomUser = {
   uid: string;
   name: string;
   photo: string | null;
+  sex: Sex;
+  era: Era;
+  selfIntroduction: string;
   unread: boolean;
 };
 
