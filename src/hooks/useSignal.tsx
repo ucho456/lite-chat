@@ -4,19 +4,19 @@ import { signalConverter } from "../utils/converters";
 
 const useSignal = () => {
   const getSignalDocRef = (signalId: string): DocumentReference<Signal> => {
-    return doc(db, signalId).withConverter(signalConverter);
+    return doc(db, "signals", signalId).withConverter(signalConverter);
   };
 
   const setSignalDoc = async (
     signalId: string,
-    signal: Signal
+    signal: Signal,
   ): Promise<void> => {
-    const docRef = doc(db, signalId).withConverter(signalConverter);
+    const docRef = doc(db, "signals", signalId).withConverter(signalConverter);
     await setDoc(docRef, signal);
   };
 
   const deleteSignalDoc = async (signalId: string): Promise<void> => {
-    const docRef = doc(db, signalId).withConverter(signalConverter);
+    const docRef = doc(db, "signals", signalId).withConverter(signalConverter);
     await deleteDoc(docRef);
   };
 

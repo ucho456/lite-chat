@@ -1,6 +1,8 @@
 import { useReducer, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import useOneTimeMountEffect from "./useOneTimeMountEffect";
+import { useSnackbar } from "@/contexts/Snackbar";
+import useOneTimeMountEffect from "@/hooks/useOneTimeMountEffect";
+import useSignal from "@/hooks/useSignal";
 
 type Action = {
   type: "setLocalMediaStream";
@@ -58,6 +60,46 @@ const useRtcClient = () => {
     setMediaStream();
   });
 
+  const { deleteSignalDoc, getSignalDocRef, setSignalDoc } = useSignal();
+  // const startListening = async () => {
+  //   if (!localPeerName) return;
+  //   await deleteSignalDoc(localPeerName);
+  //   const signalRef = getSignalDocRef(localPeerName);
+  //   onSnapshot(signalRef, async (doc) => {
+  //     if (doc.exists()) {
+  //       const { candidate, sender, sessionDescription, type } = doc.data();
+  //       switch (type) {
+  //         case "offer":
+  //           await sendAnswer(sender, sessionDescription);
+  //       }
+  //     }
+  //   });
+  // };
+
+  const handleConnect = async () => {
+    await sendOffer();
+  };
+
+  const { openSnackbar } = useSnackbar();
+
+  const sendOffer = async () => {
+    if (!remotePeerName || !localPeerName) return;
+    try {
+      const offer = await rtcPeerConnection.createOffer();
+      await rtcPeerConnection.setLocalDescription(offer);
+      if (rtcPeerConnection.localDescription) {
+        await setSignalDoc(remotePeerName, {
+          type: "offer",
+          sender: localPeerName,
+          sessionDescription: { type: offer.type, sdp: offer.sdp },
+          candidate: null,
+        });
+      }
+    } catch (error) {
+      openSnackbar("error sendOffer", "error");
+    }
+  };
+
   // useEffect(() => {
   //   if (rtcPeerConnection && !localVideoRef.current) {
   //     //
@@ -65,9 +107,8 @@ const useRtcClient = () => {
   // }, [rtcPeerConnection, localVideoRef.current]);
 
   return {
-    localPeerName,
+    handleConnect,
     localVideoRef,
-    remotePeerName,
     remoteVideoRef,
     rtcPeerConnection,
   };
