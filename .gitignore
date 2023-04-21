@@ -25,3 +25,5 @@ docker/firebase/src
 *.njsproj
 *.sln
 *.sw?
+
+/coverage
