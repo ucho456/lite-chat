@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   addDoc,
   collection,
@@ -61,14 +62,16 @@ function Menu({ joinCode, setJoinCode, setPage }: any) {
 }
 
 function Videos({ mode, callId, setPage }: any) {
-  console.log("Videos");
   const [webcamActive, setWebcamActive] = useState(false);
-  const [roomId, setRoomId] = useState(callId);
+  // const [roomId, setRoomId] = useState(callId);
 
   const localRef = useRef<HTMLVideoElement>(null);
   const remoteRef = useRef<HTMLVideoElement>(null);
 
+  const { roomId } = useParams<{ roomId: string }>();
+
   const setupSources = async () => {
+    if (!roomId) return;
     console.log("setupSources");
     const localStream = await navigator.mediaDevices.getUserMedia({
       video: true,
@@ -93,11 +96,21 @@ function Videos({ mode, callId, setPage }: any) {
 
     if (mode === "create") {
       console.log({ mode });
-      const callDoc = doc(collection(db, "calls"));
-      const offerCandidates = collection(db, "offerCandidates");
-      const answerCandidates = collection(db, "answerCandidates");
+      const callDoc = doc(db, "rooms", roomId, "calls", roomId);
+      const offerCandidates = collection(
+        db,
+        "rooms",
+        roomId,
+        "offerCandidates",
+      );
+      const answerCandidates = collection(
+        db,
+        "rooms",
+        roomId,
+        "answerCandidates",
+      );
 
-      setRoomId(callDoc.id);
+      // setRoomId(callDoc.id);
 
       pc.onicecandidate = (event) => {
         event.candidate && addDoc(offerCandidates, event.candidate.toJSON());
@@ -130,10 +143,19 @@ function Videos({ mode, callId, setPage }: any) {
         });
       });
     } else if (mode === "join") {
-      console.log({ mode }, callId);
-      const callDoc = doc(db, "calls", callId);
-      const answerCandidates = collection(db, "answerCandidates");
-      const offerCandidates = collection(db, "offerCandidates");
+      const callDoc = doc(db, "rooms", roomId, "calls", roomId);
+      const answerCandidates = collection(
+        db,
+        "rooms",
+        roomId,
+        "answerCandidates",
+      );
+      const offerCandidates = collection(
+        db,
+        "rooms",
+        roomId,
+        "offerCandidates",
+      );
 
       pc.onicecandidate = (event) => {
         event.candidate && addDoc(answerCandidates, event.candidate.toJSON());
@@ -222,13 +244,13 @@ function Videos({ mode, callId, setPage }: any) {
         <div tabIndex={0} role="button" className="more button">
           More
           <div className="popover">
-            <button
+            {/* <button
               onClick={() => {
                 navigator.clipboard.writeText(roomId);
               }}
             >
               Copy joining code
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
