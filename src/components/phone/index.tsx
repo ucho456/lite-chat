@@ -1,8 +1,7 @@
 import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
-  addDoc,
-  collection,
+  deleteDoc,
   doc,
   getDoc,
   onSnapshot,
@@ -69,6 +68,10 @@ function Videos({ mode, callId, setPage }: any) {
   const remoteRef = useRef<HTMLVideoElement>(null);
 
   const { roomId } = useParams<{ roomId: string }>();
+  if (!roomId) return <></>;
+  const callDoc = doc(db, "rooms", roomId, "calls", roomId);
+  const answerCandidates = doc(db, "rooms", roomId, "answerCandidates", roomId);
+  const offerCandidates = doc(db, "rooms", roomId, "offerCandidates", roomId);
 
   const setupSources = async () => {
     if (!roomId) return;
@@ -95,25 +98,8 @@ function Videos({ mode, callId, setPage }: any) {
     setWebcamActive(true);
 
     if (mode === "create") {
-      console.log({ mode });
-      const callDoc = doc(db, "rooms", roomId, "calls", roomId);
-      const offerCandidates = collection(
-        db,
-        "rooms",
-        roomId,
-        "offerCandidates",
-      );
-      const answerCandidates = collection(
-        db,
-        "rooms",
-        roomId,
-        "answerCandidates",
-      );
-
-      // setRoomId(callDoc.id);
-
       pc.onicecandidate = (event) => {
-        event.candidate && addDoc(offerCandidates, event.candidate.toJSON());
+        event.candidate && setDoc(offerCandidates, event.candidate.toJSON());
       };
 
       const offerDescription = await pc.createOffer();
@@ -135,30 +121,14 @@ function Videos({ mode, callId, setPage }: any) {
       });
 
       onSnapshot(answerCandidates, (snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-          if (change.type === "added") {
-            const candidate = new RTCIceCandidate(change.doc.data());
-            pc.addIceCandidate(candidate);
-          }
-        });
+        if (snapshot.exists()) {
+          const candidate = new RTCIceCandidate(snapshot.data());
+          pc.addIceCandidate(candidate);
+        }
       });
     } else if (mode === "join") {
-      const callDoc = doc(db, "rooms", roomId, "calls", roomId);
-      const answerCandidates = collection(
-        db,
-        "rooms",
-        roomId,
-        "answerCandidates",
-      );
-      const offerCandidates = collection(
-        db,
-        "rooms",
-        roomId,
-        "offerCandidates",
-      );
-
       pc.onicecandidate = (event) => {
-        event.candidate && addDoc(answerCandidates, event.candidate.toJSON());
+        event.candidate && setDoc(answerCandidates, event.candidate.toJSON());
       };
 
       const callData = (await getDoc(callDoc)).data();
@@ -184,12 +154,10 @@ function Videos({ mode, callId, setPage }: any) {
       console.log(4);
 
       onSnapshot(offerCandidates, (snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-          if (change.type === "added") {
-            const data = change.doc.data();
-            pc.addIceCandidate(new RTCIceCandidate(data));
-          }
-        });
+        if (snapshot.exists()) {
+          const candidate = new RTCIceCandidate(snapshot.data());
+          pc.addIceCandidate(candidate);
+        }
       });
     }
 
@@ -203,27 +171,9 @@ function Videos({ mode, callId, setPage }: any) {
   const hangUp = async () => {
     pc.close();
 
-    // if (roomId) {
-    //   const roomRef = doc(db, "calls", roomId);
-    //   await roomRef
-    //     .collection("answerCandidates")
-    //     .get()
-    //     .then((querySnapshot) => {
-    //       querySnapshot.forEach((doc) => {
-    //         doc.ref.delete();
-    //       });
-    //     });
-    //   await roomRef
-    //     .collection("offerCandidates")
-    //     .get()
-    //     .then((querySnapshot) => {
-    //       querySnapshot.forEach((doc) => {
-    //         doc.ref.delete();
-    //       });
-    //     });
-
-    //   await roomRef.delete();
-    // }
+    await deleteDoc(answerCandidates);
+    await deleteDoc(offerCandidates);
+    await deleteDoc(callDoc);
 
     window.location.reload();
   };
