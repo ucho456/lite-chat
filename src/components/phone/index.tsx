@@ -1,11 +1,7 @@
-import { useState } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 import Videos from "@/components/phone/Videos";
-import Wait from "@/components/phone/Wait";
 
 const Phone = () => {
-  const [currentPage, setCurrentPage] = useState("home");
-  const [joinCode, setJoinCode] = useState("");
-
   const pc = new RTCPeerConnection({
     iceServers: [
       {
@@ -18,23 +14,15 @@ const Phone = () => {
     iceCandidatePoolSize: 10,
   });
 
+  const { roomId } = useParams<{ roomId: string }>();
+  const [searchParams] = useSearchParams();
+  const creator = searchParams.get("creator");
+
+  if (!roomId) return <></>;
   return (
-    <div className="app">
-      {currentPage === "home" ? (
-        <Wait
-          joinCode={joinCode}
-          setJoinCode={setJoinCode}
-          setPage={setCurrentPage}
-        />
-      ) : (
-        <Videos
-          pc={pc}
-          mode={currentPage}
-          callId={joinCode}
-          setPage={setCurrentPage}
-        />
-      )}
-    </div>
+    <>
+      <Videos pc={pc} mode={creator} roomId={roomId} />
+    </>
   );
 };
 

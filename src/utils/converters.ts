@@ -46,25 +46,62 @@ export const roomConverter: FirestoreDataConverter<Room> = {
   },
 };
 
-export const signalConverter: FirestoreDataConverter<Signal> = {
-  toFirestore(s: Signal): DocumentData {
+export const callConverter: FirestoreDataConverter<Call> = {
+  toFirestore(c: Call): DocumentData {
     return {
-      type: s.type,
-      sender: s.sender,
-      sessionDescription: s.sessionDescription,
-      candidate: s.candidate,
+      offer: c.offer,
+      answer: c.answer,
     };
   },
-  fromFirestore(snapshot: QueryDocumentSnapshot): Signal {
+  fromFirestore(snapshot: QueryDocumentSnapshot): Call {
     const d = snapshot.data();
     return {
-      type: d.type,
-      sender: d.sender,
-      sessionDescription: d.sessionDescription,
-      candidate: d.candidate,
+      offer: d.offer,
+      answer: d.answer,
     };
   },
 };
+
+export const offerCandidateConverter: FirestoreDataConverter<OfferCandidate> = {
+  toFirestore(o: OfferCandidate): DocumentData {
+    return {
+      candidate: o.candidate,
+      sdpMid: o.sdpMid,
+      sdpMLineIndex: o.sdpMLineIndex,
+      usernameFragment: o.usernameFragment,
+    };
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot): OfferCandidate {
+    const d = snapshot.data();
+    return {
+      candidate: d.candidate,
+      sdpMid: d.sdpMid,
+      sdpMLineIndex: d.sdpMLineIndex,
+      usernameFragment: d.usernameFragment,
+    };
+  },
+};
+
+export const answerCandidateConverter: FirestoreDataConverter<AnswerCandidate> =
+  {
+    toFirestore(a: AnswerCandidate): DocumentData {
+      return {
+        candidate: a.candidate,
+        sdpMid: a.sdpMid,
+        sdpMLineIndex: a.sdpMLineIndex,
+        usernameFragment: a.usernameFragment,
+      };
+    },
+    fromFirestore(snapshot: QueryDocumentSnapshot): AnswerCandidate {
+      const d = snapshot.data();
+      return {
+        candidate: d.candidate,
+        sdpMid: d.sdpMid,
+        sdpMLineIndex: d.sdpMLineIndex,
+        usernameFragment: d.usernameFragment,
+      };
+    },
+  };
 
 export const userConverter: FirestoreDataConverter<User> = {
   toFirestore(u: User): DocumentData {

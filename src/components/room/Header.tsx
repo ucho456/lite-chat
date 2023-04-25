@@ -17,7 +17,7 @@ const Header = ({ me, you }: Props) => {
   const handleNavigateRooms = (): void => navigate("/rooms");
   const { roomId } = useParams<{ roomId: string }>();
   const handleNavigatePhone = (): void => {
-    navigate(`/rooms/${roomId}/phone?meUid=${me.uid}&youUid=${you.uid}`);
+    navigate(`/rooms/${roomId}/phone?creator=true`);
   };
 
   const { openSnackbar } = useSnackbar();
