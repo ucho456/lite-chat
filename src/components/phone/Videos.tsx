@@ -16,6 +16,7 @@ type Props = {
   roomId: string;
 };
 
+/* eslint-disable  @typescript-eslint/no-non-null-assertion */
 const Videos = ({ pc, mode, roomId }: Props) => {
   const [webcameraActive, setWebcameraActive] = useState(false);
   const localRef = useRef<HTMLVideoElement>(null);
