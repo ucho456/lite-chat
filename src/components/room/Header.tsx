@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Block, ChevronLeft, Phone } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import { useSnackbar } from "@/contexts/Snackbar";
-import { blockRoom } from "@/utils/writeToFirestore";
+import { blockRoom } from "@/utils/firestore";
 import DialogProfile from "@/components/room/DialogProfile";
 import "./Header.scss";
 

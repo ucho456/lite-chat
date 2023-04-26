@@ -7,10 +7,10 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { db } from "../firebase";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { setRooms } from "../store/modules/roomsSlice";
-import { roomConverter } from "../utils/converters";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { setRooms } from "@/store/modules/roomsSlice";
+import { roomConverter } from "@/utils/converters";
+import { db } from "@/firebase";
 
 const useRooms = () => {
   const authUid = useAppSelector((state) => state.auth.uid);

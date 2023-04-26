@@ -10,10 +10,10 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { db } from "../firebase";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { resetUser, setUser } from "../store/modules/userSlice";
-import { userConverter } from "../utils/converters";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { resetUser, setUser } from "@/store/modules/userSlice";
+import { userConverter } from "@/utils/converters";
+import { db } from "@/firebase";
 
 const useUser = () => {
   const authUid = useAppSelector((state) => state.auth.uid);

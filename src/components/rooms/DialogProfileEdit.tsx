@@ -4,7 +4,7 @@ import { LoadingButton } from "@mui/lab";
 import { Avatar, Dialog } from "@mui/material";
 import { useSnackbar } from "@/contexts/Snackbar";
 import { useAppSelector } from "@/store/hooks";
-import { updateUser } from "@/utils/writeToFirestore";
+import { updateUser } from "@/utils/firestore";
 import ProfileForm from "@/components/commons/ProfileForm";
 import "./DialogProfileEdit.scss";
 

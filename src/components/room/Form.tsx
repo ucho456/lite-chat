@@ -1,8 +1,8 @@
 import { useReducer, useRef } from "react";
 import { Send } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
+import { createMessage } from "@/utils/firestore";
 import { scrollBottom } from "@/utils/scrollBottom";
-import { createMessage } from "@/utils/writeToFirestore";
 import "./Form.scss";
 
 type State = { text: string; height: number };

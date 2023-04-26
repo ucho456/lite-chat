@@ -14,7 +14,7 @@ import { useSnackbar } from "@/contexts/Snackbar";
 import useUser from "@/hooks/useUser";
 import { useAppSelector } from "@/store/hooks";
 import { ERAS } from "@/utils/constants";
-import { createRoom } from "@/utils/writeToFirestore";
+import { createRoom } from "@/utils/firestore";
 import "./DialogUserSearch.scss";
 
 type Props = {

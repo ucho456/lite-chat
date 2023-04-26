@@ -8,7 +8,7 @@ import { useSnackbar } from "@/contexts/Snackbar";
 import useUser from "@/hooks/useUser";
 import { useAppDispatch } from "@/store/hooks";
 import { signIn } from "@/store/modules/authSlice";
-import { createUser } from "@/utils/writeToFirestore";
+import { createUser } from "@/utils/firestore";
 import { auth, googleAuthProvider } from "@/firebase";
 import ProfileForm from "@/components/commons/ProfileForm";
 
