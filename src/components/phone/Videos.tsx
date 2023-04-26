@@ -1,6 +1,15 @@
 import { useRef, useState } from "react";
-import { getDoc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
-import { deleteWebRTC, getWebRTCDocRef } from "@/utils/firestore";
+import { useNavigate } from "react-router-dom";
+import { onSnapshot } from "firebase/firestore";
+import {
+  createAnswerCandidate,
+  createCall,
+  createOfferCandidate,
+  deletePhoneDocs,
+  fetchCall,
+  getPhoneDocRefs,
+  updateCall,
+} from "@/utils/firestore";
 
 type Props = {
   pc: RTCPeerConnection;
@@ -13,7 +22,7 @@ const Videos = ({ pc, mode, roomId }: Props) => {
   const localRef = useRef<HTMLVideoElement>(null);
   const remoteRef = useRef<HTMLVideoElement>(null);
   const { callDocRef, offerCandidateDocRef, answerCandidateDocRef } =
-    getWebRTCDocRef(roomId);
+    getPhoneDocRefs(roomId);
 
   const setupSources = async () => {
     if (!roomId) return;
@@ -36,15 +45,16 @@ const Videos = ({ pc, mode, roomId }: Props) => {
 
     switch (mode) {
       case "true": {
+        await deletePhoneDocs(roomId);
         pc.onicecandidate = (event) => {
           event.candidate &&
-            setDoc(offerCandidateDocRef, event.candidate.toJSON());
+            createOfferCandidate(roomId, event.candidate.toJSON());
         };
         const offerDescription = await pc.createOffer();
         await pc.setLocalDescription(offerDescription);
-        await setDoc(callDocRef, {
-          offer: { sdp: offerDescription.sdp ?? "", type: "offer" },
-          answer: null,
+        await createCall(roomId, {
+          sdp: offerDescription.sdp ?? "",
+          type: "offer",
         });
         onSnapshot(callDocRef, (snapshot) => {
           const data = snapshot.data();
@@ -64,20 +74,19 @@ const Videos = ({ pc, mode, roomId }: Props) => {
       case null: {
         pc.onicecandidate = (event) => {
           event.candidate &&
-            setDoc(answerCandidateDocRef, event.candidate.toJSON());
+            createAnswerCandidate(roomId, event.candidate.toJSON());
         };
-        const callData = (await getDoc(callDocRef)).data();
-        const offerDescription = callData!.offer!;
+        const call = await fetchCall(roomId);
+        if (!call || !call.offer) return;
+        const offerDescription = call.offer;
         await pc.setRemoteDescription(
           new RTCSessionDescription(offerDescription),
         );
         const answerDescription = await pc.createAnswer();
         await pc.setLocalDescription(answerDescription);
-        await updateDoc(callDocRef, {
-          answer: {
-            sdp: answerDescription.sdp,
-            type: "answer",
-          },
+        await updateCall(roomId, {
+          sdp: answerDescription.sdp!,
+          type: "answer",
         });
         onSnapshot(offerCandidateDocRef, (snapshot) => {
           if (snapshot.exists()) {
@@ -96,10 +105,11 @@ const Videos = ({ pc, mode, roomId }: Props) => {
     };
   };
 
+  const navigate = useNavigate();
   const hangUp = async () => {
     pc.close();
-    await deleteWebRTC(roomId);
-    window.location.reload();
+    await deletePhoneDocs(roomId);
+    navigate(`/rooms/${roomId}`);
   };
 
   return (

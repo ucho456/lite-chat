@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { onSnapshot } from "firebase/firestore";
 import { useAppSelector } from "@/store/hooks";
-import { getWebRTCDocRef, readMessage } from "@/utils/firestore";
+import { getPhoneDocRefs, readMessage } from "@/utils/firestore";
 import Form from "@/components/room/Form";
 import Header from "@/components/room/Header";
 import List from "@/components/room/List";
@@ -41,7 +41,7 @@ const Room = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (!roomId || !you) return;
-    const { callDocRef } = getWebRTCDocRef(roomId);
+    const { callDocRef } = getPhoneDocRefs(roomId);
     const unsubscribe = onSnapshot(callDocRef, async (doc) => {
       if (doc.exists()) {
         const result = window.confirm(
@@ -50,7 +50,7 @@ const Room = () => {
         if (result) {
           navigate(`/rooms/${roomId}/phone`);
         } else {
-          // await deleteWebRTC(roomId);
+          // await deletePhoneDocs(roomId);
         }
       }
     });

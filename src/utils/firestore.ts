@@ -3,6 +3,7 @@ import {
   arrayUnion,
   collection,
   doc,
+  getDoc,
   increment,
   serverTimestamp,
   setDoc,
@@ -154,17 +155,14 @@ export const blockRoom = async (
   youUid: string,
 ) => {
   const batch = writeBatch(db);
-
   const roomDocRef = doc(db, "rooms", roomId).withConverter(roomConverter);
   batch.update(roomDocRef, { isBlock: true });
-
   const userDocRef = doc(db, "users", meUid).withConverter(userConverter);
   batch.update(userDocRef, { blocks: arrayUnion(youUid) });
-
   await batch.commit();
 };
 
-export const getWebRTCDocRef = (
+export const getPhoneDocRefs = (
   roomId: string,
 ): {
   callDocRef: DocumentReference<Call>;
@@ -192,12 +190,50 @@ export const getWebRTCDocRef = (
   };
 };
 
-export const deleteWebRTC = async (roomId: string): Promise<void> => {
+export const deletePhoneDocs = async (roomId: string): Promise<void> => {
   const { callDocRef, offerCandidateDocRef, answerCandidateDocRef } =
-    getWebRTCDocRef(roomId);
+    getPhoneDocRefs(roomId);
   const batch = writeBatch(db);
   batch.delete(callDocRef);
   batch.delete(offerCandidateDocRef);
   batch.delete(answerCandidateDocRef);
   await batch.commit();
+};
+
+export const createOfferCandidate = (
+  roomId: string,
+  offerCandidate: RTCIceCandidateInit,
+): void => {
+  const { offerCandidateDocRef } = getPhoneDocRefs(roomId);
+  setDoc(offerCandidateDocRef, offerCandidate);
+};
+
+export const createCall = async (
+  roomId: string,
+  offer: Offer,
+): Promise<void> => {
+  const { callDocRef } = getPhoneDocRefs(roomId);
+  await setDoc(callDocRef, { offer, answer: null });
+};
+
+export const createAnswerCandidate = (
+  roomId: string,
+  answerCandidate: RTCIceCandidateInit,
+): void => {
+  const { answerCandidateDocRef } = getPhoneDocRefs(roomId);
+  setDoc(answerCandidateDocRef, answerCandidate);
+};
+
+export const fetchCall = async (roomId: string): Promise<Call | null> => {
+  const { callDocRef } = getPhoneDocRefs(roomId);
+  const snapshot = await getDoc(callDocRef);
+  return snapshot.exists() ? snapshot.data() : null;
+};
+
+export const updateCall = async (
+  roomId: string,
+  answer: Answer,
+): Promise<void> => {
+  const { callDocRef } = getPhoneDocRefs(roomId);
+  await updateDoc(callDocRef, { answer });
 };
