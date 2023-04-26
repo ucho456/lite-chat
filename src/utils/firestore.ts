@@ -1,4 +1,5 @@
 import {
+  DocumentReference,
   arrayUnion,
   collection,
   doc,
@@ -9,7 +10,10 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import {
+  answerCandidateConverter,
+  callConverter,
   messageConverter,
+  offerCandidateConverter,
   roomConverter,
   userConverter,
 } from "@/utils/converters";
@@ -157,5 +161,43 @@ export const blockRoom = async (
   const userDocRef = doc(db, "users", meUid).withConverter(userConverter);
   batch.update(userDocRef, { blocks: arrayUnion(youUid) });
 
+  await batch.commit();
+};
+
+export const getWebRTCDocRef = (
+  roomId: string,
+): {
+  callDocRef: DocumentReference<Call>;
+  offerCandidateDocRef: DocumentReference<OfferCandidate>;
+  answerCandidateDocRef: DocumentReference<AnswerCandidate>;
+} => {
+  return {
+    callDocRef: doc(db, "rooms", roomId, "calls", roomId).withConverter(
+      callConverter,
+    ),
+    offerCandidateDocRef: doc(
+      db,
+      "rooms",
+      roomId,
+      "offerCandidates",
+      roomId,
+    ).withConverter(offerCandidateConverter),
+    answerCandidateDocRef: doc(
+      db,
+      "rooms",
+      roomId,
+      "answerCandidates",
+      roomId,
+    ).withConverter(answerCandidateConverter),
+  };
+};
+
+export const deleteWebRTC = async (roomId: string): Promise<void> => {
+  const { callDocRef, offerCandidateDocRef, answerCandidateDocRef } =
+    getWebRTCDocRef(roomId);
+  const batch = writeBatch(db);
+  batch.delete(callDocRef);
+  batch.delete(offerCandidateDocRef);
+  batch.delete(answerCandidateDocRef);
   await batch.commit();
 };

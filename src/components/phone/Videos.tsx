@@ -1,18 +1,6 @@
 import { useRef, useState } from "react";
-import {
-  deleteDoc,
-  doc,
-  getDoc,
-  onSnapshot,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
-import {
-  answerCandidateConverter,
-  callConverter,
-  offerCandidateConverter,
-} from "@/utils/converters";
-import { db } from "@/firebase";
+import { getDoc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
+import { deleteWebRTC, getWebRTCDocRef } from "@/utils/firestore";
 
 type Props = {
   pc: RTCPeerConnection;
@@ -22,27 +10,10 @@ type Props = {
 
 const Videos = ({ pc, mode, roomId }: Props) => {
   const [webcameraActive, setWebcameraActive] = useState(false);
-
   const localRef = useRef<HTMLVideoElement>(null);
   const remoteRef = useRef<HTMLVideoElement>(null);
-
-  const callDoc = doc(db, "rooms", roomId, "calls", roomId).withConverter(
-    callConverter,
-  );
-  const answerCandidates = doc(
-    db,
-    "rooms",
-    roomId,
-    "answerCandidates",
-    roomId,
-  ).withConverter(answerCandidateConverter);
-  const offerCandidates = doc(
-    db,
-    "rooms",
-    roomId,
-    "offerCandidates",
-    roomId,
-  ).withConverter(offerCandidateConverter);
+  const { callDocRef, offerCandidateDocRef, answerCandidateDocRef } =
+    getWebRTCDocRef(roomId);
 
   const setupSources = async () => {
     if (!roomId) return;
@@ -51,41 +22,38 @@ const Videos = ({ pc, mode, roomId }: Props) => {
       audio: true,
     });
     const remoteStream = new MediaStream();
-
     localStream.getTracks().forEach((track) => {
       pc.addTrack(track, localStream);
     });
-
     pc.ontrack = (event) => {
       event.streams[0].getTracks().forEach((track) => {
         remoteStream.addTrack(track);
       });
     };
-
     localRef.current!.srcObject = localStream;
     remoteRef.current!.srcObject = remoteStream;
-
     setWebcameraActive(true);
 
     switch (mode) {
       case "true": {
         pc.onicecandidate = (event) => {
-          event.candidate && setDoc(offerCandidates, event.candidate.toJSON());
+          event.candidate &&
+            setDoc(offerCandidateDocRef, event.candidate.toJSON());
         };
         const offerDescription = await pc.createOffer();
         await pc.setLocalDescription(offerDescription);
-        await setDoc(callDoc, {
+        await setDoc(callDocRef, {
           offer: { sdp: offerDescription.sdp ?? "", type: "offer" },
           answer: null,
         });
-        onSnapshot(callDoc, (snapshot) => {
+        onSnapshot(callDocRef, (snapshot) => {
           const data = snapshot.data();
           if (!pc.currentRemoteDescription && data?.answer) {
             const answerDescription = new RTCSessionDescription(data.answer);
             pc.setRemoteDescription(answerDescription);
           }
         });
-        onSnapshot(answerCandidates, (snapshot) => {
+        onSnapshot(answerCandidateDocRef, (snapshot) => {
           if (snapshot.exists()) {
             const candidate = new RTCIceCandidate(snapshot.data());
             pc.addIceCandidate(candidate);
@@ -95,22 +63,23 @@ const Videos = ({ pc, mode, roomId }: Props) => {
       }
       case null: {
         pc.onicecandidate = (event) => {
-          event.candidate && setDoc(answerCandidates, event.candidate.toJSON());
+          event.candidate &&
+            setDoc(answerCandidateDocRef, event.candidate.toJSON());
         };
-        const callData = (await getDoc(callDoc)).data();
+        const callData = (await getDoc(callDocRef)).data();
         const offerDescription = callData!.offer!;
         await pc.setRemoteDescription(
           new RTCSessionDescription(offerDescription),
         );
         const answerDescription = await pc.createAnswer();
         await pc.setLocalDescription(answerDescription);
-        await updateDoc(callDoc, {
+        await updateDoc(callDocRef, {
           answer: {
             sdp: answerDescription.sdp,
             type: "answer",
           },
         });
-        onSnapshot(offerCandidates, (snapshot) => {
+        onSnapshot(offerCandidateDocRef, (snapshot) => {
           if (snapshot.exists()) {
             const candidate = new RTCIceCandidate(snapshot.data());
             pc.addIceCandidate(candidate);
@@ -129,11 +98,7 @@ const Videos = ({ pc, mode, roomId }: Props) => {
 
   const hangUp = async () => {
     pc.close();
-
-    await deleteDoc(answerCandidates);
-    await deleteDoc(offerCandidates);
-    await deleteDoc(callDoc);
-
+    await deleteWebRTC(roomId);
     window.location.reload();
   };
 

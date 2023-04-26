@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { onSnapshot } from "firebase/firestore";
 import { useAppSelector } from "@/store/hooks";
-import { readMessage } from "@/utils/writeToFirestore";
+import { getWebRTCDocRef, readMessage } from "@/utils/firestore";
 import Form from "@/components/room/Form";
 import Header from "@/components/room/Header";
 import List from "@/components/room/List";
@@ -30,10 +31,31 @@ const Room = () => {
     }
   }, [room, user]);
 
+  /** Read message when in room */
   useEffect(() => {
     if (!me || !room) return;
     if (me.unread) readMessage(me, room);
   }, [me, room]);
+
+  /** Watch phone request */
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!roomId || !you) return;
+    const { callDocRef } = getWebRTCDocRef(roomId);
+    const unsubscribe = onSnapshot(callDocRef, async (doc) => {
+      if (doc.exists()) {
+        const result = window.confirm(
+          `${you.name}さんから電話のリクエストを受けました。応答しますか？`,
+        );
+        if (result) {
+          navigate(`/rooms/${roomId}/phone`);
+        } else {
+          // await deleteWebRTC(roomId);
+        }
+      }
+    });
+    return () => unsubscribe();
+  }, [roomId, navigate, you]);
 
   /** Messages body ref */
   const bodyRef = useRef<HTMLDivElement>(null);
