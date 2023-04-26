@@ -1,5 +1,12 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  Videocam,
+  VideocamOff,
+  VolumeOff,
+  VolumeUp,
+} from "@mui/icons-material";
+import { Button, IconButton } from "@mui/material";
 import { onSnapshot } from "firebase/firestore";
 import {
   createAnswerCandidate,
@@ -9,6 +16,7 @@ import {
   getPhoneDocRefs,
   updateCall,
 } from "@/utils/firestore";
+import "./Videos.scss";
 
 type Props = {
   pc: RTCPeerConnection;
@@ -24,6 +32,7 @@ const Videos = ({ pc, mode, roomId }: Props) => {
   const { callDocRef, offerCandidateDocRef, answerCandidateDocRef } =
     getPhoneDocRefs(roomId);
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
+  const navigate = useNavigate();
 
   const setupSources = async () => {
     if (!roomId) return;
@@ -67,7 +76,7 @@ const Videos = ({ pc, mode, roomId }: Props) => {
         onSnapshot(answerCandidateDocRef, (snapshot) => {
           if (snapshot.exists() && pc.signalingState !== "closed") {
             const candidate = new RTCIceCandidate(snapshot.data());
-            pc.addIceCandidate(candidate);
+            if (candidate) pc.addIceCandidate(candidate);
           }
         });
         break;
@@ -92,7 +101,7 @@ const Videos = ({ pc, mode, roomId }: Props) => {
         onSnapshot(offerCandidateDocRef, (snapshot) => {
           if (snapshot.exists() && pc.signalingState !== "closed") {
             const candidate = new RTCIceCandidate(snapshot.data());
-            pc.addIceCandidate(candidate);
+            if (candidate) pc.addIceCandidate(candidate);
           }
         });
         break;
@@ -101,57 +110,53 @@ const Videos = ({ pc, mode, roomId }: Props) => {
 
     pc.onconnectionstatechange = () => {
       if (pc.connectionState === "disconnected") {
-        hangUp();
+        navigate(`/rooms/${roomId}`);
       }
     };
   };
 
+  const [isVideo, setIsVideo] = useState(true);
   const handleToggleLocalVideo = () => {
     if (!localStream) return;
     const videoTrack = localStream.getVideoTracks()[0];
     const enabled = videoTrack.enabled;
     videoTrack.enabled = !enabled;
+    setIsVideo(!enabled);
   };
 
+  const [isAudio, setIsAudio] = useState(true);
   const handleToggleLocalAudio = () => {
     if (!localStream) return;
     const audioTrack = localStream.getAudioTracks()[0];
     const enabled = audioTrack.enabled;
     audioTrack.enabled = !enabled;
-  };
-
-  const navigate = useNavigate();
-  const hangUp = async () => {
-    navigate(`/rooms/${roomId}`);
+    setIsAudio(!enabled);
   };
 
   return (
-    <div className="videos">
-      <video ref={localRef} autoPlay playsInline className="local" muted />
-      <video ref={remoteRef} autoPlay playsInline className="remote" />
-
-      <div className="buttonsContainer">
-        <button
-          onClick={hangUp}
-          disabled={!webcameraActive}
-          className="hangup button"
-        >
-          HangUp
-        </button>
-        <button onClick={handleToggleLocalVideo}>video toggle</button>
-        <button onClick={handleToggleLocalAudio}>audio toggle</button>
-      </div>
-
+    <div className="phone-videos">
       {!webcameraActive && (
-        <div className="modalContainer">
-          <div className="modal">
-            <h3>Turn on your camera and microphone and start the call</h3>
-            <div className="container">
-              <button onClick={setupSources}>Start</button>
-            </div>
-          </div>
+        <div className="wait-container">
+          <p>カメラとマイクをオンにしてスタートボタンを押してください</p>
+          <Button variant="contained" onClick={setupSources}>
+            スタート
+          </Button>
         </div>
       )}
+      <div className="videos-container">
+        <video className="remote" ref={remoteRef} autoPlay playsInline />
+        <video className="local" ref={localRef} autoPlay playsInline muted />
+        {webcameraActive && (
+          <div className="buttons" style={{ color: "white" }}>
+            <IconButton onClick={handleToggleLocalVideo}>
+              {isVideo ? <Videocam /> : <VideocamOff />}
+            </IconButton>
+            <IconButton onClick={handleToggleLocalAudio}>
+              {isAudio ? <VolumeUp /> : <VolumeOff />}
+            </IconButton>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

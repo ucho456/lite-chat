@@ -1,0 +1,59 @@
+@import "./index.scss";
+
+.phone-videos {
+  height: calc(100vh - $headerHeight);
+  background-color: rgb(17, 17, 17);
+  .wait-container {
+    text-align: center;
+    max-width: $pageMaxWidth;
+    margin: 0 auto;
+    padding-top: 50px;
+    p {
+      color: $white;
+      margin-bottom: 20px;
+      padding: 8px;
+      @include sp() {
+        font-size: 12px;
+      }
+    }
+    .info-row {
+      h4 {
+        color: $white;
+      }
+    }
+  }
+  .videos-container {
+    max-width: $pageMaxWidth;
+    margin: 0 auto;
+    padding-top: 40px;
+    text-align: center;
+    video {
+      width: 384px;
+      height: 288px;
+      border-radius: 10px;
+      margin: 10px;
+      @include sp() {
+        width: 320px;
+        height: 240px;
+      }
+    }
+    .buttons {
+      width: 768px;
+      margin: 0 auto;
+      text-align: right;
+      @include pc() {
+        width: 320px;
+      }
+      @include sp() {
+        width: 320px;
+      }
+      button {
+        .MuiSvgIcon-root {
+          path {
+            color: $white;
+          }
+        }
+      }
+    }
+  }
+}
