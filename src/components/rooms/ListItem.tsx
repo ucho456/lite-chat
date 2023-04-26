@@ -38,8 +38,8 @@ const ListItem = ({ room }: Props) => {
         <ListItemText
           primary={you.name}
           secondary={
-            <p style={{ display: "flex" }}>
-              <div
+            <span style={{ display: "flex" }}>
+              <span
                 style={{
                   height: "20px",
                   lineHeight: "20px",
@@ -49,9 +49,9 @@ const ListItem = ({ room }: Props) => {
                 }}
               >
                 {me.unread ? "●" : ""}
-              </div>
-              <div style={{ color: "gray" }}>{room.lastMessage}</div>
-            </p>
+              </span>
+              <span style={{ color: "gray" }}>{room.lastMessage}</span>
+            </span>
           }
         />
       </MuiListItem>
