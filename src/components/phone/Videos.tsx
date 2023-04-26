@@ -5,7 +5,6 @@ import {
   createAnswerCandidate,
   createCall,
   createOfferCandidate,
-  deletePhoneDocs,
   fetchCall,
   getPhoneDocRefs,
   updateCall,
@@ -45,7 +44,6 @@ const Videos = ({ pc, mode, roomId }: Props) => {
 
     switch (mode) {
       case "true": {
-        await deletePhoneDocs(roomId);
         pc.onicecandidate = (event) => {
           event.candidate &&
             createOfferCandidate(roomId, event.candidate.toJSON());
@@ -64,7 +62,7 @@ const Videos = ({ pc, mode, roomId }: Props) => {
           }
         });
         onSnapshot(answerCandidateDocRef, (snapshot) => {
-          if (snapshot.exists()) {
+          if (snapshot.exists() && pc.signalingState !== "closed") {
             const candidate = new RTCIceCandidate(snapshot.data());
             pc.addIceCandidate(candidate);
           }
@@ -89,7 +87,7 @@ const Videos = ({ pc, mode, roomId }: Props) => {
           type: "answer",
         });
         onSnapshot(offerCandidateDocRef, (snapshot) => {
-          if (snapshot.exists()) {
+          if (snapshot.exists() && pc.signalingState !== "closed") {
             const candidate = new RTCIceCandidate(snapshot.data());
             pc.addIceCandidate(candidate);
           }
@@ -107,8 +105,7 @@ const Videos = ({ pc, mode, roomId }: Props) => {
 
   const navigate = useNavigate();
   const hangUp = async () => {
-    pc.close();
-    await deletePhoneDocs(roomId);
+    // pc.close();
     navigate(`/rooms/${roomId}`);
   };
 

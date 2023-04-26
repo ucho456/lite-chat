@@ -2,7 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { onSnapshot } from "firebase/firestore";
 import { useAppSelector } from "@/store/hooks";
-import { getPhoneDocRefs, readMessage } from "@/utils/firestore";
+import {
+  deletePhoneDocs,
+  getPhoneDocRefs,
+  readMessage,
+} from "@/utils/firestore";
 import Form from "@/components/room/Form";
 import Header from "@/components/room/Header";
 import List from "@/components/room/List";
@@ -50,7 +54,7 @@ const Room = () => {
         if (result) {
           navigate(`/rooms/${roomId}/phone`);
         } else {
-          // await deletePhoneDocs(roomId);
+          await deletePhoneDocs(roomId);
         }
       }
     });

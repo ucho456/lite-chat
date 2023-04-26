@@ -1,6 +1,5 @@
-import { useEffect } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import { deletePhoneDocs } from "@/utils/firestore";
+import Header from "@/components/phone/Header";
 import Videos from "@/components/phone/Videos";
 
 const Phone = () => {
@@ -20,17 +19,10 @@ const Phone = () => {
   const [searchParams] = useSearchParams();
   const creator = searchParams.get("creator");
 
-  /** Post-processing when unmounting */
-  useEffect(() => {
-    return () => {
-      if (!roomId) return;
-      deletePhoneDocs(roomId);
-    };
-  }, [roomId]);
-
   if (!roomId) return <></>;
   return (
     <>
+      <Header pc={pc} roomId={roomId} />
       <Videos pc={pc} mode={creator} roomId={roomId} />
     </>
   );
