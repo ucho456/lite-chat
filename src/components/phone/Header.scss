@@ -1,11 +1,11 @@
 @import "./index.scss";
 
-.room-header {
+.phone-header {
   height: $headerHeight;
   background-color: $primaryLight;
   .container {
     display: grid;
-    grid-template-columns: 50px 210px auto 50px 50px;
+    grid-template-columns: 50px 210px auto;
     grid-template-rows: 50px;
     max-width: $pageMaxWidth;
     height: 100%;
@@ -16,12 +16,6 @@
     .photo-column {
       grid-column: 2 / 3;
       padding: 5px 0 0 5px;
-    }
-    .phone-column {
-      grid-column: 4 / 5;
-    }
-    .block-column {
-      grid-column: 5 / 6;
     }
   }
 }
