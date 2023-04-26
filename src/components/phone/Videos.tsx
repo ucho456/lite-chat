@@ -22,23 +22,25 @@ const Videos = ({ pc, mode, roomId }: Props) => {
   const remoteRef = useRef<HTMLVideoElement>(null);
   const { callDocRef, offerCandidateDocRef, answerCandidateDocRef } =
     getPhoneDocRefs(roomId);
+  const [localStream, setLocalStream] = useState<MediaStream | null>(null);
 
   const setupSources = async () => {
     if (!roomId) return;
-    const localStream = await navigator.mediaDevices.getUserMedia({
+    const _localStream = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: true,
     });
+    setLocalStream(_localStream);
     const remoteStream = new MediaStream();
-    localStream.getTracks().forEach((track) => {
-      pc.addTrack(track, localStream);
+    _localStream.getTracks().forEach((track) => {
+      pc.addTrack(track, _localStream);
     });
     pc.ontrack = (event) => {
       event.streams[0].getTracks().forEach((track) => {
         remoteStream.addTrack(track);
       });
     };
-    localRef.current!.srcObject = localStream;
+    localRef.current!.srcObject = _localStream;
     remoteRef.current!.srcObject = remoteStream;
     setWebcameraActive(true);
 
@@ -103,9 +105,22 @@ const Videos = ({ pc, mode, roomId }: Props) => {
     };
   };
 
+  const handleToggleLocalVideo = () => {
+    if (!localStream) return;
+    const videoTrack = localStream.getVideoTracks()[0];
+    const enabled = videoTrack.enabled;
+    videoTrack.enabled = !enabled;
+  };
+
+  const handleToggleLocalAudio = () => {
+    if (!localStream) return;
+    const audioTrack = localStream.getAudioTracks()[0];
+    const enabled = audioTrack.enabled;
+    audioTrack.enabled = !enabled;
+  };
+
   const navigate = useNavigate();
   const hangUp = async () => {
-    // pc.close();
     navigate(`/rooms/${roomId}`);
   };
 
@@ -122,6 +137,8 @@ const Videos = ({ pc, mode, roomId }: Props) => {
         >
           HangUp
         </button>
+        <button onClick={handleToggleLocalVideo}>video toggle</button>
+        <button onClick={handleToggleLocalAudio}>audio toggle</button>
       </div>
 
       {!webcameraActive && (
