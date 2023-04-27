@@ -1,0 +1,45 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "rooms",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userUids",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "isBlock",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "lastActionAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "users",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "era",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "sex",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "roomCount",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "lastActionAt",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
