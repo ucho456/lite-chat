@@ -1,27 +1,8 @@
 @import "./index.scss";
 
 .phone-videos {
-  height: calc(100vh - $headerHeight);
+  min-height: calc(100vh - $headerHeight);
   background-color: rgb(17, 17, 17);
-  .wait-container {
-    text-align: center;
-    max-width: $pageMaxWidth;
-    margin: 0 auto;
-    padding-top: 50px;
-    p {
-      color: $white;
-      margin-bottom: 20px;
-      padding: 8px;
-      @include sp() {
-        font-size: 12px;
-      }
-    }
-    .info-row {
-      h4 {
-        color: $white;
-      }
-    }
-  }
   .videos-container {
     max-width: $pageMaxWidth;
     margin: 0 auto;

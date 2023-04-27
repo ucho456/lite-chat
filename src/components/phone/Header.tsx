@@ -8,14 +8,17 @@ import "./Header.scss";
 
 type Props = {
   pc: RTCPeerConnection;
+  callId: string | null;
   roomId: string;
   you: RoomUser;
 };
 
 class Header extends Component<Props> {
   componentWillUnmount(): void {
-    deletePhoneDocs(this.props.roomId);
     this.props.pc.close();
+    if (this.props.callId) {
+      deletePhoneDocs(this.props.roomId, this.props.callId);
+    }
   }
   render(): ReactNode {
     return (

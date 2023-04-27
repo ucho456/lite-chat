@@ -6,31 +6,34 @@ import {
   VolumeOff,
   VolumeUp,
 } from "@mui/icons-material";
-import { Button, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { onSnapshot } from "firebase/firestore";
+import useOneTimeMountEffect from "@/hooks/useOneTimeMountEffect";
 import {
   createAnswerCandidate,
   createCall,
   createOfferCandidate,
   fetchCall,
-  getPhoneDocRefs,
+  getCallColRef,
+  getCandidateDocRefs,
   updateCall,
 } from "@/utils/firestore";
 import "./Videos.scss";
 
 type Props = {
   pc: RTCPeerConnection;
-  mode: string | null;
+  caller: string | null;
+  callId: string | null;
+  setCallId: React.Dispatch<React.SetStateAction<string | null>>;
   roomId: string;
 };
 
 /* eslint-disable  @typescript-eslint/no-non-null-assertion */
-const Videos = ({ pc, mode, roomId }: Props) => {
-  const [webcameraActive, setWebcameraActive] = useState(false);
+const Videos = ({ pc, caller, callId, setCallId, roomId }: Props) => {
   const localRef = useRef<HTMLVideoElement>(null);
   const remoteRef = useRef<HTMLVideoElement>(null);
-  const { callDocRef, offerCandidateDocRef, answerCandidateDocRef } =
-    getPhoneDocRefs(roomId);
+  const { offerCandidateDocRef, answerCandidateDocRef } =
+    getCandidateDocRefs(roomId);
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
   const navigate = useNavigate();
 
@@ -52,60 +55,64 @@ const Videos = ({ pc, mode, roomId }: Props) => {
     };
     localRef.current!.srcObject = _localStream;
     remoteRef.current!.srcObject = remoteStream;
-    setWebcameraActive(true);
 
-    switch (mode) {
-      case "true": {
-        pc.onicecandidate = (event) => {
-          event.candidate &&
-            createOfferCandidate(roomId, event.candidate.toJSON());
-        };
-        const offerDescription = await pc.createOffer();
-        await pc.setLocalDescription(offerDescription);
-        await createCall(roomId, {
-          sdp: offerDescription.sdp ?? "",
-          type: "offer",
-        });
-        onSnapshot(callDocRef, (snapshot) => {
-          const data = snapshot.data();
-          if (!pc.currentRemoteDescription && data?.answer) {
-            const answerDescription = new RTCSessionDescription(data.answer);
-            pc.setRemoteDescription(answerDescription);
+    /** Create offer and watch answer */
+    if (caller === "true") {
+      pc.onicecandidate = (event) => {
+        event.candidate &&
+          createOfferCandidate(roomId, event.candidate.toJSON());
+      };
+      const offerDescription = await pc.createOffer();
+      await pc.setLocalDescription(offerDescription);
+      await createCall(roomId, {
+        sdp: offerDescription.sdp ?? "",
+        type: "offer",
+      });
+      const callColRef = getCallColRef(roomId);
+      onSnapshot(callColRef, (querySnapshot) => {
+        querySnapshot.docChanges().forEach((change) => {
+          if (change.type === "added") {
+            setCallId(change.doc.id);
+          } else if (change.type === "modified") {
+            const call = change.doc.data();
+            if (!pc.currentRemoteDescription && call.answer) {
+              const answerDescription = new RTCSessionDescription(call.answer);
+              pc.setRemoteDescription(answerDescription);
+            }
           }
         });
-        onSnapshot(answerCandidateDocRef, (snapshot) => {
-          if (snapshot.exists() && pc.signalingState !== "closed") {
-            const candidate = new RTCIceCandidate(snapshot.data());
-            if (candidate) pc.addIceCandidate(candidate);
-          }
-        });
-        break;
-      }
-      case null: {
-        pc.onicecandidate = (event) => {
-          event.candidate &&
-            createAnswerCandidate(roomId, event.candidate.toJSON());
-        };
-        const call = await fetchCall(roomId);
-        if (!call || !call.offer) return;
-        const offerDescription = call.offer;
-        await pc.setRemoteDescription(
-          new RTCSessionDescription(offerDescription),
-        );
-        const answerDescription = await pc.createAnswer();
-        await pc.setLocalDescription(answerDescription);
-        await updateCall(roomId, {
-          sdp: answerDescription.sdp!,
-          type: "answer",
-        });
-        onSnapshot(offerCandidateDocRef, (snapshot) => {
-          if (snapshot.exists() && pc.signalingState !== "closed") {
-            const candidate = new RTCIceCandidate(snapshot.data());
-            if (candidate) pc.addIceCandidate(candidate);
-          }
-        });
-        break;
-      }
+      });
+      onSnapshot(answerCandidateDocRef, (snapshot) => {
+        if (snapshot.exists() && pc.signalingState !== "closed") {
+          const candidate = new RTCIceCandidate(snapshot.data());
+          if (candidate) pc.addIceCandidate(candidate);
+        }
+      });
+    }
+
+    if (callId && !caller) {
+      pc.onicecandidate = (event) => {
+        event.candidate &&
+          createAnswerCandidate(roomId, event.candidate.toJSON());
+      };
+      const call = await fetchCall(roomId, callId);
+      if (!call || !call.offer) return;
+      const offerDescription = call.offer;
+      await pc.setRemoteDescription(
+        new RTCSessionDescription(offerDescription),
+      );
+      const answerDescription = await pc.createAnswer();
+      await pc.setLocalDescription(answerDescription);
+      await updateCall(roomId, callId, {
+        sdp: answerDescription.sdp!,
+        type: "answer",
+      });
+      onSnapshot(offerCandidateDocRef, (snapshot) => {
+        if (snapshot.exists() && pc.signalingState !== "closed") {
+          const candidate = new RTCIceCandidate(snapshot.data());
+          if (candidate) pc.addIceCandidate(candidate);
+        }
+      });
     }
 
     pc.onconnectionstatechange = () => {
@@ -114,6 +121,10 @@ const Videos = ({ pc, mode, roomId }: Props) => {
       }
     };
   };
+
+  useOneTimeMountEffect(() => {
+    setupSources();
+  });
 
   const [isVideo, setIsVideo] = useState(true);
   const handleToggleLocalVideo = () => {
@@ -135,27 +146,17 @@ const Videos = ({ pc, mode, roomId }: Props) => {
 
   return (
     <div className="phone-videos">
-      {!webcameraActive && (
-        <div className="wait-container">
-          <p>カメラとマイクをオンにしてスタートボタンを押してください</p>
-          <Button variant="contained" onClick={setupSources}>
-            スタート
-          </Button>
-        </div>
-      )}
       <div className="videos-container">
         <video className="remote" ref={remoteRef} autoPlay playsInline />
         <video className="local" ref={localRef} autoPlay playsInline muted />
-        {webcameraActive && (
-          <div className="buttons" style={{ color: "white" }}>
-            <IconButton onClick={handleToggleLocalVideo}>
-              {isVideo ? <Videocam /> : <VideocamOff />}
-            </IconButton>
-            <IconButton onClick={handleToggleLocalAudio}>
-              {isAudio ? <VolumeUp /> : <VolumeOff />}
-            </IconButton>
-          </div>
-        )}
+        <div className="buttons" style={{ color: "white" }}>
+          <IconButton onClick={handleToggleLocalVideo}>
+            {isVideo ? <Videocam /> : <VideocamOff />}
+          </IconButton>
+          <IconButton onClick={handleToggleLocalAudio}>
+            {isAudio ? <VolumeUp /> : <VolumeOff />}
+          </IconButton>
+        </div>
       </div>
     </div>
   );

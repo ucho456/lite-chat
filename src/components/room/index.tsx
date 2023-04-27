@@ -1,12 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { onSnapshot } from "firebase/firestore";
+import { useParams } from "react-router-dom";
+import useWatchPhoneRequest from "@/hooks/useWatchPhoneRequest";
 import { useAppSelector } from "@/store/hooks";
-import {
-  deletePhoneDocs,
-  getPhoneDocRefs,
-  readMessage,
-} from "@/utils/firestore";
+import { readMessage } from "@/utils/firestore";
 import Form from "@/components/room/Form";
 import Header from "@/components/room/Header";
 import List from "@/components/room/List";
@@ -42,24 +38,7 @@ const Room = () => {
   }, [me, room]);
 
   /** Watch phone request */
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!roomId || !you) return;
-    const { callDocRef } = getPhoneDocRefs(roomId);
-    const unsubscribe = onSnapshot(callDocRef, async (doc) => {
-      if (doc.exists()) {
-        const result = window.confirm(
-          `${you.name}さんから電話のリクエストを受けました。応答しますか？`,
-        );
-        if (result) {
-          navigate(`/rooms/${roomId}/phone`);
-        } else {
-          await deletePhoneDocs(roomId);
-        }
-      }
-    });
-    return () => unsubscribe();
-  }, [roomId, navigate, you]);
+  useWatchPhoneRequest({ roomId, you });
 
   /** Messages body ref */
   const bodyRef = useRef<HTMLDivElement>(null);

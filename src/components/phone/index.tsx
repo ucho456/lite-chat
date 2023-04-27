@@ -19,7 +19,10 @@ const Phone = () => {
 
   const { roomId } = useParams<{ roomId: string }>();
   const [searchParams] = useSearchParams();
-  const creator = searchParams.get("creator");
+  const caller = searchParams.get("caller");
+  const [callId, setCallId] = useState<string | null>(
+    searchParams.get("callId"),
+  );
 
   /** Set you */
   const rooms = useAppSelector((state) => state.rooms.rooms);
@@ -38,8 +41,14 @@ const Phone = () => {
   if (!roomId || !you) return <></>;
   return (
     <>
-      <Header pc={pc} roomId={roomId} you={you} />
-      <Videos pc={pc} mode={creator} roomId={roomId} />
+      <Header pc={pc} callId={callId} roomId={roomId} you={you} />
+      <Videos
+        pc={pc}
+        caller={caller}
+        callId={callId}
+        setCallId={setCallId}
+        roomId={roomId}
+      />
     </>
   );
 };

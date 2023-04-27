@@ -1,5 +1,6 @@
 import {
   DocumentReference,
+  addDoc,
   arrayUnion,
   collection,
   doc,
@@ -162,17 +163,13 @@ export const blockRoom = async (
   await batch.commit();
 };
 
-export const getPhoneDocRefs = (
+export const getCandidateDocRefs = (
   roomId: string,
 ): {
-  callDocRef: DocumentReference<Call>;
   offerCandidateDocRef: DocumentReference<OfferCandidate>;
   answerCandidateDocRef: DocumentReference<AnswerCandidate>;
 } => {
   return {
-    callDocRef: doc(db, "rooms", roomId, "calls", roomId).withConverter(
-      callConverter,
-    ),
     offerCandidateDocRef: doc(
       db,
       "rooms",
@@ -190,9 +187,15 @@ export const getPhoneDocRefs = (
   };
 };
 
-export const deletePhoneDocs = async (roomId: string): Promise<void> => {
-  const { callDocRef, offerCandidateDocRef, answerCandidateDocRef } =
-    getPhoneDocRefs(roomId);
+export const deletePhoneDocs = async (
+  roomId: string,
+  callId: string,
+): Promise<void> => {
+  const { offerCandidateDocRef, answerCandidateDocRef } =
+    getCandidateDocRefs(roomId);
+  const callDocRef = doc(db, "rooms", roomId, "calls", callId).withConverter(
+    callConverter,
+  );
   const batch = writeBatch(db);
   batch.delete(callDocRef);
   batch.delete(offerCandidateDocRef);
@@ -204,36 +207,48 @@ export const createOfferCandidate = (
   roomId: string,
   offerCandidate: RTCIceCandidateInit,
 ): void => {
-  const { offerCandidateDocRef } = getPhoneDocRefs(roomId);
+  const { offerCandidateDocRef } = getCandidateDocRefs(roomId);
   setDoc(offerCandidateDocRef, offerCandidate);
+};
+
+export const getCallColRef = (roomId: string) => {
+  return collection(db, "rooms", roomId, "calls").withConverter(callConverter);
 };
 
 export const createCall = async (
   roomId: string,
   offer: Offer,
 ): Promise<void> => {
-  const { callDocRef } = getPhoneDocRefs(roomId);
-  await setDoc(callDocRef, { offer, answer: null });
+  const callColRef = getCallColRef(roomId);
+  await addDoc(callColRef, { offer, answer: null });
 };
 
 export const createAnswerCandidate = (
   roomId: string,
   answerCandidate: RTCIceCandidateInit,
 ): void => {
-  const { answerCandidateDocRef } = getPhoneDocRefs(roomId);
+  const { answerCandidateDocRef } = getCandidateDocRefs(roomId);
   setDoc(answerCandidateDocRef, answerCandidate);
 };
 
-export const fetchCall = async (roomId: string): Promise<Call | null> => {
-  const { callDocRef } = getPhoneDocRefs(roomId);
+export const fetchCall = async (
+  roomId: string,
+  callId: string,
+): Promise<Call | null> => {
+  const callDocRef = doc(db, "rooms", roomId, "calls", callId).withConverter(
+    callConverter,
+  );
   const snapshot = await getDoc(callDocRef);
   return snapshot.exists() ? snapshot.data() : null;
 };
 
 export const updateCall = async (
   roomId: string,
+  callId: string,
   answer: Answer,
 ): Promise<void> => {
-  const { callDocRef } = getPhoneDocRefs(roomId);
+  const callDocRef = doc(db, "rooms", roomId, "calls", callId).withConverter(
+    callConverter,
+  );
   await updateDoc(callDocRef, { answer });
 };

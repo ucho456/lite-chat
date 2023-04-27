@@ -17,7 +17,10 @@ const Header = ({ me, you }: Props) => {
   const handleNavigateRooms = (): void => navigate("/rooms");
   const { roomId } = useParams<{ roomId: string }>();
   const handleNavigatePhone = (): void => {
-    navigate(`/rooms/${roomId}/phone?creator=true`);
+    const result = confirm(
+      `${you.name}さんとビデオ電話で通話しますか？（相手がチャットルームにいないと通知されません。）`,
+    );
+    if (result) navigate(`/rooms/${roomId}/phone?caller=true`);
   };
 
   const { openSnackbar } = useSnackbar();
