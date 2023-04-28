@@ -40,7 +40,5 @@ jobs:
         env:
           CI: true
       - name: Test with Docker image
-        with:
-          context: .
         run: |
           docker run ucho456/lite-chat-react-app:latest npm run test
