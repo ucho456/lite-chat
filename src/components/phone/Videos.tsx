@@ -22,6 +22,8 @@ import "./Videos.scss";
 
 type Props = {
   pc: RTCPeerConnection;
+  localStream: MediaStream | null;
+  setLocalStream: React.Dispatch<React.SetStateAction<MediaStream | null>>;
   caller: string | null;
   callId: string | null;
   setCallId: React.Dispatch<React.SetStateAction<string | null>>;
@@ -29,12 +31,19 @@ type Props = {
 };
 
 /* eslint-disable  @typescript-eslint/no-non-null-assertion */
-const Videos = ({ pc, caller, callId, setCallId, roomId }: Props) => {
+const Videos = ({
+  pc,
+  localStream,
+  setLocalStream,
+  caller,
+  callId,
+  setCallId,
+  roomId,
+}: Props) => {
   const localRef = useRef<HTMLVideoElement>(null);
   const remoteRef = useRef<HTMLVideoElement>(null);
   const { offerCandidateDocRef, answerCandidateDocRef } =
     getCandidateDocRefs(roomId);
-  const [localStream, setLocalStream] = useState<MediaStream | null>(null);
   const navigate = useNavigate();
 
   const setupSources = async () => {
