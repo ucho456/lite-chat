@@ -21,7 +21,8 @@
     "format": "npm run lint:fix && prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "push:main": "bash ./shells/push_to_main.sh"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
