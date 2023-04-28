@@ -8,6 +8,7 @@ import "./Header.scss";
 
 type Props = {
   pc: RTCPeerConnection;
+  localStream: MediaStream | null;
   callId: string | null;
   roomId: string;
   you: RoomUser;
@@ -16,6 +17,7 @@ type Props = {
 class Header extends Component<Props> {
   componentWillUnmount(): void {
     this.props.pc.close();
+    this.props.localStream?.getTracks().forEach((track) => track.stop());
     if (this.props.callId) {
       deletePhoneDocs(this.props.roomId, this.props.callId);
     }

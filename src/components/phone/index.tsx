@@ -16,6 +16,7 @@ const Phone = () => {
     ],
     iceCandidatePoolSize: 10,
   });
+  const [localStream, setLocalStream] = useState<MediaStream | null>(null);
 
   const { roomId } = useParams<{ roomId: string }>();
   const [searchParams] = useSearchParams();
@@ -41,9 +42,17 @@ const Phone = () => {
   if (!roomId || !you) return <></>;
   return (
     <>
-      <Header pc={pc} callId={callId} roomId={roomId} you={you} />
+      <Header
+        pc={pc}
+        localStream={localStream}
+        callId={callId}
+        roomId={roomId}
+        you={you}
+      />
       <Videos
         pc={pc}
+        localStream={localStream}
+        setLocalStream={setLocalStream}
         caller={caller}
         callId={callId}
         setCallId={setCallId}
