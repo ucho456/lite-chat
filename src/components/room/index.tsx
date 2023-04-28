@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import useWatchPhoneRequest from "@/hooks/useWatchPhoneRequest";
 import { useAppSelector } from "@/store/hooks";
 import { readMessage } from "@/utils/firestore";
 import Form from "@/components/room/Form";
@@ -36,9 +35,6 @@ const Room = () => {
     if (!me || !room) return;
     if (me.unread) readMessage(me, room);
   }, [me, room]);
-
-  /** Watch phone request */
-  useWatchPhoneRequest({ roomId, you });
 
   /** Messages body ref */
   const bodyRef = useRef<HTMLDivElement>(null);
