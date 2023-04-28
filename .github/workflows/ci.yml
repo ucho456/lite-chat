@@ -15,8 +15,7 @@ jobs:
       - name: Build and test Docker image
         uses: docker/build-push-action@v2
         with:
-          context: .
-          dockerfile: ./docker/react/Dockerfile
+          dockerfile: ../../docker/react/Dockerfile
           push: false
         env:
           CI: true
