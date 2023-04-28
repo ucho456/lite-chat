@@ -12,6 +12,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./docker/react
+          push: true
+          tags: ucho456/lite-chat-react-app:latest
+        env:
+          DOCKER_USERNAME: ucho456
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_REGISTRY: docker.io
       - name: Build and test Docker image
         uses: docker/build-push-action@v2
         with:
