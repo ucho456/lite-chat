@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build and test Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          dockerfile: ./docker/react/Dockerfile
+          push: false
+        env:
+          CI: true
+      - name: Test with Docker image
+        run: |
+          docker run lite-chat-react-app:latest npm run test
