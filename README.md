@@ -1,7 +1,5 @@
 ## firebase function execution steps
 
-a
-
 ```
 npm run exec:firebase
 ```
