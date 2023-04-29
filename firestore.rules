@@ -47,6 +47,7 @@ service cloud.firestore {
         && 'blocks' in user && user.blocks is list
         && 'lastActionAt' in user && user.lastActionAt is timestamp;
       }
+
       allow read;
 
       allow create: if onlyMe(userUid)
@@ -58,10 +59,64 @@ service cloud.firestore {
       && isValidString(newData().selfIntroduction, 0, 140)
       && isValidInt(newData().life, 0, 3)
       && isValidInt(newData().roomCount, 0, 30);
+
+      allow update: if
+      ( // Update me
+        onlyMe(userUid)
+        && isValidUser(newData())
+        && isValidString(newData().name, 1, 10)
+        && isValidPhoto(newData().photo)
+        && isValidSex(newData().sex)
+        && isValidEra(newData().era)
+        && isValidString(newData().selfIntroduction, 0, 140)
+        && isValidInt(newData().life, 0, 3)
+        && isValidInt(newData().roomCount, 0, 30)
+      )
+      ||
+      ( // When creating a room, allow only the update of the opponent user's roomCount by incrementing it by 1.
+        request.auth != null
+        && isValidUser(newData())
+        && newData().name == oldData().name
+        && newData().photo == oldData().photo
+        && newData().sex == oldData().sex
+        && newData().era == oldData().era
+        && newData().selfIntroduction == oldData().selfIntroduction
+        && newData().life == oldData().life
+        && isValidInt(newData().roomCount, 0, 30)
+      );
     }
 
     match /rooms/{roomId} {
-      allow read, write;
+      function onlyMembers() {
+        return request.auth != null && request.auth.uid in resource.data.userUids;
+      }
+      function isValidRoom(room) {
+        return room.size() == 6
+        && 'inviteeUser' in room && room.inviteeUser is map
+        && 'invitedUser' in room && room.invitedUser is map
+        && 'userUids' in room && room.userUids is list
+        && 'isBlock' in room && room.isBlock is bool
+        && 'lastMessage' in room && room.lastMessage is string
+        && 'lastActionAt' in room && room.lastActionAt is timestamp;
+      }
+      function isValidRoomUser(roomUser) {
+        return isValidString(roomUser.uid, 20, 40)
+        && isValidString(roomUser.name, 1, 10)
+        && isValidPhoto(roomUser.photo)
+        && isValidSex(roomUser.sex)
+        && isValidEra(roomUser.era)
+        && isValidString(roomUser.selfIntroduction, 0, 140)
+        && roomUser.unread is bool;
+      }
+
+      allow read: if onlyMembers();
+
+      allow create: if request.auth != null
+      && request.auth.uid in newData().userUids
+      && isValidRoom(newData())
+      && isValidRoomUser(newData().inviteeUser)
+      && isValidRoomUser(newData().invitedUser)
+      && isValidString(newData().lastMessage, 0, 0);
     }
   }
 }

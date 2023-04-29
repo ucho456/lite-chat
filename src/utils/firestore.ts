@@ -24,7 +24,15 @@ import { db } from "@/firebase";
 export const createUser = async (user: User): Promise<void> => {
   const docRef = doc(db, "users", user.uid).withConverter(userConverter);
   await setDoc(docRef, {
-    ...user,
+    uid: user.uid,
+    name: user.name,
+    photo: user.photo,
+    sex: user.sex,
+    era: user.era,
+    selfIntroduction: user.selfIntroduction,
+    life: user.life,
+    roomCount: user.roomCount,
+    blocks: user.blocks,
     lastActionAt: serverTimestamp(),
   });
 };
@@ -32,7 +40,11 @@ export const createUser = async (user: User): Promise<void> => {
 export const updateUser = async (user: User): Promise<void> => {
   const docRef = doc(db, "users", user.uid).withConverter(userConverter);
   await updateDoc(docRef, {
-    ...user,
+    name: user.name,
+    photo: user.photo,
+    sex: user.sex,
+    era: user.era,
+    selfIntroduction: user.selfIntroduction,
     lastActionAt: serverTimestamp(),
   });
 };
@@ -71,7 +83,6 @@ export const createRoom = async (me: User, you: User): Promise<void> => {
 
   const meDocRef = doc(db, "users", me.uid).withConverter(userConverter);
   batch.update(meDocRef, {
-    ...me,
     life: increment(-1),
     roomCount: increment(1),
     lastActionAt: serverTimestamp(),

@@ -69,6 +69,7 @@ const Form = ({ user, room, bodyRef }: Props) => {
           value={textarea.text}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
+          maxLength={500}
         />
         <div className="button-column">
           <IconButton type="submit" onClick={handleSubmit}>

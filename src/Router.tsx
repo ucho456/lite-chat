@@ -18,6 +18,10 @@ import Rooms from "@/components/rooms";
 import Top from "@/components/top";
 
 const IsAuth = () => {
+  /** Loading at the root to persist reactive data to the store */
+  useUser();
+  useRooms();
+
   const dispatch = useAppDispatch();
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((loginUser) => {
@@ -40,10 +44,6 @@ const IsAuth = () => {
 };
 
 const Router = () => {
-  /** Loading at the root to persist reactive data to the store */
-  useUser();
-  useRooms();
-
   return (
     <BrowserRouter>
       <Routes>
