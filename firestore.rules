@@ -117,6 +117,35 @@ service cloud.firestore {
       && isValidRoomUser(newData().inviteeUser)
       && isValidRoomUser(newData().invitedUser)
       && isValidString(newData().lastMessage, 0, 0);
+
+      allow update: if onlyMembers()
+      && isValidRoom(newData())
+      && isValidRoomUser(newData().inviteeUser)
+      && isValidRoomUser(newData().invitedUser)
+      && isValidString(newData().lastMessage, 1, 500);
+
+      function onlyMembersForSubCol() {
+        return request.auth.uid in get(/databases/$(database)/documents/rooms/$(roomId)).data.userUids;
+      }
+
+      match /messages/{messageId} {
+        function isValidMessage(message) {
+          return message.size() == 3
+          && 'uid' in message && message.uid is string
+          && 'text' in message && message.text is string
+          && 'createdAt' in message && message.createdAt is timestamp;
+        }
+        allow read: if onlyMembersForSubCol();
+
+        allow create: if onlyMembersForSubCol()
+        && isValidMessage(newData())
+        && isValidString(newData().uid, 20, 40)
+        && isValidString(newData().text, 1, 500);
+      }
+
+      match /calls/{callId} {
+        allow read, write;
+      }
     }
   }
 }
