@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
+import { Unsubscribe } from "firebase/firestore";
 import { useAppSelector } from "@/store/hooks";
 import Header from "@/components/phone/Header";
 import Videos from "@/components/phone/Videos";
@@ -17,6 +18,14 @@ const Phone = () => {
     iceCandidatePoolSize: 10,
   });
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
+  const [callUnsubscribe, setCallUnsubscribe] = useState<Unsubscribe | null>(
+    null,
+  );
+  const [offerUnsubscribe, setOfferUnsubscribe] = useState<Unsubscribe | null>(
+    null,
+  );
+  const [answerUnsubscribe, setAnswerUnsubscribe] =
+    useState<Unsubscribe | null>(null);
 
   const { roomId } = useParams<{ roomId: string }>();
   const [searchParams] = useSearchParams();
@@ -48,6 +57,9 @@ const Phone = () => {
         callId={callId}
         roomId={roomId}
         you={you}
+        callUnsubscribe={callUnsubscribe}
+        answerUnsubscribe={answerUnsubscribe}
+        offerUnsubscribe={offerUnsubscribe}
       />
       <Videos
         pc={pc}
@@ -57,6 +69,9 @@ const Phone = () => {
         callId={callId}
         setCallId={setCallId}
         roomId={roomId}
+        setCallUnsubscribe={setCallUnsubscribe}
+        setAnswerUnsubscribe={setAnswerUnsubscribe}
+        setOfferUnsubscribe={setOfferUnsubscribe}
       />
     </>
   );

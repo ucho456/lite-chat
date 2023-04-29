@@ -7,7 +7,7 @@ import {
   VolumeUp,
 } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
-import { onSnapshot } from "firebase/firestore";
+import { Unsubscribe, onSnapshot } from "firebase/firestore";
 import useOneTimeMountEffect from "@/hooks/useOneTimeMountEffect";
 import {
   createAnswerCandidate,
@@ -28,6 +28,11 @@ type Props = {
   callId: string | null;
   setCallId: React.Dispatch<React.SetStateAction<string | null>>;
   roomId: string;
+  setCallUnsubscribe: React.Dispatch<React.SetStateAction<Unsubscribe | null>>;
+  setOfferUnsubscribe: React.Dispatch<React.SetStateAction<Unsubscribe | null>>;
+  setAnswerUnsubscribe: React.Dispatch<
+    React.SetStateAction<Unsubscribe | null>
+  >;
 };
 
 /* eslint-disable  @typescript-eslint/no-non-null-assertion */
@@ -39,12 +44,26 @@ const Videos = ({
   callId,
   setCallId,
   roomId,
+  setCallUnsubscribe,
+  setOfferUnsubscribe,
+  setAnswerUnsubscribe,
 }: Props) => {
   const localRef = useRef<HTMLVideoElement>(null);
   const remoteRef = useRef<HTMLVideoElement>(null);
   const { offerCandidateDocRef, answerCandidateDocRef } =
     getCandidateDocRefs(roomId);
   const navigate = useNavigate();
+
+  let callUnsubscribe: Unsubscribe | null = null;
+  let answerUnsubscribe: Unsubscribe | null = null;
+  let offerUnsubscribe: Unsubscribe | null = null;
+  useOneTimeMountEffect(() => {
+    return () => {
+      if (callUnsubscribe) callUnsubscribe();
+      if (offerUnsubscribe) offerUnsubscribe();
+      if (answerUnsubscribe) answerUnsubscribe();
+    };
+  });
 
   const setupSources = async () => {
     if (!roomId) return;
@@ -78,7 +97,7 @@ const Videos = ({
         type: "offer",
       });
       const callColRef = getCallColRef(roomId);
-      onSnapshot(callColRef, (querySnapshot) => {
+      callUnsubscribe = onSnapshot(callColRef, (querySnapshot) => {
         querySnapshot.docChanges().forEach((change) => {
           if (change.type === "added") {
             setCallId(change.doc.id);
@@ -91,7 +110,7 @@ const Videos = ({
           }
         });
       });
-      onSnapshot(answerCandidateDocRef, (snapshot) => {
+      answerUnsubscribe = onSnapshot(answerCandidateDocRef, (snapshot) => {
         if (snapshot.exists() && pc.signalingState !== "closed") {
           const candidate = new RTCIceCandidate(snapshot.data());
           if (candidate) pc.addIceCandidate(candidate);
@@ -116,7 +135,7 @@ const Videos = ({
         sdp: answerDescription.sdp!,
         type: "answer",
       });
-      onSnapshot(offerCandidateDocRef, (snapshot) => {
+      offerUnsubscribe = onSnapshot(offerCandidateDocRef, (snapshot) => {
         if (snapshot.exists() && pc.signalingState !== "closed") {
           const candidate = new RTCIceCandidate(snapshot.data());
           if (candidate) pc.addIceCandidate(candidate);
