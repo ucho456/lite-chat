@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Videocam,
@@ -7,7 +7,7 @@ import {
   VolumeUp,
 } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
-import { Unsubscribe, onSnapshot } from "firebase/firestore";
+import { onSnapshot } from "firebase/firestore";
 import useOneTimeMountEffect from "@/hooks/useOneTimeMountEffect";
 import {
   createAnswerCandidate,
@@ -28,11 +28,6 @@ type Props = {
   callId: string | null;
   setCallId: React.Dispatch<React.SetStateAction<string | null>>;
   roomId: string;
-  setCallUnsubscribe: React.Dispatch<React.SetStateAction<Unsubscribe | null>>;
-  setOfferUnsubscribe: React.Dispatch<React.SetStateAction<Unsubscribe | null>>;
-  setAnswerUnsubscribe: React.Dispatch<
-    React.SetStateAction<Unsubscribe | null>
-  >;
 };
 
 /* eslint-disable  @typescript-eslint/no-non-null-assertion */
@@ -44,26 +39,12 @@ const Videos = ({
   callId,
   setCallId,
   roomId,
-  setCallUnsubscribe,
-  setOfferUnsubscribe,
-  setAnswerUnsubscribe,
 }: Props) => {
   const localRef = useRef<HTMLVideoElement>(null);
   const remoteRef = useRef<HTMLVideoElement>(null);
   const { offerCandidateDocRef, answerCandidateDocRef } =
     getCandidateDocRefs(roomId);
   const navigate = useNavigate();
-
-  let callUnsubscribe: Unsubscribe | null = null;
-  let answerUnsubscribe: Unsubscribe | null = null;
-  let offerUnsubscribe: Unsubscribe | null = null;
-  useOneTimeMountEffect(() => {
-    return () => {
-      if (callUnsubscribe) callUnsubscribe();
-      if (offerUnsubscribe) offerUnsubscribe();
-      if (answerUnsubscribe) answerUnsubscribe();
-    };
-  });
 
   const setupSources = async () => {
     if (!roomId) return;
@@ -84,7 +65,7 @@ const Videos = ({
     localRef.current!.srcObject = _localStream;
     remoteRef.current!.srcObject = remoteStream;
 
-    /** Create offer and watch answer */
+    /** Create offer and call */
     if (caller === "true") {
       pc.onicecandidate = (event) => {
         event.candidate &&
@@ -96,28 +77,9 @@ const Videos = ({
         sdp: offerDescription.sdp ?? "",
         type: "offer",
       });
-      const callColRef = getCallColRef(roomId);
-      callUnsubscribe = onSnapshot(callColRef, (querySnapshot) => {
-        querySnapshot.docChanges().forEach((change) => {
-          if (change.type === "added") {
-            setCallId(change.doc.id);
-          } else if (change.type === "modified") {
-            const call = change.doc.data();
-            if (!pc.currentRemoteDescription && call.answer) {
-              const answerDescription = new RTCSessionDescription(call.answer);
-              pc.setRemoteDescription(answerDescription);
-            }
-          }
-        });
-      });
-      answerUnsubscribe = onSnapshot(answerCandidateDocRef, (snapshot) => {
-        if (snapshot.exists() && pc.signalingState !== "closed") {
-          const candidate = new RTCIceCandidate(snapshot.data());
-          if (candidate) pc.addIceCandidate(candidate);
-        }
-      });
     }
 
+    /** Create answer and update call */
     if (callId && !caller) {
       pc.onicecandidate = (event) => {
         event.candidate &&
@@ -135,12 +97,6 @@ const Videos = ({
         sdp: answerDescription.sdp!,
         type: "answer",
       });
-      offerUnsubscribe = onSnapshot(offerCandidateDocRef, (snapshot) => {
-        if (snapshot.exists() && pc.signalingState !== "closed") {
-          const candidate = new RTCIceCandidate(snapshot.data());
-          if (candidate) pc.addIceCandidate(candidate);
-        }
-      });
     }
 
     pc.onconnectionstatechange = () => {
@@ -153,6 +109,51 @@ const Videos = ({
   useOneTimeMountEffect(() => {
     setupSources();
   });
+
+  /** Watch call and answerCandidate */
+  useEffect(() => {
+    if (caller !== "true") return;
+    const callColRef = getCallColRef(roomId);
+    const callUnsubscribe = onSnapshot(callColRef, (querySnapshot) => {
+      querySnapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          setCallId(change.doc.id);
+        } else if (change.type === "modified") {
+          const call = change.doc.data();
+          if (!pc.currentRemoteDescription && call.answer) {
+            const answerDescription = new RTCSessionDescription(call.answer);
+            pc.setRemoteDescription(answerDescription);
+          }
+        }
+      });
+    });
+    const answerUnsubscribe = onSnapshot(answerCandidateDocRef, (snapshot) => {
+      if (snapshot.exists() && pc.signalingState !== "closed") {
+        const candidate = new RTCIceCandidate(snapshot.data());
+        if (candidate) pc.addIceCandidate(candidate);
+      }
+    });
+    return () => {
+      callUnsubscribe();
+      answerUnsubscribe();
+    };
+  }, []);
+
+  /** Watch offerCandidate */
+  useEffect(() => {
+    if (!callId) return;
+    const offerUnsubscribe = onSnapshot(offerCandidateDocRef, (snapshot) => {
+      if (snapshot.exists() && pc.signalingState !== "closed") {
+        pc.oniceconnectionstatechange = () => {
+          if (pc.iceConnectionState === "connected") {
+            const candidate = new RTCIceCandidate(snapshot.data());
+            if (candidate) pc.addIceCandidate(candidate);
+          }
+        };
+      }
+    });
+    return () => offerUnsubscribe();
+  }, []);
 
   const [isVideo, setIsVideo] = useState(true);
   const handleToggleLocalVideo = () => {
