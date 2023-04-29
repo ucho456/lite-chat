@@ -7,6 +7,7 @@ import { useAppSelector } from "@/store/hooks";
 import { updateUser } from "@/utils/firestore";
 import ProfileForm from "@/components/commons/ProfileForm";
 import "./DialogProfileEdit.scss";
+import { uploadImageAndGetUrl } from "@/utils/storage";
 
 const DialogProfileEdit = () => {
   /** Dialog switch */
@@ -16,33 +17,40 @@ const DialogProfileEdit = () => {
 
   /** User form */
   const user = useAppSelector((state) => state.user.user);
-  const { control, handleSubmit, reset } = useForm<InputUser>({
-    shouldUnregister: false,
-    defaultValues: useMemo(() => {
-      if (!user) return;
-      return {
-        name: user.name,
-        photo: user.photo,
-        sex: user.sex,
-        era: user.era,
-        selfIntroduction: user.selfIntroduction,
-      };
-    }, [user]),
+  const [inputUser, setInputUser] = useState<InputUser>({
+    name: "",
+    photo: null,
+    sex: "man",
+    era: "early 20s",
+    selfIntroduction: "",
   });
   useEffect(() => {
     if (!user) return;
-    reset(user);
-  }, [user, reset]);
+    setInputUser({
+      name: user.name,
+      photo: user.photo,
+      sex: user.sex,
+      era: user.era,
+      selfIntroduction: user.selfIntroduction,
+    });
+  }, [user]);
 
   /** Update user profile */
   const [loading, setLoading] = useState(false);
   const { openSnackbar } = useSnackbar();
-  const handleUpdateUser: SubmitHandler<InputUser> = async (
-    inputUser: InputUser,
-  ) => {
+  const handleUpdateUser = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ): Promise<void> => {
+    e.preventDefault();
     if (!user) return;
     try {
       setLoading(true);
+      if (inputUser.photo && !inputUser.photo.match("^https?://.+$")) {
+        inputUser.photo = await uploadImageAndGetUrl(
+          `users/${user.uid}`,
+          inputUser.photo,
+        );
+      }
       await updateUser({ ...user, ...inputUser });
       openSnackbar("プロフィールを更新しました。", "success");
     } catch {
@@ -61,20 +69,16 @@ const DialogProfileEdit = () => {
         <div className="name">{user.name}</div>
       </div>
       <Dialog className="dialog-profile-edit" open={open} onClose={handleClose}>
-        <ProfileForm
-          control={control}
-          handleFunction={handleUpdateUser}
-          handleSubmit={handleSubmit}
+        <ProfileForm inputUser={inputUser} setInputUser={setInputUser} />
+        <LoadingButton
+          loading={loading}
+          size="large"
+          type="submit"
+          variant="contained"
+          onClick={handleUpdateUser}
         >
-          <LoadingButton
-            loading={loading}
-            size="large"
-            type="submit"
-            variant="contained"
-          >
-            プロフィールを更新
-          </LoadingButton>
-        </ProfileForm>
+          プロフィールを更新
+        </LoadingButton>
       </Dialog>
     </div>
   );

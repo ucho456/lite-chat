@@ -3,7 +3,7 @@
     display: grid;
     gap: 20px;
     grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: 180px 140px 100px;
+    grid-template-rows: 180px 140px;
     text-align: center;
     .me-row {
       grid-row: 1 / 2;
@@ -26,6 +26,9 @@
               cursor: pointer;
               opacity: 0.6;
             }
+          }
+          input {
+            display: none;
           }
         }
         .name-column {
@@ -50,9 +53,6 @@
       margin: 0 auto;
       width: 93%;
       grid-row: 2 / 3;
-    }
-    .button-row {
-      grid-row: 3 / 4;
     }
   }
 }
