@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { LoadingButton } from "@mui/lab";
 import { Button, Dialog } from "@mui/material";
@@ -19,15 +18,12 @@ const DialogSignup = () => {
   const handleClose = () => setOpen(false);
 
   /** User form */
-  const { control, handleSubmit } = useForm<InputUser>({
-    shouldUnregister: false,
-    defaultValues: {
-      name: "",
-      photo: null,
-      sex: "man",
-      era: "early 20s",
-      selfIntroduction: "",
-    },
+  const [inputUser, setInputUser] = useState<InputUser>({
+    name: "",
+    photo: null,
+    sex: "man",
+    era: "early 20s",
+    selfIntroduction: "",
   });
 
   /** Sign up */
@@ -36,9 +32,10 @@ const DialogSignup = () => {
   const { getUserDoc } = useUser();
   const { openSnackbar } = useSnackbar();
   const navigate = useNavigate();
-  const handleSignup: SubmitHandler<InputUser> = async (
-    inputUser: InputUser,
+  const handleSignup = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
+    e.preventDefault();
     try {
       setLoading(true);
       const userCredential = await signInWithPopup(auth, googleAuthProvider);
@@ -70,22 +67,18 @@ const DialogSignup = () => {
         新規登録
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <ProfileForm
-          control={control}
-          handleFunction={handleSignup}
-          handleSubmit={handleSubmit}
+        <ProfileForm inputUser={inputUser} setInputUser={setInputUser} />
+        <LoadingButton
+          style={{ backgroundColor: "#4285f4", textTransform: "none" }}
+          loading={loading}
+          startIcon={<img src="/google_icon.png" />}
+          size="large"
+          type="submit"
+          variant="contained"
+          onClick={handleSignup}
         >
-          <LoadingButton
-            style={{ backgroundColor: "#4285f4", textTransform: "none" }}
-            loading={loading}
-            startIcon={<img src="/google_icon.png" />}
-            size="large"
-            type="submit"
-            variant="contained"
-          >
-            Googleアカウントで新規登録
-          </LoadingButton>
-        </ProfileForm>
+          Googleアカウントで新規登録
+        </LoadingButton>
       </Dialog>
     </>
   );
