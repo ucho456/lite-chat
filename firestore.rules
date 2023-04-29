@@ -1,9 +1,188 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if
-          request.time < timestamp.date(2023, 5, 30);
+
+    function onlyMe(userUid) {
+      return request.auth != null && userUid == request.auth.uid;
+    }
+
+    function newData() {
+      return request.resource.data;
+    }
+
+    function oldData() {
+      return resource.data;
+    }
+
+    function isValidString(v, min, max) {
+      return min <= v.size() && v.size() <= max;
+    }
+
+    function isValidInt(v, min, max) {
+      return min <= v && v <= max;
+    }
+
+    function isValidPhoto(v) {
+      return v == null || v.matches('^https?://.+$');
+    }
+
+    function isValidSex(v) {
+      return v == 'man' || v == 'woman';
+    }
+
+    function isValidEra(v) {
+      return v == 'under 10' || v == 'early teens' || v == 'late teens' || v == 'early 20s' || v == 'late 20s' || v == 'early 30s' || v == 'late 30s' || v == 'early 40s' || v == 'late 40s' || v == 'early 50s' || v == 'late 50s' || v == 'early 60s' || v == 'late 60s' || v == 'over 70s';
+    }
+
+    match /users/{userUid} {
+      function isValidUser(user) {
+        return user.size() == 9
+        && 'name' in user && user.name is string
+        && 'photo' in user && (user.photo is string || user.photo == null)
+        && 'sex' in user && user.sex is string
+        && 'era' in user && user.era is string
+        && 'selfIntroduction' in user && user.selfIntroduction is string
+        && 'life' in user && user.life is number
+        && 'roomCount' in user && user.roomCount is number
+        && 'blocks' in user && user.blocks is list
+        && 'lastActionAt' in user && user.lastActionAt is timestamp;
+      }
+
+      allow read;
+
+      allow create: if onlyMe(userUid)
+      && isValidUser(newData())
+      && isValidString(newData().name, 1, 10)
+      && isValidPhoto(newData().photo)
+      && isValidSex(newData().sex)
+      && isValidEra(newData().era)
+      && isValidString(newData().selfIntroduction, 0, 140)
+      && isValidInt(newData().life, 0, 3)
+      && isValidInt(newData().roomCount, 0, 30);
+
+      allow update: if
+      ( // Update me
+        onlyMe(userUid)
+        && isValidUser(newData())
+        && isValidString(newData().name, 1, 10)
+        && isValidPhoto(newData().photo)
+        && isValidSex(newData().sex)
+        && isValidEra(newData().era)
+        && isValidString(newData().selfIntroduction, 0, 140)
+        && isValidInt(newData().life, 0, 3)
+        && isValidInt(newData().roomCount, 0, 30)
+      )
+      ||
+      ( // When creating a room, allow only the update of the opponent user's roomCount by incrementing it by 1.
+        request.auth != null
+        && isValidUser(newData())
+        && newData().name == oldData().name
+        && newData().photo == oldData().photo
+        && newData().sex == oldData().sex
+        && newData().era == oldData().era
+        && newData().selfIntroduction == oldData().selfIntroduction
+        && newData().life == oldData().life
+        && isValidInt(newData().roomCount, 0, 30)
+      );
+    }
+
+    match /rooms/{roomId} {
+      function onlyMembers() {
+        return request.auth != null && request.auth.uid in resource.data.userUids;
+      }
+      function isValidRoom(room) {
+        return room.size() == 6
+        && 'inviteeUser' in room && room.inviteeUser is map
+        && 'invitedUser' in room && room.invitedUser is map
+        && 'userUids' in room && room.userUids is list
+        && 'isBlock' in room && room.isBlock is bool
+        && 'lastMessage' in room && room.lastMessage is string
+        && 'lastActionAt' in room && room.lastActionAt is timestamp;
+      }
+      function isValidRoomUser(roomUser) {
+        return isValidString(roomUser.uid, 20, 40)
+        && isValidString(roomUser.name, 1, 10)
+        && isValidPhoto(roomUser.photo)
+        && isValidSex(roomUser.sex)
+        && isValidEra(roomUser.era)
+        && isValidString(roomUser.selfIntroduction, 0, 140)
+        && roomUser.unread is bool;
+      }
+
+      allow read: if onlyMembers();
+
+      allow create: if request.auth != null
+      && request.auth.uid in newData().userUids
+      && isValidRoom(newData())
+      && isValidRoomUser(newData().inviteeUser)
+      && isValidRoomUser(newData().invitedUser)
+      && isValidString(newData().lastMessage, 0, 0);
+
+      allow update: if onlyMembers()
+      && isValidRoom(newData())
+      && isValidRoomUser(newData().inviteeUser)
+      && isValidRoomUser(newData().invitedUser)
+      && isValidString(newData().lastMessage, 1, 500);
+
+      function onlyMembersForSubCol() {
+        return request.auth != null && request.auth.uid in get(/databases/$(database)/documents/rooms/$(roomId)).data.userUids;
+      }
+
+      match /messages/{messageId} {
+        function isValidMessage(message) {
+          return message.size() == 3
+          && 'uid' in message && message.uid is string
+          && 'text' in message && message.text is string
+          && 'createdAt' in message && message.createdAt is timestamp;
+        }
+        allow read: if onlyMembersForSubCol();
+
+        allow create: if onlyMembersForSubCol()
+        && isValidMessage(newData())
+        && isValidString(newData().uid, 20, 40)
+        && isValidString(newData().text, 1, 500);
+      }
+
+      match /calls/{callId} {
+        function isValidCall(call) {
+          return call.size() == 2
+          && 'offer' in call && (call.offer is map || call.offer == null)
+          && 'answer' in call && (call.answer is map || call.answer == null);
+        }
+        allow read: if onlyMembersForSubCol();
+
+        allow create: if onlyMembersForSubCol()
+        && isValidCall(newData());
+
+        allow update: if onlyMembersForSubCol()
+        && isValidCall(newData());
+
+        allow delete: if onlyMembersForSubCol();
+      }
+
+      function isValidCandidates(candidate) {
+        return candidate.size() == 4
+        && 'candidate' in candidate && candidate.candidate is string
+        && 'sdpMid' in candidate && candidate.sdpMid is string
+        && 'sdpMLineIndex' in candidate && candidate.sdpMLineIndex is int
+        && 'usernameFragment' in candidate && candidate.usernameFragment is string;
+      }
+      match /offerCandidates/{offerCandidateId} {
+        allow read: if onlyMembersForSubCol();
+        allow create: if onlyMembersForSubCol()
+        && isValidCandidates(newData());
+        allow update: if onlyMembersForSubCol()
+        && isValidCandidates(newData());
+        allow delete: if onlyMembersForSubCol();
+      }
+      match /answerCandidates/{answerCandidateId} {
+        allow read: if onlyMembersForSubCol();
+        allow create: if onlyMembersForSubCol()
+        && isValidCandidates(newData());
+        allow update: if onlyMembersForSubCol()
+        && isValidCandidates(newData());
+        allow delete: if onlyMembersForSubCol();
+      }
     }
   }
 }

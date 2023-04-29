@@ -2,6 +2,7 @@ import { Component, ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { ChevronLeft } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
+import { Unsubscribe } from "firebase/firestore";
 import { deletePhoneDocs } from "@/utils/firestore";
 import DialogProfile from "@/components/commons/DialogProfile";
 import "./Header.scss";
@@ -12,6 +13,9 @@ type Props = {
   callId: string | null;
   roomId: string;
   you: RoomUser;
+  callUnsubscribe: Unsubscribe | null;
+  offerUnsubscribe: Unsubscribe | null;
+  answerUnsubscribe: Unsubscribe | null;
 };
 
 class Header extends Component<Props> {
@@ -21,6 +25,10 @@ class Header extends Component<Props> {
     if (this.props.callId) {
       deletePhoneDocs(this.props.roomId, this.props.callId);
     }
+    console.log("呼ばれた？");
+    if (this.props.callUnsubscribe) this.props.callUnsubscribe();
+    if (this.props.offerUnsubscribe) this.props.offerUnsubscribe();
+    if (this.props.answerUnsubscribe) this.props.answerUnsubscribe();
   }
   render(): ReactNode {
     return (
