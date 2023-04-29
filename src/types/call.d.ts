@@ -9,8 +9,8 @@ type Answer = {
 };
 
 type Call = {
-  offer: null | Offer;
-  answer: null | Answer;
+  offer: Offer | null;
+  answer: Answer | null;
 };
 
 type Candidate = {

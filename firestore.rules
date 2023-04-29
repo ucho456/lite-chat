@@ -125,7 +125,7 @@ service cloud.firestore {
       && isValidString(newData().lastMessage, 1, 500);
 
       function onlyMembersForSubCol() {
-        return request.auth.uid in get(/databases/$(database)/documents/rooms/$(roomId)).data.userUids;
+        return request.auth != null && request.auth.uid in get(/databases/$(database)/documents/rooms/$(roomId)).data.userUids;
       }
 
       match /messages/{messageId} {
@@ -144,7 +144,44 @@ service cloud.firestore {
       }
 
       match /calls/{callId} {
-        allow read, write;
+        function isValidCall(call) {
+          return call.size() == 2
+          && 'offer' in call && (call.offer is map || call.offer == null)
+          && 'answer' in call && (call.answer is map || call.answer == null);
+        }
+        allow read: if onlyMembersForSubCol();
+
+        allow create: if onlyMembersForSubCol()
+        && isValidCall(newData());
+
+        allow update: if onlyMembersForSubCol()
+        && isValidCall(newData());
+
+        allow delete: if onlyMembersForSubCol();
+      }
+
+      function isValidCandidates(candidate) {
+        return candidate.size() == 4
+        && 'candidate' in candidate && candidate.candidate is string
+        && 'sdpMid' in candidate && candidate.sdpMid is string
+        && 'sdpMLineIndex' in candidate && candidate.sdpMLineIndex is int
+        && 'usernameFragment' in candidate && candidate.usernameFragment is string;
+      }
+      match /offerCandidates/{offerCandidateId} {
+        allow read: if onlyMembersForSubCol();
+        allow create: if onlyMembersForSubCol()
+        && isValidCandidates(newData());
+        allow update: if onlyMembersForSubCol()
+        && isValidCandidates(newData());
+        allow delete: if onlyMembersForSubCol();
+      }
+      match /answerCandidates/{answerCandidateId} {
+        allow read: if onlyMembersForSubCol();
+        allow create: if onlyMembersForSubCol()
+        && isValidCandidates(newData());
+        allow update: if onlyMembersForSubCol()
+        && isValidCandidates(newData());
+        allow delete: if onlyMembersForSubCol();
       }
     }
   }
