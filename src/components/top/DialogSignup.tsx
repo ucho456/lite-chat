@@ -35,7 +35,7 @@ const DialogSignup = () => {
   const navigate = useNavigate();
   const handleSignup = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
+  ): Promise<void> => {
     e.preventDefault();
     try {
       setLoading(true);
