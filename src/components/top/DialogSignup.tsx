@@ -8,6 +8,7 @@ import useUser from "@/hooks/useUser";
 import { useAppDispatch } from "@/store/hooks";
 import { signIn } from "@/store/modules/authSlice";
 import { createUser } from "@/utils/firestore";
+import { uploadImageAndGetUrl } from "@/utils/storage";
 import { auth, googleAuthProvider } from "@/firebase";
 import ProfileForm from "@/components/commons/ProfileForm";
 
@@ -39,13 +40,20 @@ const DialogSignup = () => {
     try {
       setLoading(true);
       const userCredential = await signInWithPopup(auth, googleAuthProvider);
-      dispatch(signIn(userCredential.user.uid));
-      const user = await getUserDoc(userCredential.user.uid);
+      const uid = userCredential.user.uid;
+      dispatch(signIn(uid));
+      const user = await getUserDoc(uid);
       if (user) {
         openSnackbar("サインインしました。", "success");
       } else {
+        if (inputUser.photo && !inputUser.photo.match("^https?://.+$")) {
+          inputUser.photo = await uploadImageAndGetUrl(
+            `users/${uid}`,
+            inputUser.photo,
+          );
+        }
         await createUser({
-          uid: userCredential.user.uid,
+          uid: uid,
           ...inputUser,
           life: 3,
           roomCount: 0,

@@ -20,12 +20,14 @@ services:
       - ./.firebaserc:/opt/firebase/.firebaserc
       - ./firebase.json:/opt/firebase/firebase.json
       - ./firestore.rules:/opt/firebase/firestore.rules
+      - ./storage.rules:/opt/firebase/storage.rules
       - ./docker/firebase/bin/:/root/.cache:cached
       - ./docker/firebase/config/:/root/.config:cached
       - ./docker/firebase/src:/opt/firebase/
       - ./seed:/opt/firebase/seed
       - ./functions:/opt/firebase/functions
     ports:
+      - 9199:9199
       - 9099:9099
       - 8080:8080
       - 5050:5050
