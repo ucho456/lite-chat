@@ -35,7 +35,7 @@ const UserSearchDialog = ({ rooms }: Props) => {
   /** Search form */
   const { control, handleSubmit } = useForm<InputCondition>({
     shouldUnregister: false,
-    defaultValues: { sex: "man", era: "early 20's" },
+    defaultValues: { sex: "man", era: "early 20s" },
   });
 
   /** Matching */

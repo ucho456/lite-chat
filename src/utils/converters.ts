@@ -4,20 +4,32 @@ import {
   QueryDocumentSnapshot,
 } from "firebase/firestore";
 
-export const messageConverter: FirestoreDataConverter<Message> = {
-  toFirestore(m: Message): DocumentData {
+export const userConverter: FirestoreDataConverter<User> = {
+  toFirestore(u: User): DocumentData {
     return {
-      uid: m.uid,
-      text: m.text,
-      createdAt: m.createdAt,
+      name: u.name,
+      photo: u.photo,
+      sex: u.sex,
+      era: u.era,
+      selfIntroduction: u.selfIntroduction,
+      life: u.life,
+      roomCount: u.roomCount,
+      blocks: u.blocks,
+      lastActionAt: u.lastActionAt,
     };
   },
-  fromFirestore(snapshot: QueryDocumentSnapshot): Message {
+  fromFirestore(snapshot: QueryDocumentSnapshot): User {
     const d = snapshot.data();
     return {
-      id: snapshot.id,
-      uid: d.uid,
-      text: d.text,
+      uid: snapshot.id,
+      name: d.name,
+      photo: d.photo,
+      sex: d.sex,
+      era: d.era,
+      selfIntroduction: d.selfIntroduction,
+      life: d.life,
+      blocks: d.blocks,
+      roomCount: d.roomCount,
     };
   },
 };
@@ -42,6 +54,24 @@ export const roomConverter: FirestoreDataConverter<Room> = {
       userUids: d.userUids,
       isBlock: d.isBlock,
       lastMessage: d.lastMessage,
+    };
+  },
+};
+
+export const messageConverter: FirestoreDataConverter<Message> = {
+  toFirestore(m: Message): DocumentData {
+    return {
+      uid: m.uid,
+      text: m.text,
+      createdAt: m.createdAt,
+    };
+  },
+  fromFirestore(snapshot: QueryDocumentSnapshot): Message {
+    const d = snapshot.data();
+    return {
+      id: snapshot.id,
+      uid: d.uid,
+      text: d.text,
     };
   },
 };
@@ -102,33 +132,3 @@ export const answerCandidateConverter: FirestoreDataConverter<AnswerCandidate> =
       };
     },
   };
-
-export const userConverter: FirestoreDataConverter<User> = {
-  toFirestore(u: User): DocumentData {
-    return {
-      name: u.name,
-      photo: u.photo,
-      sex: u.sex,
-      era: u.era,
-      selfIntroduction: u.selfIntroduction,
-      life: u.life,
-      roomCount: u.roomCount,
-      blocks: u.blocks,
-      lastActionAt: u.lastActionAt,
-    };
-  },
-  fromFirestore(snapshot: QueryDocumentSnapshot): User {
-    const d = snapshot.data();
-    return {
-      uid: snapshot.id,
-      name: d.name,
-      photo: d.photo,
-      sex: d.sex,
-      era: d.era,
-      selfIntroduction: d.selfIntroduction,
-      life: d.life,
-      blocks: d.blocks,
-      roomCount: d.roomCount,
-    };
-  },
-};

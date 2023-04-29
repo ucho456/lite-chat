@@ -1,9 +1,67 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if
-          request.time < timestamp.date(2023, 5, 30);
+
+    function onlyMe(userUid) {
+      return request.auth != null && userUid == request.auth.uid;
+    }
+
+    function newData() {
+      return request.resource.data;
+    }
+
+    function oldData() {
+      return resource.data;
+    }
+
+    function isValidString(v, min, max) {
+      return min <= v.size() && v.size() <= max;
+    }
+
+    function isValidInt(v, min, max) {
+      return min <= v && v <= max;
+    }
+
+    function isValidPhoto(v) {
+      return v == null || v.matches('^https?://.+$');
+    }
+
+    function isValidSex(v) {
+      return v == 'man' || v == 'woman';
+    }
+
+    function isValidEra(v) {
+      return v == 'under 10' || v == 'early teens' || v == 'late teens' || v == 'early 20s' || v == 'late 20s' || v == 'early 30s' || v == 'late 30s' || v == 'early 40s' || v == 'late 40s' || v == 'early 50s' || v == 'late 50s' || v == 'early 60s' || v == 'late 60s' || v == 'over 70s';
+    }
+
+    match /users/{userUid} {
+      function isValidUser(user) {
+        return user.size() == 9
+        && 'name' in user && user.name is string
+        && 'photo' in user && (user.photo is string || user.photo == null)
+        && 'sex' in user && user.sex is string
+        && 'era' in user && user.era is string
+        && 'selfIntroduction' in user && user.selfIntroduction is string
+        && 'life' in user && user.life is number
+        && 'roomCount' in user && user.roomCount is number
+        && 'blocks' in user && user.blocks is list
+        && 'lastActionAt' in user && user.lastActionAt is timestamp;
+      }
+      allow read;
+
+      allow create: if onlyMe(userUid)
+      && isValidUser(newData())
+      && isValidString(newData().name, 1, 10)
+      && isValidPhoto(newData().photo)
+      && isValidSex(newData().sex)
+      && isValidEra(newData().era)
+      && isValidString(newData().selfIntroduction, 0, 140)
+      && isValidInt(newData().life, 0, 3)
+      && isValidInt(newData().roomCount, 0, 30);
+    }
+
+    match /rooms/{roomId} {
+      allow read, write;
     }
   }
 }
