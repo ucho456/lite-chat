@@ -1,9 +1,7 @@
 type Sex = "man" | "woman";
 
 type Era =
-  | "under 10"
-  | "early teens"
-  | "late teens"
+  | "over 18"
   | "early 20's"
   | "late 20's"
   | "early 30's"

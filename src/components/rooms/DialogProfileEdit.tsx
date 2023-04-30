@@ -69,15 +69,17 @@ const DialogProfileEdit = () => {
       </div>
       <Dialog className="dialog-profile-edit" open={open} onClose={handleClose}>
         <ProfileForm inputUser={inputUser} setInputUser={setInputUser} />
-        <LoadingButton
-          loading={loading}
-          size="large"
-          type="submit"
-          variant="contained"
-          onClick={handleUpdateUser}
-        >
-          プロフィールを更新
-        </LoadingButton>
+        <div style={{ marginBottom: "30px", textAlign: "center" }}>
+          <LoadingButton
+            loading={loading}
+            size="large"
+            type="submit"
+            variant="contained"
+            onClick={handleUpdateUser}
+          >
+            プロフィールを更新
+          </LoadingButton>
+        </div>
       </Dialog>
     </div>
   );
