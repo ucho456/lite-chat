@@ -1,19 +1,21 @@
 import { useState } from "react";
 import {
+  Button,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import "./DialogTermOfUse.scss";
+import "./DialogTermsOfService.scss";
 
-const DialogTermOfUse = () => {
+const DialogTermsOfService = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   return (
     <>
-      <span className="dialog-term-of-use" onClick={handleOpen}>
+      <span className="dialog-terms-of-service" onClick={handleOpen}>
         利用規約に同意する
       </span>
       <Dialog open={open} onClose={handleClose}>
@@ -49,9 +51,12 @@ const DialogTermOfUse = () => {
             </div>
           </DialogContentText>
         </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>閉じる</Button>
+        </DialogActions>
       </Dialog>
     </>
   );
 };
 
-export default DialogTermOfUse;
+export default DialogTermsOfService;

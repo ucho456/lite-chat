@@ -11,7 +11,7 @@ import { createUser } from "@/utils/firestore";
 import { uploadImageAndGetUrl } from "@/utils/storage";
 import { auth, googleAuthProvider } from "@/firebase";
 import ProfileForm from "@/components/commons/ProfileForm";
-import DialogTermOfUse from "@/components/top/DialogTermOfUse";
+import DialogTermsOfService from "@/components/top/DialogTermsOfService";
 
 const DialogSignup = () => {
   /** Dialog switch */
@@ -84,7 +84,7 @@ const DialogSignup = () => {
               checked={isChecked}
               onChange={(e) => setIsChecked(e.target.checked)}
             />
-            <DialogTermOfUse />
+            <DialogTermsOfService />
           </div>
           <div style={{ marginBottom: "30px", textAlign: "center" }}>
             <LoadingButton
