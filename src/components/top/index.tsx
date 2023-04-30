@@ -38,24 +38,39 @@ const Top = () => {
 
   return (
     <div className="top">
-      <div className="container">
-        <div className="logo-row">
-          <img src="/logo.png" />
+      <header>
+        <div className="container">
+          <img src="https://placehold.jp/150x50.png" />
         </div>
-        <div className="discription-row">
-          <p>
-            登録・インストール不要。チャットや通話を気軽に楽しめるサービスです。さぁ始めましょう！
-          </p>
+      </header>
+      <section className="hero">
+        <div className="container">
+          <div className="left">
+            <div className="block">
+              <h2>インストール不要のチャットサービス</h2>
+              <p>
+                Lite
+                chatはチャットやビデオ通話を気軽に楽しめる無料サービスです。
+              </p>
+              <p>さぁ始めましょう！</p>
+            </div>
+            <div className="buttons">
+              <DialogSignup />
+              <LoadingButton
+                className="sign-in-button"
+                loading={loading}
+                variant="contained"
+                onClick={handleSignIn}
+              >
+                サインイン
+              </LoadingButton>
+            </div>
+          </div>
+          <div className="right">
+            <img src="/hero.png" alt="hero image" />
+          </div>
         </div>
-        <DialogSignup />
-        <LoadingButton
-          loading={loading}
-          variant="contained"
-          onClick={handleSignIn}
-        >
-          サインイン
-        </LoadingButton>
-      </div>
+      </section>
     </div>
   );
 };

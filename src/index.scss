@@ -9,11 +9,16 @@ $headerHeight: 50px;
 $pageMaxWidth: 1000px;
 
 $pc: 1024px;
-$tab: 680px;
+$tab: 768px;
 $sp: 480px;
 
-@mixin pc {
-  @media (max-width: ($pc)) {
+@mixin w1280 {
+  @media (max-width: 1280px) {
+    @content;
+  }
+}
+@mixin w1024 {
+  @media (max-width: 1024px) {
     @content;
   }
 }
