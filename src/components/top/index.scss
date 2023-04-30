@@ -31,9 +31,17 @@
       height: 100%;
       .left {
         height: 100%;
-        .block {
+        .text {
           margin-top: 50%;
           text-align: center;
+          h2 {
+            .desktop {
+              display: inline-block;
+            }
+            .mobile {
+              display: none;
+            }
+          }
           p {
             margin-top: 10px;
           }
@@ -64,7 +72,7 @@
     @include w1280() {
       .container {
         .left {
-          .block {
+          .text {
             margin-top: 25%;
           }
         }
@@ -79,7 +87,7 @@
       height: calc(70vh - $headerHeight);
       .container {
         .left {
-          .block {
+          .text {
             h2 {
               font-size: 20px;
             }
@@ -95,10 +103,15 @@
       .container {
         grid-template-columns: 200px 170px;
         .left {
-          .block {
-            margin-top: 60px;
+          .text {
+            margin-top: 50px;
             h2 {
-              font-size: 22px;
+              .desktop {
+                display: none;
+              }
+              .mobile {
+                display: inline-block;
+              }
             }
           }
           .buttons {

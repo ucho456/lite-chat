@@ -46,8 +46,17 @@ const Top = () => {
       <section className="hero">
         <div className="container">
           <div className="left">
-            <div className="block">
-              <h2>インストール不要のチャットサービス</h2>
+            <div className="text">
+              <h2>
+                <span className="desktop">
+                  インストール不要のチャットサービス
+                </span>
+                <span className="mobile">
+                  インストール不要の
+                  <br />
+                  チャットサービス
+                </span>
+              </h2>
               <p>
                 Lite
                 chatはチャットやビデオ通話を気軽に楽しめる無料サービスです。
