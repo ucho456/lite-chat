@@ -23,7 +23,7 @@ const DialogSignup = () => {
     name: "",
     photo: null,
     sex: "man",
-    era: "early 20s",
+    era: "early 20's",
     selfIntroduction: "",
   });
 

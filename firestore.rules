@@ -31,7 +31,7 @@ service cloud.firestore {
     }
 
     function isValidEra(v) {
-      return v == 'under 10' || v == 'early teens' || v == 'late teens' || v == 'early 20s' || v == 'late 20s' || v == 'early 30s' || v == 'late 30s' || v == 'early 40s' || v == 'late 40s' || v == 'early 50s' || v == 'late 50s' || v == 'early 60s' || v == 'late 60s' || v == 'over 70s';
+      return v == 'late teens' || v == 'early 20\'s' || v == 'late 20\'s' || v == 'early 30\'s' || v == 'late 30\'s' || v == 'early 40\'s' || v == 'late 40\'s' || v == 'early 50\'s' || v == 'late 50\'s' || v == 'early 60\'s' || v == 'late 60\'s' || v == 'over 70\'s';
     }
 
     match /users/{userUid} {
