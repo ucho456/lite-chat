@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { Button } from "@mui/material";
 import { useAppSelector } from "@/store/hooks";
 import { readMessage } from "@/utils/firestore";
 import Form from "@/components/room/Form";
@@ -39,7 +40,18 @@ const Room = () => {
   /** Messages body ref */
   const bodyRef = useRef<HTMLDivElement>(null);
 
-  if (!me || !you || !user || !room) return <></>;
+  const navigate = useNavigate();
+  const handleNavigateRooms = (): void => navigate("/rooms");
+
+  if (!me || !you || !user || !room)
+    return (
+      <div className="room-blocked">
+        <div>相手ユーザーにブロックされました。</div>
+        <Button variant="contained" onClick={handleNavigateRooms}>
+          もどる
+        </Button>
+      </div>
+    );
   return (
     <>
       <Header me={me} you={you} />
