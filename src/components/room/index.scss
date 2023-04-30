@@ -3,3 +3,11 @@
 $headerHeight: 50px;
 $footerHeight: 70px;
 $bodyHeight: calc(100vh - ($headerHeight + $footerHeight));
+
+.room-blocked {
+  margin-top: 30px;
+  text-align: center;
+  button {
+    margin-top: 30px;
+  }
+}
