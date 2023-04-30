@@ -86,7 +86,7 @@ const ProfileForm = ({ inputUser, setInputUser }: Props) => {
                   label="性別"
                   labelId="sex-label"
                   size="small"
-                  sx={{ width: "70px" }}
+                  sx={{ width: "70px", fontSize: "10px" }}
                   value={inputUser.sex}
                   onChange={(e) =>
                     setInputUser({ ...inputUser, sex: e.target.value as Sex })
@@ -104,7 +104,7 @@ const ProfileForm = ({ inputUser, setInputUser }: Props) => {
                   label="年代"
                   labelId="era-label"
                   size="small"
-                  sx={{ width: "100px" }}
+                  sx={{ width: "100px", fontSize: "10px" }}
                   value={inputUser.era}
                   onChange={(e) =>
                     setInputUser({ ...inputUser, era: e.target.value as Era })

@@ -1,0 +1,7 @@
+@import "./index.scss";
+
+.dialog-terms-of-service {
+  font-size: 12px;
+  color: #0099ff;
+  @include hover();
+}

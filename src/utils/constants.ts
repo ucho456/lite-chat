@@ -1,7 +1,5 @@
 export const ERAS = [
-  { value: "under 10", name: "10代以下" },
-  { value: "early teens", name: "10代前半" },
-  { value: "late teens", name: "10代後半" },
+  { value: "over 18", name: "18歳以上" },
   { value: "early 20's", name: "20代前半" },
   { value: "late 20's", name: "20代後半" },
   { value: "early 30's", name: "30代前半" },
