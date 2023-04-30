@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ExpandMore } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Typography,
+} from "@mui/material";
 import { signInWithPopup } from "firebase/auth";
 import { useSnackbar } from "@/contexts/Snackbar";
 import useUser from "@/hooks/useUser";
@@ -26,6 +33,28 @@ const Top = () => {
       title: "すぐにマッチ",
       text: "テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト",
       photo: "https://placehold.jp/300x300.png",
+    },
+  ];
+  const QAs = [
+    {
+      q: "ブラウザで動きません",
+      a: "対応していない可能性があります。",
+    },
+    {
+      q: "ブラウザで動きません1",
+      a: "対応していない可能性があります。",
+    },
+    {
+      q: "ブラウザで動きません2",
+      a: "対応していない可能性があります。",
+    },
+    {
+      q: "ブラウザで動きません3",
+      a: "対応していない可能性があります。",
+    },
+    {
+      q: "ブラウザで動きません4",
+      a: "対応していない可能性があります。",
     },
   ];
   /** Sign in */
@@ -109,6 +138,58 @@ const Top = () => {
           ))}
         </div>
       </section>
+      <section className="q-a">
+        <h2>ー よくある質問 ー</h2>
+        <div className="container">
+          {QAs.map((qa) => (
+            <Accordion style={{ maxWidth: "90%", margin: "0 auto" }} key={qa.q}>
+              <AccordionSummary
+                expandIcon={<ExpandMore />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography>{qa.q}</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>{qa.a}</Typography>
+              </AccordionDetails>
+            </Accordion>
+          ))}
+        </div>
+      </section>
+      <section className="lets-try">
+        <h2>ー さぁ始めましょう！ ー</h2>
+        <div className="buttons">
+          <DialogSignup />
+          <LoadingButton
+            className="sign-in-button"
+            loading={loading}
+            variant="contained"
+            onClick={handleSignIn}
+          >
+            サインイン
+          </LoadingButton>
+        </div>
+      </section>
+      <footer>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-6">
+              <ul className="footer-links">
+                <li>
+                  <a href="/terms-of-use">利用規約</a>
+                </li>
+                <li>
+                  <a href="/contact">お問い合わせ</a>
+                </li>
+              </ul>
+            </div>
+            <div className="col-md-6">
+              <p className="copy-right">© 2023 Lite chat</p>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
