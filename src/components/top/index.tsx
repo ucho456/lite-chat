@@ -11,6 +11,23 @@ import DialogSignup from "@/components/top/DialogSignup";
 import "./index.scss";
 
 const Top = () => {
+  const features = [
+    {
+      title: "無料",
+      text: "テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト",
+      photo: "https://placehold.jp/300x300.png",
+    },
+    {
+      title: "シンプル",
+      text: "テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト",
+      photo: "https://placehold.jp/300x300.png",
+    },
+    {
+      title: "すぐにマッチ",
+      text: "テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト",
+      photo: "https://placehold.jp/300x300.png",
+    },
+  ];
   /** Sign in */
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
@@ -78,6 +95,18 @@ const Top = () => {
           <div className="right">
             <img src="/hero.png" alt="hero image" />
           </div>
+        </div>
+      </section>
+      <section className="features">
+        <h2>ー 特徴 ー</h2>
+        <div className="container">
+          {features.map((f) => (
+            <div className="feature" key={f.title}>
+              <img src={f.photo} alt="feature" />
+              <h3>{f.title}</h3>
+              <p>{f.text}</p>
+            </div>
+          ))}
         </div>
       </section>
     </div>
