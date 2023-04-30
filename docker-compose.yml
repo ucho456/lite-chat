@@ -25,13 +25,11 @@ services:
       - ./docker/firebase/config/:/root/.config:cached
       - ./docker/firebase/src:/opt/firebase/
       - ./seed:/opt/firebase/seed
-      - ./functions:/opt/firebase/functions
     ports:
       - 9199:9199
       - 9099:9099
       - 8080:8080
       - 5050:5050
-      - 5001:5001
       - 4000:4000
     tty: true
     working_dir: /opt/firebase
