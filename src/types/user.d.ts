@@ -4,17 +4,17 @@ type Era =
   | "under 10"
   | "early teens"
   | "late teens"
-  | "early 20s"
-  | "late 20s"
-  | "early 30s"
-  | "late 30s"
-  | "early 40s"
-  | "late 40s"
-  | "early 50s"
-  | "late 50s"
-  | "early 60s"
-  | "late 60s"
-  | "over 70s";
+  | "early 20's"
+  | "late 20's"
+  | "early 30's"
+  | "late 30's"
+  | "early 40's"
+  | "late 40's"
+  | "early 50's"
+  | "late 50's"
+  | "early 60's"
+  | "late 60's"
+  | "over 70's";
 
 type User = {
   uid: string;
