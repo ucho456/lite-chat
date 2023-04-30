@@ -9,14 +9,29 @@ import {
 } from "@mui/material";
 import "./DialogTermsOfService.scss";
 
-const DialogTermsOfService = () => {
+type Props = {
+  text?: string;
+  textStyle?: {
+    fontSize: string;
+    color: string;
+  };
+};
+
+const DialogTermsOfService = ({
+  text = "利用規約に同意する",
+  textStyle = { fontSize: "12px", color: "#0099ff" },
+}: Props) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   return (
     <>
-      <span className="dialog-terms-of-service" onClick={handleOpen}>
-        利用規約に同意する
+      <span
+        className="dialog-terms-of-service"
+        style={textStyle}
+        onClick={handleOpen}
+      >
+        {text}
       </span>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>利用規約</DialogTitle>

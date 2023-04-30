@@ -5,18 +5,23 @@
   header {
     height: $headerHeight;
     width: 100%;
-    // position: fixed;
-    // top: 0;
-    // left: 0;
-    // z-index: 10;
     background-color: $ghostwhite;
     .container {
       display: grid;
-      grid-template-columns: 200px auto;
+      grid-template-columns: 200px auto 100px;
       grid-template-rows: $headerHeight;
       max-width: $pageMaxWidth;
       height: 100%;
       margin: 0 auto;
+      img {
+        grid-column: 1 / 2;
+      }
+      a {
+        grid-column: 3 / 4;
+        align-self: center;
+        text-decoration: none;
+        @include hover();
+      }
     }
   }
   .hero {
@@ -145,6 +150,12 @@
       justify-content: center;
       max-width: $pageMaxWidth;
       margin: 0 auto;
+      .feature {
+        h3 {
+          text-align: center;
+          margin-bottom: 5px;
+        }
+      }
     }
     @include w1024() {
       .container {

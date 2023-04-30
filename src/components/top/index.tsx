@@ -16,45 +16,42 @@ import { signIn } from "@/store/modules/authSlice";
 import { auth, googleAuthProvider } from "@/firebase";
 import DialogSignup from "@/components/top/DialogSignup";
 import "./index.scss";
+import DialogTermsOfService from "./DialogTermsOfService";
 
 const Top = () => {
   const features = [
     {
-      title: "無料",
-      text: "テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト",
-      photo: "https://placehold.jp/300x300.png",
+      title: "無料で手軽に利用可能",
+      text: "本サービスは完全無料で利用可能です。Googleアカウントをお持ちの方はすぐに利用できます。",
+      photo: "/free.png",
     },
     {
-      title: "シンプル",
-      text: "テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト",
-      photo: "https://placehold.jp/300x300.png",
+      title: "シンプルなレイアウト",
+      text: "誰にでも使いやすいように、シンプルなレイアウトと必要最低限の機能に限定しています。",
+      photo: "/simple.png",
     },
     {
-      title: "すぐにマッチ",
-      text: "テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト",
-      photo: "https://placehold.jp/300x300.png",
+      title: "簡単にマッチング",
+      text: "相手の性別と年代を選択するだけで、条件に合う人とランダムにマッチングできます。煩雑な設定や操作は不要です。",
+      photo: "/easy-match.png",
     },
   ];
   const QAs = [
     {
-      q: "ブラウザで動きません",
-      a: "対応していない可能性があります。",
+      q: "18歳未満は利用可能ですか？",
+      a: "利用規約より、18歳未満の方の利用を禁止しておりますので本サービスのご利用をご遠慮下さい。また本サービスが原因でユーザーに損害が生じた場合も、管理者は一切責任を負いませんので予めご了承下さい。",
     },
     {
-      q: "ブラウザで動きません1",
-      a: "対応していない可能性があります。",
+      q: "推奨ブラウザはありますか？",
+      a: "『Google Chrome』または『Safari』の最新バージョンにて動作をテストしています。その他のブラウザでの動作については保証致しかねますのでご了承下さい。",
     },
     {
-      q: "ブラウザで動きません2",
-      a: "対応していない可能性があります。",
+      q: "Googleアカウント以外で新規登録する事はできますか？",
+      a: "現時点でGoogleアカウント以外で新規登録する方法はございません。その他の方法に関しては今暫くお待ち下さいませ。",
     },
     {
-      q: "ブラウザで動きません3",
-      a: "対応していない可能性があります。",
-    },
-    {
-      q: "ブラウザで動きません4",
-      a: "対応していない可能性があります。",
+      q: "マッチング数の上限はありますか？",
+      a: "現在のマッチング数の上限は30件に設定してあります。上限到達後に別のユーザーとマッチしたい場合、既存のユーザーをブロックする事で枠を空ける必要があります。",
     },
   ];
   /** Sign in */
@@ -87,6 +84,13 @@ const Top = () => {
       <header>
         <div className="container">
           <img src="https://placehold.jp/150x50.png" />
+          <a
+            href="https://twitter.com/ucho456"
+            target="_blank"
+            rel="noreferrer"
+          >
+            お問い合わせ
+          </a>
         </div>
       </header>
       <section className="hero">
@@ -177,10 +181,19 @@ const Top = () => {
             <div className="col-md-6">
               <ul className="footer-links">
                 <li>
-                  <a href="/terms-of-use">利用規約</a>
+                  <DialogTermsOfService
+                    text="利用規約"
+                    textStyle={{ fontSize: "16px", color: "white" }}
+                  />
                 </li>
                 <li>
-                  <a href="/contact">お問い合わせ</a>
+                  <a
+                    href="https://twitter.com/ucho456"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    お問い合わせ
+                  </a>
                 </li>
               </ul>
             </div>
