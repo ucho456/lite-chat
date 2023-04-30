@@ -1,13 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Avatar, Dialog } from "@mui/material";
 import { useSnackbar } from "@/contexts/Snackbar";
 import { useAppSelector } from "@/store/hooks";
 import { updateUser } from "@/utils/firestore";
+import { uploadImageAndGetUrl } from "@/utils/storage";
 import ProfileForm from "@/components/commons/ProfileForm";
 import "./DialogProfileEdit.scss";
-import { uploadImageAndGetUrl } from "@/utils/storage";
 
 const DialogProfileEdit = () => {
   /** Dialog switch */

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoadingButton } from "@mui/lab";
-import { Button, Dialog } from "@mui/material";
+import { Button, Checkbox, Dialog } from "@mui/material";
 import { signInWithPopup } from "firebase/auth";
 import { useSnackbar } from "@/contexts/Snackbar";
 import useUser from "@/hooks/useUser";
@@ -26,6 +26,7 @@ const DialogSignup = () => {
     era: "early 20's",
     selfIntroduction: "",
   });
+  const [isChecked, setIsChecked] = useState(false);
 
   /** Sign up */
   const [loading, setLoading] = useState(false);
@@ -34,7 +35,7 @@ const DialogSignup = () => {
   const { openSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const handleSignup = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> => {
     e.preventDefault();
     try {
@@ -74,19 +75,31 @@ const DialogSignup = () => {
       <Button fullWidth size="large" variant="contained" onClick={handleOpen}>
         新規登録
       </Button>
-      <Dialog open={open} onClose={handleClose}>
-        <ProfileForm inputUser={inputUser} setInputUser={setInputUser} />
-        <LoadingButton
-          style={{ backgroundColor: "#4285f4", textTransform: "none" }}
-          loading={loading}
-          startIcon={<img src="/google_icon.png" />}
-          size="large"
-          type="submit"
-          variant="contained"
-          onClick={handleSignup}
-        >
-          Googleアカウントで新規登録
-        </LoadingButton>
+      <Dialog className="dialog-signup" open={open} onClose={handleClose}>
+        <form onSubmit={handleSignup} style={{ maxWidth: "350px" }}>
+          <ProfileForm inputUser={inputUser} setInputUser={setInputUser} />
+          <div style={{ textAlign: "center" }}>
+            <Checkbox
+              checked={isChecked}
+              onChange={(e) => setIsChecked(e.target.checked)}
+            />
+            <span>利用規約に同意する</span>
+          </div>
+          <div style={{ marginBottom: "30px", textAlign: "center" }}>
+            <LoadingButton
+              className="submit-button"
+              disabled={!isChecked}
+              style={{ backgroundColor: "#4285f4", textTransform: "none" }}
+              loading={loading}
+              startIcon={<img src="/google_icon.png" />}
+              size="large"
+              type="submit"
+              variant="contained"
+            >
+              Googleアカウントで新規登録
+            </LoadingButton>
+          </div>
+        </form>
       </Dialog>
     </>
   );
