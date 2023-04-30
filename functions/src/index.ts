@@ -1,8 +1,8 @@
 import * as admin from "firebase-admin";
 admin.initializeApp();
 
-// import matching from "./matching";
+// import updatePaidMember from "./updatePaidMember";
 
 module.exports = {
-  // matching,
+  // updatePaidMember,
 };
