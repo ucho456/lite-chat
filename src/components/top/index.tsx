@@ -208,12 +208,12 @@ const Top = () => {
       <section className="q-a">
         <h2>ー よくある質問 ー</h2>
         <div className="container">
-          {QAs.map((qa) => (
+          {QAs.map((qa, i) => (
             <Accordion style={{ maxWidth: "90%", margin: "0 auto" }} key={qa.q}>
               <AccordionSummary
                 expandIcon={<ExpandMore />}
                 aria-controls="panel1a-content"
-                id={`panel${qa.q}-header`}
+                id={`panel${i}-header`}
               >
                 <Typography>{qa.q}</Typography>
               </AccordionSummary>
