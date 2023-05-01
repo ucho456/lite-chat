@@ -16,7 +16,7 @@ const List = () => {
         <DialogUserSearch rooms={rooms} />
       </div>
       {rooms.length === 0 ? (
-        <div>マッチしたあいてがいません。</div>
+        <div>マッチした相手がいません。</div>
       ) : (
         rooms.map((r) => <ListItem key={r.id} room={r} />)
       )}

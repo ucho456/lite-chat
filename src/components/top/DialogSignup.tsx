@@ -74,7 +74,7 @@ const DialogSignup = () => {
   return (
     <>
       <Button fullWidth size="large" variant="contained" onClick={handleOpen}>
-        新規登録
+        サインアップ
       </Button>
       <Dialog className="dialog-signup" open={open} onClose={handleClose}>
         <form onSubmit={handleSignup} style={{ maxWidth: "350px" }}>
@@ -97,7 +97,7 @@ const DialogSignup = () => {
               type="submit"
               variant="contained"
             >
-              Googleアカウントで新規登録
+              Googleアカウントでサインアップ
             </LoadingButton>
           </div>
         </form>
