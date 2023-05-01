@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ExpandMore } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import {
@@ -8,7 +8,7 @@ import {
   AccordionSummary,
   Typography,
 } from "@mui/material";
-import { signInWithPopup } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useSnackbar } from "@/contexts/Snackbar";
 import useUser from "@/hooks/useUser";
 import { useAppDispatch } from "@/store/hooks";
@@ -84,6 +84,39 @@ const Top = () => {
     }
   };
 
+  const [searchParams] = useSearchParams();
+  const testUser = searchParams.get("testUser");
+  const handleSignInTest = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    user: "taro" | "hanako",
+  ): Promise<void> => {
+    e.preventDefault();
+    const env = import.meta.env;
+    const email = user === "taro" ? env.VITE_TARO_EMAIL : env.VITE_HANAKO_EMAIL;
+    const password =
+      user === "taro" ? env.VITE_TARO_PASSWORD : env.VITE_HANAKO_PASSWORD;
+    try {
+      setLoading(true);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      dispatch(signIn(userCredential.user.uid));
+      const user = await getUserDoc(userCredential.user.uid);
+      if (user) {
+        openSnackbar("サインインしました。", "success");
+        navigate("/rooms");
+      } else {
+        openSnackbar("サインアップを完了させて下さい", "warning");
+      }
+    } catch {
+      openSnackbar("サインインに失敗しました。", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="top">
       <header>
@@ -119,15 +152,38 @@ const Top = () => {
               <p>さぁ始めましょう！</p>
             </div>
             <div className="buttons">
-              <DialogSignup />
-              <LoadingButton
-                className="sign-in-button"
-                loading={loading}
-                variant="contained"
-                onClick={handleSignIn}
-              >
-                サインイン
-              </LoadingButton>
+              {testUser === "true" ? (
+                <>
+                  <LoadingButton
+                    className="sign-in-button"
+                    loading={loading}
+                    variant="contained"
+                    onClick={(e) => handleSignInTest(e, "taro")}
+                  >
+                    太郎サインイン
+                  </LoadingButton>
+                  <LoadingButton
+                    className="sign-in-button"
+                    loading={loading}
+                    variant="contained"
+                    onClick={(e) => handleSignInTest(e, "hanako")}
+                  >
+                    花子サインイン
+                  </LoadingButton>
+                </>
+              ) : (
+                <>
+                  <DialogSignup />
+                  <LoadingButton
+                    className="sign-in-button"
+                    loading={loading}
+                    variant="contained"
+                    onClick={handleSignIn}
+                  >
+                    サインイン
+                  </LoadingButton>
+                </>
+              )}
             </div>
           </div>
           <div className="right">
