@@ -50,7 +50,13 @@ const Videos = ({
     if (!roomId) return;
     const _localStream = await navigator.mediaDevices.getUserMedia({
       video: true,
-      audio: true,
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        autoGainControl: true,
+        sampleRate: 32000,
+        sampleSize: 16,
+      },
     });
     setLocalStream(_localStream);
     const remoteStream = new MediaStream();
