@@ -41,9 +41,11 @@
           text-align: center;
           h2 {
             .desktop {
+              font-weight: 700;
               display: inline-block;
             }
             .mobile {
+              font-weight: 700;
               display: none;
             }
           }
@@ -139,6 +141,7 @@
   .features {
     margin: 50px 0;
     h2 {
+      font-weight: 700;
       text-align: center;
       margin-bottom: 50px;
     }
@@ -152,6 +155,7 @@
       margin: 0 auto;
       .feature {
         h3 {
+          font-weight: 700;
           text-align: center;
           margin-bottom: 5px;
         }
@@ -187,6 +191,7 @@
     padding-bottom: 100px;
     background-color: $ghostwhite;
     h2 {
+      font-weight: 700;
       padding-top: 50px;
       text-align: center;
       margin-bottom: 50px;
@@ -199,6 +204,7 @@
   .lets-try {
     margin: 50px 0 100px;
     h2 {
+      font-weight: 700;
       text-align: center;
     }
     .buttons {

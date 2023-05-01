@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { lazy, useEffect, Suspense } from "react";
 import {
   BrowserRouter,
   Navigate,
@@ -11,11 +11,11 @@ import useUser from "@/hooks/useUser";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { isFirstAuthChecked } from "@/store/modules/authSlice";
 import { auth } from "@/firebase";
-import Error from "@/components/error";
-import Phone from "@/components/phone";
 import Room from "@/components/room";
 import Rooms from "@/components/rooms";
 import Top from "@/components/top";
+const Error = lazy(() => import("@/components/error"));
+const Phone = lazy(() => import("@/components/phone"));
 
 const IsAuth = () => {
   /** Loading at the root to persist reactive data to the store */
@@ -46,15 +46,17 @@ const IsAuth = () => {
 const Router = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="*" element={<Error />} />
-        <Route path="/" element={<Top />} />
-        <Route path="/rooms" element={<IsAuth />}>
-          <Route path="" element={<Rooms />} />
-          <Route path=":roomId" element={<Room />} />
-          <Route path=":roomId/phone" element={<Phone />} />
-        </Route>
-      </Routes>
+      <Suspense fallback={<></>}>
+        <Routes>
+          <Route path="*" element={<Error />} />
+          <Route path="/" element={<Top />} />
+          <Route path="/rooms" element={<IsAuth />}>
+            <Route path="" element={<Rooms />} />
+            <Route path=":roomId" element={<Room />} />
+            <Route path=":roomId/phone" element={<Phone />} />
+          </Route>
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 };

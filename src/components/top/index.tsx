@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { lazy, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ExpandMore } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
@@ -15,8 +15,10 @@ import { useAppDispatch } from "@/store/hooks";
 import { signIn } from "@/store/modules/authSlice";
 import { MATCH_LIMIT } from "@/utils/constants";
 import { auth, googleAuthProvider } from "@/firebase";
-import DialogSignup from "@/components/top/DialogSignup";
-import DialogTermsOfService from "@/components/top/DialogTermsOfService";
+const DialogSignup = lazy(() => import("@/components/top/DialogSignup"));
+const DialogTermsOfService = lazy(
+  () => import("@/components/top/DialogTermsOfService"),
+);
 import "./index.scss";
 
 const Top = () => {
@@ -24,17 +26,17 @@ const Top = () => {
     {
       title: "無料で手軽に利用可能",
       text: "完全無料で利用可能です。Googleアカウントをお持ちの方はすぐに利用できます。",
-      photo: "/free.png",
+      photo: "/free.webp",
     },
     {
       title: "シンプルな使い勝手",
       text: "誰にでも使いやすいように、シンプルなレイアウトと必要最低限の機能に限定しています。",
-      photo: "/simple.png",
+      photo: "/simple.webp",
     },
     {
       title: "簡単にマッチング",
       text: "相手の性別と年代を選択するだけで、条件に合う人とランダムにマッチングできます。煩雑な設定や操作は不要です。",
-      photo: "/easy-match.png",
+      photo: "/easy-match.webp",
     },
   ];
   const QAs = [
@@ -121,7 +123,7 @@ const Top = () => {
     <div className="top">
       <header>
         <div className="container">
-          <img src="https://placehold.jp/150x50.png" />
+          <img src="https://placehold.jp/150x50.png" alt="logo" />
           <a
             href="https://twitter.com/ucho456"
             target="_blank"
@@ -187,7 +189,7 @@ const Top = () => {
             </div>
           </div>
           <div className="right">
-            <img src="/hero.png" alt="hero image" />
+            <img src="/hero.webp" alt="hero image" />
           </div>
         </div>
       </section>
@@ -206,12 +208,12 @@ const Top = () => {
       <section className="q-a">
         <h2>ー よくある質問 ー</h2>
         <div className="container">
-          {QAs.map((qa) => (
+          {QAs.map((qa, i) => (
             <Accordion style={{ maxWidth: "90%", margin: "0 auto" }} key={qa.q}>
               <AccordionSummary
                 expandIcon={<ExpandMore />}
                 aria-controls="panel1a-content"
-                id="panel1a-header"
+                id={`panel${i}-header`}
               >
                 <Typography>{qa.q}</Typography>
               </AccordionSummary>

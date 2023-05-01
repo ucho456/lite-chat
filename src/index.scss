@@ -45,6 +45,8 @@ $sp: 480px;
 * {
   margin: 0;
   font-family: "Noto Sans JP";
+  font-weight: 300;
+  font-display: swap;
   box-sizing: border-box;
   color: $fontColor;
 }

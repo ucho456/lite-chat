@@ -33,7 +33,7 @@ const ListItem = ({ room }: Props) => {
     <div className="rooms-list-item" onClick={handleNavigateRoom}>
       <MuiListItem alignItems="flex-start">
         <ListItemAvatar>
-          <Avatar alt={you.name} src={you.photo ?? "/avatar.png"} />
+          <Avatar alt={you.name} src={you.photo ?? "/avatar.webp"} />
         </ListItemAvatar>
         <ListItemText
           primary={you.name}
