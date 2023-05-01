@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { lazy, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ExpandMore } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
@@ -15,8 +15,10 @@ import { useAppDispatch } from "@/store/hooks";
 import { signIn } from "@/store/modules/authSlice";
 import { MATCH_LIMIT } from "@/utils/constants";
 import { auth, googleAuthProvider } from "@/firebase";
-import DialogSignup from "@/components/top/DialogSignup";
-import DialogTermsOfService from "@/components/top/DialogTermsOfService";
+const DialogSignup = lazy(() => import("@/components/top/DialogSignup"));
+const DialogTermsOfService = lazy(
+  () => import("@/components/top/DialogTermsOfService"),
+);
 import "./index.scss";
 
 const Top = () => {
