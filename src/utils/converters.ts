@@ -7,6 +7,7 @@ import {
 export const userConverter: FirestoreDataConverter<User> = {
   toFirestore(u: User): DocumentData {
     return {
+      uid: u.uid,
       name: u.name,
       photo: u.photo,
       sex: u.sex,
