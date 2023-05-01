@@ -77,12 +77,12 @@ const UserSearchDialog = ({ rooms }: Props) => {
   return (
     <div className="dialog-user-search">
       <Button className="button" onClick={handleOpen}>
-        新規マッチング
+        マッチング相手を探す
       </Button>
       <Dialog className="dialog-user-search" open={open} onClose={handleClose}>
         <Stack component="form" onSubmit={handleSubmit(handleMatching)}>
           <div className="container">
-            <h3>- あいての条件 -</h3>
+            <h3>- 相手の条件 -</h3>
             <div className="sex-row">
               <Controller
                 control={control}
@@ -140,7 +140,7 @@ const UserSearchDialog = ({ rooms }: Props) => {
               >
                 マッチング開始
               </LoadingButton>
-              <p>本日の残り{me.life}回</p>
+              <p>残り{me.life}回</p>
             </div>
           </div>
         </Stack>
