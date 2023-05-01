@@ -13,10 +13,11 @@ import { useSnackbar } from "@/contexts/Snackbar";
 import useUser from "@/hooks/useUser";
 import { useAppDispatch } from "@/store/hooks";
 import { signIn } from "@/store/modules/authSlice";
+import { MATCH_LIMIT } from "@/utils/constants";
 import { auth, googleAuthProvider } from "@/firebase";
 import DialogSignup from "@/components/top/DialogSignup";
+import DialogTermsOfService from "@/components/top/DialogTermsOfService";
 import "./index.scss";
-import DialogTermsOfService from "./DialogTermsOfService";
 
 const Top = () => {
   const features = [
@@ -47,11 +48,15 @@ const Top = () => {
     },
     {
       q: "メールアドレスとパスワードでサインアップする事はできますか？",
-      a: "現時点でGoogleアカウント以外でサインアップする方法はございません。",
+      a: "Googleアカウント以外でサインアップする方法はございません。今後のアップデートでSNSサインアップの機能を追加します。今暫くお待ち下さいませ。",
     },
     {
       q: "マッチング数の上限はありますか？",
-      a: "現在のマッチング数の上限は30件です。上限到達後に別のユーザーとマッチしたい場合、既存のユーザーをブロックする事で枠を空ける必要があります。",
+      a: `現在のマッチング数の上限は${MATCH_LIMIT}件です。上限到達後に別のユーザーとマッチしたい場合、既存のユーザーをブロックする事で枠を空ける必要があります。`,
+    },
+    {
+      q: "過去のメッセージの内容が遡れません。",
+      a: "最新のメッセージから50件表示する仕様になっています。今後のアップデートでメッセージを遡る機能を追加します。今暫くお待ち下さいませ。",
     },
   ];
   /** Sign in */

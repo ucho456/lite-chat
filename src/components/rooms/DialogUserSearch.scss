@@ -4,7 +4,7 @@
   .container {
     min-width: 310px;
     display: grid;
-    grid-template-rows: 50px 50px 50px 100px;
+    grid-template-rows: 50px 50px 50px 120px;
     gap: 20px;
     text-align: center;
     h3 {
@@ -21,8 +21,15 @@
     }
     .button-row {
       grid-row: 4 / 5;
+      .limit-reached {
+        width: 200px;
+        margin: 5px auto 0;
+        text-align: left;
+        color: $fontColorRed;
+        font-size: 10px;
+      }
       p {
-        margin-top: 5px;
+        margin: 5px 0;
         color: $fontColorLight;
         font-size: 12px;
       }

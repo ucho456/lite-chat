@@ -12,6 +12,7 @@ import {
 } from "firebase/firestore";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { resetUser, setUser } from "@/store/modules/userSlice";
+import { MATCH_LIMIT } from "@/utils/constants";
 import { userConverter } from "@/utils/converters";
 import { db } from "@/firebase";
 
@@ -43,7 +44,7 @@ const useUser = () => {
       colRef,
       where("era", "==", era),
       where("sex", "==", sex),
-      where("roomCount", "<", 30),
+      where("roomCount", "<", MATCH_LIMIT),
       orderBy("roomCount", "asc"),
       orderBy("lastActionAt", "desc"),
       limit(10),

@@ -94,6 +94,14 @@ export const createRoom = async (me: User, you: User): Promise<void> => {
   await batch.commit();
 };
 
+export const regainLife = async (user: User): Promise<void> => {
+  const docRef = doc(db, "users", user.uid).withConverter(userConverter);
+  await updateDoc(docRef, {
+    life: 3,
+    lastActionAt: serverTimestamp(),
+  });
+};
+
 export const createMessage = async (
   roomId: string,
   user: User,

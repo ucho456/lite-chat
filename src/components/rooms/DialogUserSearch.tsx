@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import {
   Button,
@@ -8,13 +7,12 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  Stack,
 } from "@mui/material";
 import { useSnackbar } from "@/contexts/Snackbar";
 import useUser from "@/hooks/useUser";
 import { useAppSelector } from "@/store/hooks";
-import { ERAS } from "@/utils/constants";
-import { createRoom } from "@/utils/firestore";
+import { ERAS, MATCH_LIMIT } from "@/utils/constants";
+import { createRoom, regainLife } from "@/utils/firestore";
 import "./DialogUserSearch.scss";
 
 type Props = {
@@ -33,19 +31,24 @@ const UserSearchDialog = ({ rooms }: Props) => {
   const handleClose = () => setOpen(false);
 
   /** Search form */
-  const { control, handleSubmit } = useForm<InputCondition>({
-    shouldUnregister: false,
-    defaultValues: { sex: "man", era: "early 20's" },
+  const me = useAppSelector((state) => state.user.user);
+  const [inputCondition, setInputCondition] = useState<InputCondition>({
+    sex: "man",
+    era: "early 20's",
   });
+  useEffect(() => {
+    if (!me) return;
+    setInputCondition({ sex: me.sex === "man" ? "woman" : "man", era: me.era });
+  }, [me]);
 
   /** Matching */
-  const me = useAppSelector((state) => state.user.user);
   const [loading, setLoading] = useState(false);
   const { getRandomUserDocs } = useUser();
   const { openSnackbar } = useSnackbar();
-  const handleMatching: SubmitHandler<InputCondition> = async (
-    inputCondition: InputCondition,
+  const handleMatching = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
+    e.preventDefault();
     if (!me) return;
     const { sex, era } = inputCondition;
     try {
@@ -73,6 +76,33 @@ const UserSearchDialog = ({ rooms }: Props) => {
     }
   };
 
+  const handleRegainLife = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    e.preventDefault();
+    if (!me) return;
+    try {
+      setLoading(true);
+      await regainLife(me);
+      openSnackbar("マッチング回数を回復しました。", "success");
+    } catch {
+      openSnackbar("マッチング回数の回復に失敗しました。", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const [isMatchLimit, setIsMatchLimit] = useState(false);
+  useEffect(() => {
+    setIsMatchLimit(rooms.length >= MATCH_LIMIT);
+  }, [rooms.length]);
+
+  const [isLife, setIsLife] = useState(true);
+  useEffect(() => {
+    if (!me) return;
+    setIsLife(me.life !== 0);
+  }, [me]);
+
   if (!me) return <></>;
   return (
     <div className="dialog-user-search">
@@ -80,70 +110,76 @@ const UserSearchDialog = ({ rooms }: Props) => {
         マッチング相手を探す
       </Button>
       <Dialog className="dialog-user-search" open={open} onClose={handleClose}>
-        <Stack component="form" onSubmit={handleSubmit(handleMatching)}>
-          <div className="container">
-            <h3>- 相手の条件 -</h3>
-            <div className="sex-row">
-              <Controller
-                control={control}
-                name="sex"
-                render={({ field }) => (
-                  <FormControl>
-                    <InputLabel id="sex-label">性別</InputLabel>
-                    <Select
-                      {...field}
-                      fullWidth
-                      label="性別"
-                      labelId="sex-label"
-                      size="small"
-                      sx={{ width: "120px" }}
-                    >
-                      <MenuItem value={"man"}>男性</MenuItem>
-                      <MenuItem value={"woman"}>女性</MenuItem>
-                    </Select>
-                  </FormControl>
-                )}
-              />
-            </div>
-            <div className="era-row">
-              <Controller
-                control={control}
-                name="era"
-                render={({ field }) => (
-                  <FormControl>
-                    <InputLabel id="era-label">年代</InputLabel>
-                    <Select
-                      {...field}
-                      fullWidth
-                      label="年代"
-                      labelId="era-label"
-                      size="small"
-                      sx={{ width: "120px" }}
-                    >
-                      {ERAS.map((e) => (
-                        <MenuItem key={e.value} value={e.value}>
-                          {e.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                )}
-              />
-            </div>
-            <div className="button-row">
-              <LoadingButton
-                disabled={me.life === 0}
-                loading={loading}
-                size="large"
-                type="submit"
-                variant="contained"
+        <div className="container">
+          <h3>- 相手の条件 -</h3>
+          <div className="sex-row">
+            <FormControl>
+              <InputLabel id="sex-label">性別</InputLabel>
+              <Select
+                fullWidth
+                label="性別"
+                labelId="sex-label"
+                size="small"
+                sx={{ width: "120px" }}
+                value={inputCondition.sex}
+                onChange={(e) =>
+                  setInputCondition({
+                    ...inputCondition,
+                    sex: e.target.value as Sex,
+                  })
+                }
               >
-                マッチング開始
-              </LoadingButton>
-              <p>残り{me.life}回</p>
-            </div>
+                <MenuItem value={"man"}>男性</MenuItem>
+                <MenuItem value={"woman"}>女性</MenuItem>
+              </Select>
+            </FormControl>
           </div>
-        </Stack>
+          <div className="era-row">
+            <FormControl>
+              <InputLabel id="era-label">年代</InputLabel>
+              <Select
+                fullWidth
+                label="年代"
+                labelId="era-label"
+                size="small"
+                sx={{ width: "120px" }}
+                value={inputCondition.era}
+                onChange={(e) =>
+                  setInputCondition({
+                    ...inputCondition,
+                    era: e.target.value as Era,
+                  })
+                }
+              >
+                {ERAS.map((e) => (
+                  <MenuItem key={e.value} value={e.value}>
+                    {e.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
+          <div className="button-row">
+            <LoadingButton
+              disabled={isMatchLimit}
+              loading={loading}
+              size="large"
+              type={isLife ? "submit" : "button"}
+              variant="contained"
+              onClick={isLife ? handleMatching : handleRegainLife}
+            >
+              {isLife ? "マッチング開始" : "マッチング回数を回復する"}
+            </LoadingButton>
+            {isMatchLimit ? (
+              <div className="limit-reached">
+                マッチング数の上限に達しました。
+                別のユーザーとマッチしたい場合、既存のユーザーをブロックして枠を空けて下さい。
+              </div>
+            ) : (
+              <p>マッチング回数残り {me.life} 回</p>
+            )}
+          </div>
+        </div>
       </Dialog>
     </div>
   );
