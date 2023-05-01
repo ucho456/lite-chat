@@ -20,14 +20,14 @@ const DialogProfile = ({ you }: Props) => {
   return (
     <div className="dialog-profile">
       <div className="user-column" onClick={handleOpen}>
-        <Avatar className="avatar" src={you.photo ?? "/avatar.png"} />
+        <Avatar className="avatar" src={you.photo ?? "/avatar.webp"} />
         <div className="name">{you.name}</div>
       </div>
       <Dialog className="dialog-profile" open={open} onClose={handleClose}>
         <div className="container">
           <div className="photo-row">
             <Avatar
-              src={you.photo ?? "/avatar.png"}
+              src={you.photo ?? "/avatar.webp"}
               sx={{ width: 110, height: 110, margin: "0 auto" }}
             />
           </div>
