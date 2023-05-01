@@ -25,7 +25,7 @@ const ProfileForm = ({ inputUser, setInputUser }: Props) => {
         const canvas = document.createElement("canvas");
         let width = img.width;
         let height = img.height;
-        const maxWidth = 300;
+        const maxWidth = 200;
         if (width > maxWidth) {
           height *= maxWidth / width;
           width = maxWidth;
