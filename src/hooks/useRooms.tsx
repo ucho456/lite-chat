@@ -9,6 +9,7 @@ import {
 } from "firebase/firestore";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setRooms } from "@/store/modules/roomsSlice";
+import { MATCH_LIMIT } from "@/utils/constants";
 import { roomConverter } from "@/utils/converters";
 import { db } from "@/firebase";
 
@@ -22,7 +23,7 @@ const useRooms = () => {
       where("isBlock", "==", false),
       where("userUids", "array-contains", authUid),
       orderBy("lastActionAt", "desc"),
-      limit(30),
+      limit(MATCH_LIMIT),
     );
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const _rooms: Room[] = [];

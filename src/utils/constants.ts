@@ -12,3 +12,5 @@ export const ERAS = [
   { value: "late 60's", name: "60代後半" },
   { value: "over 70's", name: "70代以上" },
 ];
+
+export const MATCH_LIMIT = 30;
