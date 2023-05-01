@@ -123,7 +123,7 @@ const Top = () => {
     <div className="top">
       <header>
         <div className="container">
-          <img src="https://placehold.jp/150x50.png" />
+          <img src="https://placehold.jp/150x50.png" alt="logo" />
           <a
             href="https://twitter.com/ucho456"
             target="_blank"
@@ -213,7 +213,7 @@ const Top = () => {
               <AccordionSummary
                 expandIcon={<ExpandMore />}
                 aria-controls="panel1a-content"
-                id="panel1a-header"
+                id={`panel${qa.q}-header`}
               >
                 <Typography>{qa.q}</Typography>
               </AccordionSummary>
