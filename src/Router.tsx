@@ -11,9 +11,9 @@ import useUser from "@/hooks/useUser";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { isFirstAuthChecked } from "@/store/modules/authSlice";
 import { auth } from "@/firebase";
-import Room from "@/components/room";
-import Rooms from "@/components/rooms";
 import Top from "@/components/top";
+const Room = lazy(() => import("@/components/room"));
+const Rooms = lazy(() => import("@/components/rooms"));
 const Error = lazy(() => import("@/components/error"));
 const Phone = lazy(() => import("@/components/phone"));
 
