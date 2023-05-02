@@ -27,19 +27,16 @@ const Top = () => {
       title: "無料で手軽に利用可能",
       text: "完全無料で利用可能です。Googleアカウントをお持ちの方はすぐに利用できます。",
       photo: "/images/free.webp",
-      lazy: false,
     },
     {
       title: "シンプルな使い勝手",
       text: "誰にでも使いやすいように、シンプルなレイアウトと必要最低限の機能に限定しています。",
       photo: "/images/simple.webp",
-      lazy: true,
     },
     {
       title: "簡単にマッチング",
       text: "相手の性別と年代を選択するだけで、条件に合う人とランダムにマッチングできます。煩雑な設定や操作は不要です。",
       photo: "/images/easy-match.webp",
-      lazy: true,
     },
   ];
   const QAs = [
@@ -201,11 +198,7 @@ const Top = () => {
         <div className="container">
           {features.map((f) => (
             <div className="feature" key={f.title}>
-              <img
-                src={f.photo}
-                alt="feature"
-                loading={f.lazy ? "lazy" : "eager"}
-              />
+              <img src={f.photo} alt="feature" />
               <h3>{f.title}</h3>
               <p>{f.text}</p>
             </div>

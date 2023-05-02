@@ -28,7 +28,11 @@ export default defineConfig(({ mode }) => {
               brotliSize: true,
             }),
         ],
+        output: {
+          manualChunks: undefined,
+        },
       },
+      emptyOutDir: true,
     },
   };
 });
