@@ -42,9 +42,14 @@ $sp: 480px;
   }
 }
 
+@font-face {
+  font-family: "Noto Sans JP", sans-serif;
+  src: url("/fonts/NotoSansJP-VariableFont_wght.ttf") format("truetype");
+}
+
 * {
   margin: 0;
-  font-family: "Noto Sans JP";
+  font-family: "Noto Sans JP", sans-serif;
   font-weight: 300;
   font-display: swap;
   box-sizing: border-box;
