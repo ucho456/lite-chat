@@ -10,27 +10,28 @@ $white: white;
 $headerHeight: 50px;
 $pageMaxWidth: 1000px;
 
-$pc: 1024px;
-$tab: 768px;
-$sp: 480px;
-
-@mixin w1280 {
+@mixin pc {
   @media (max-width: 1280px) {
     @content;
   }
 }
-@mixin w1024 {
+@mixin wideTab {
   @media (max-width: 1024px) {
     @content;
   }
 }
 @mixin tab {
-  @media (max-width: ($tab)) {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+@mixin wideSp {
+  @media (max-width: 690px) {
     @content;
   }
 }
 @mixin sp {
-  @media (max-width: ($sp)) {
+  @media (max-width: 479px) {
     @content;
   }
 }

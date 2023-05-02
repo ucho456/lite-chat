@@ -69,8 +69,8 @@
         height: 100%;
         position: relative;
         img {
-          max-height: 80%;
-          width: auto;
+          height: 750px;
+          width: 368px;
           position: absolute;
           top: 50%;
           left: 50%;
@@ -78,7 +78,7 @@
         }
       }
     }
-    @include w1280() {
+    @include pc() {
       .container {
         .left {
           .text {
@@ -87,7 +87,17 @@
         }
         .right {
           img {
-            max-height: 80%;
+            height: 431px;
+            width: 211px;
+          }
+        }
+      }
+    }
+    @include wideTab {
+      .container {
+        .left {
+          .text {
+            margin-top: 35%;
           }
         }
       }
@@ -97,6 +107,7 @@
       .container {
         .left {
           .text {
+            margin-top: 45%;
             h2 {
               font-size: 20px;
             }
@@ -107,13 +118,29 @@
         }
       }
     }
+    @include wideSp() {
+      height: calc(100vh - $headerHeight);
+      .container {
+        .left {
+          .text {
+            margin-top: 20%;
+          }
+        }
+        .right {
+          img {
+            height: 260px;
+            width: 128px;
+          }
+        }
+      }
+    }
     @include sp() {
       height: calc(65vh - $headerHeight);
       .container {
         grid-template-columns: 200px 170px;
         .left {
           .text {
-            margin-top: 50px;
+            margin-top: 60px;
             h2 {
               .desktop {
                 display: none;
@@ -167,7 +194,7 @@
         }
       }
     }
-    @include w1024() {
+    @include wideTab {
       .container {
         grid-template-columns: 200px 200px 200px;
         .feature {

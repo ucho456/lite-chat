@@ -22,7 +22,7 @@
       width: 768px;
       margin: 0 auto;
       text-align: right;
-      @include w1024() {
+      @include wideTab {
         width: 320px;
       }
       @include sp() {

@@ -198,7 +198,7 @@ const Top = () => {
         <div className="container">
           {features.map((f) => (
             <div className="feature" key={f.title}>
-              <img src={f.photo} alt="feature" />
+              <img src={f.photo} alt="feature" loading="lazy" />
               <h3>{f.title}</h3>
               <p>{f.text}</p>
             </div>
