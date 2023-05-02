@@ -10,27 +10,28 @@ $white: white;
 $headerHeight: 50px;
 $pageMaxWidth: 1000px;
 
-$pc: 1024px;
-$tab: 768px;
-$sp: 480px;
-
-@mixin w1280 {
+@mixin pc {
   @media (max-width: 1280px) {
     @content;
   }
 }
-@mixin w1024 {
+@mixin wideTab {
   @media (max-width: 1024px) {
     @content;
   }
 }
 @mixin tab {
-  @media (max-width: ($tab)) {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+@mixin wideSp {
+  @media (max-width: 690px) {
     @content;
   }
 }
 @mixin sp {
-  @media (max-width: ($sp)) {
+  @media (max-width: 479px) {
     @content;
   }
 }
@@ -42,9 +43,14 @@ $sp: 480px;
   }
 }
 
+@font-face {
+  font-family: "Noto Sans JP", sans-serif;
+  src: url("/fonts/NotoSansJP-VariableFont_wght.ttf") format("truetype");
+}
+
 * {
   margin: 0;
-  font-family: "Noto Sans JP";
+  font-family: "Noto Sans JP", sans-serif;
   font-weight: 300;
   font-display: swap;
   box-sizing: border-box;

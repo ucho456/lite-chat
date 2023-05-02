@@ -52,7 +52,7 @@ const ProfileForm = ({ inputUser, setInputUser }: Props) => {
               <label htmlFor="photo-input">
                 <Avatar
                   className="photo"
-                  src={inputUser.photo ?? "/avatar.webp"}
+                  src={inputUser.photo ?? "/images/avatar.webp"}
                   sx={{ width: 110, height: 110 }}
                 />
               </label>

@@ -92,7 +92,7 @@ const DialogSignup = () => {
               disabled={!isChecked}
               style={{ backgroundColor: "#4285f4", textTransform: "none" }}
               loading={loading}
-              startIcon={<img src="/google_icon.webp" />}
+              startIcon={<img src="/images/google_icon.webp" />}
               size="large"
               type="submit"
               variant="contained"

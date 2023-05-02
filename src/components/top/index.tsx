@@ -26,17 +26,17 @@ const Top = () => {
     {
       title: "無料で手軽に利用可能",
       text: "完全無料で利用可能です。Googleアカウントをお持ちの方はすぐに利用できます。",
-      photo: "/free.webp",
+      photo: "/images/free.webp",
     },
     {
       title: "シンプルな使い勝手",
       text: "誰にでも使いやすいように、シンプルなレイアウトと必要最低限の機能に限定しています。",
-      photo: "/simple.webp",
+      photo: "/images/simple.webp",
     },
     {
       title: "簡単にマッチング",
       text: "相手の性別と年代を選択するだけで、条件に合う人とランダムにマッチングできます。煩雑な設定や操作は不要です。",
-      photo: "/easy-match.webp",
+      photo: "/images/easy-match.webp",
     },
   ];
   const QAs = [
@@ -189,7 +189,7 @@ const Top = () => {
             </div>
           </div>
           <div className="right">
-            <img src="/hero.webp" alt="hero image" />
+            <img src="/images/hero.webp" alt="hero image" />
           </div>
         </div>
       </section>
