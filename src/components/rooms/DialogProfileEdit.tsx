@@ -64,7 +64,7 @@ const DialogProfileEdit = () => {
   return (
     <div className="dialog-profile-edit">
       <div className="user-column" onClick={handleOpen}>
-        <Avatar src={user.photo ?? "/avatar.webp"} />
+        <Avatar src={user.photo ?? "/images/avatar.webp"} />
         <div className="name">{user.name}</div>
       </div>
       <Dialog className="dialog-profile-edit" open={open} onClose={handleClose}>
