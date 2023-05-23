@@ -25,7 +25,7 @@ const Top = () => {
   const features = [
     {
       title: "無料で手軽に利用可能",
-      text: "完全無料で利用可能です。Googleアカウントをお持ちの方はすぐに利用できます。",
+      text: "完全無料で利用可能です。簡単なプロフィールを入力してすぐに開始できます。",
       photo: "/images/free.webp",
     },
     {
@@ -61,6 +61,7 @@ const Top = () => {
       a: "最新のメッセージから50件表示する仕様になっています。今後のアップデートでメッセージを遡る機能を追加します。今暫くお待ち下さいませ。",
     },
   ];
+
   /** Sign in */
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
@@ -86,6 +87,7 @@ const Top = () => {
     }
   };
 
+  /** Sign in for test user */
   const [searchParams] = useSearchParams();
   const testUser = searchParams.get("testUser");
   const handleSignInTest = async (
@@ -124,13 +126,7 @@ const Top = () => {
       <header>
         <div className="container">
           <img src="https://placehold.jp/150x50.png" alt="logo" />
-          <a
-            href="https://twitter.com/ucho456"
-            target="_blank"
-            rel="noreferrer"
-          >
-            お問い合わせ
-          </a>
+          <div onClick={handleSignIn}>サインイン</div>
         </div>
       </header>
       <section className="hero">
@@ -175,15 +171,7 @@ const Top = () => {
                 </>
               ) : (
                 <>
-                  <DialogSignup />
-                  <LoadingButton
-                    className="sign-in-button"
-                    loading={loading}
-                    variant="contained"
-                    onClick={handleSignIn}
-                  >
-                    サインイン
-                  </LoadingButton>
+                  <DialogSignup buttonText="開始する" />
                 </>
               )}
             </div>
@@ -227,7 +215,7 @@ const Top = () => {
       <section className="lets-try">
         <h2>ー さぁ始めましょう！ ー</h2>
         <div className="buttons">
-          <DialogSignup />
+          <DialogSignup buttonText="サインアップ" />
           <LoadingButton
             className="sign-in-button"
             loading={loading}

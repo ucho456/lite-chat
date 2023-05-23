@@ -2,18 +2,22 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoadingButton } from "@mui/lab";
 import { Button, Checkbox, Dialog } from "@mui/material";
-import { signInWithPopup } from "firebase/auth";
+import { signInAnonymously } from "firebase/auth";
 import { useSnackbar } from "@/contexts/Snackbar";
 import useUser from "@/hooks/useUser";
 import { useAppDispatch } from "@/store/hooks";
 import { signIn } from "@/store/modules/authSlice";
 import { createUser } from "@/utils/firestore";
 import { uploadImageAndGetUrl } from "@/utils/storage";
-import { auth, googleAuthProvider } from "@/firebase";
+import { auth } from "@/firebase";
 import ProfileForm from "@/components/commons/ProfileForm";
 import DialogTermsOfService from "@/components/top/DialogTermsOfService";
 
-const DialogSignup = () => {
+type Props = {
+  buttonText: string;
+};
+
+const DialogSignup = ({ buttonText }: Props) => {
   /** Dialog switch */
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -41,7 +45,7 @@ const DialogSignup = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const userCredential = await signInWithPopup(auth, googleAuthProvider);
+      const userCredential = await signInAnonymously(auth);
       const uid = userCredential.user.uid;
       dispatch(signIn(uid));
       const user = await getUserDoc(uid);
@@ -74,7 +78,7 @@ const DialogSignup = () => {
   return (
     <>
       <Button fullWidth size="large" variant="contained" onClick={handleOpen}>
-        サインアップ
+        {buttonText}
       </Button>
       <Dialog className="dialog-signup" open={open} onClose={handleClose}>
         <form onSubmit={handleSignup} style={{ maxWidth: "350px" }}>
@@ -90,14 +94,14 @@ const DialogSignup = () => {
             <LoadingButton
               className="submit-button"
               disabled={!isChecked}
-              style={{ backgroundColor: "#4285f4", textTransform: "none" }}
+              style={{ width: "90%" }}
               loading={loading}
-              startIcon={<img src="/images/google_icon.webp" />}
               size="large"
               type="submit"
               variant="contained"
+              fullWidth
             >
-              Googleアカウントでサインアップ
+              開始する
             </LoadingButton>
           </div>
         </form>
