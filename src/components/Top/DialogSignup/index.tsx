@@ -11,7 +11,7 @@ import { createUser } from "@/utils/firestore";
 import { uploadImageAndGetUrl } from "@/utils/storage";
 import { auth } from "@/firebase";
 import ProfileForm from "@/components/commons/ProfileForm";
-import DialogTermsOfService from "@/components/top/DialogTermsOfService";
+import DialogTermsOfService from "@/components/Top/DialogTermsOfService";
 
 type Props = {
   buttonText: string;

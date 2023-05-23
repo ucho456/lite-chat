@@ -15,11 +15,11 @@ import { useAppDispatch } from "@/store/hooks";
 import { signIn } from "@/store/modules/authSlice";
 import { MATCH_LIMIT } from "@/utils/constants";
 import { auth, googleAuthProvider } from "@/firebase";
-const DialogSignup = lazy(() => import("@/components/top/DialogSignup"));
+const DialogSignup = lazy(() => import("@/components/Top/DialogSignup"));
 const DialogTermsOfService = lazy(
-  () => import("@/components/top/DialogTermsOfService"),
+  () => import("@/components/Top/DialogTermsOfService"),
 );
-import "./index.scss";
+import "./Top.scss";
 
 const Top = () => {
   const features = [
