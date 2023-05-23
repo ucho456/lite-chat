@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoadingButton } from "@mui/lab";
 import { Button, Checkbox, Dialog } from "@mui/material";
@@ -17,7 +17,7 @@ type Props = {
   buttonText: string;
 };
 
-const DialogSignup = ({ buttonText }: Props) => {
+const DialogSignup = memo(({ buttonText }: Props) => {
   /** Dialog switch */
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -108,6 +108,8 @@ const DialogSignup = ({ buttonText }: Props) => {
       </Dialog>
     </>
   );
-};
+});
+
+DialogSignup.displayName = "DialogSignup";
 
 export default DialogSignup;
