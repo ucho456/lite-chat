@@ -13,5 +13,16 @@ $bodyHeight: calc(100vh - ($headerHeight + $spacerHeight));
     max-width: $pageMaxWidth;
     width: 100%;
     margin: 0 auto;
+    p {
+      text-align: center;
+      color: $fontColorRed;
+      font-size: 12px;
+      span {
+        span {
+          color: $fontColorLink;
+          @include hover();
+        }
+      }
+    }
   }
 }
