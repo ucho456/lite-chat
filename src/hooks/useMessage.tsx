@@ -7,6 +7,7 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
+import { MESSAGE_LIMIT } from "@/utils/constants";
 import { messageConverter } from "@/utils/converters";
 import { db } from "@/firebase";
 
@@ -18,7 +19,11 @@ const useMessage = () => {
     const colRef = collection(db, "rooms", roomId, "messages").withConverter(
       messageConverter,
     );
-    const q = query(colRef, orderBy("createdAt", "asc"), limitToLast(50));
+    const q = query(
+      colRef,
+      orderBy("createdAt", "asc"),
+      limitToLast(MESSAGE_LIMIT),
+    );
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const _messages: Message[] = [];
       querySnapshot.forEach((doc) => _messages.push(doc.data()));

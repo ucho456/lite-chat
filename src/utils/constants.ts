@@ -14,3 +14,5 @@ export const ERAS = [
 ];
 
 export const MATCH_LIMIT = 30;
+
+export const MESSAGE_LIMIT = 50;

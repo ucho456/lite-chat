@@ -1,4 +1,4 @@
-import { lazy, useState } from "react";
+import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ExpandMore } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
@@ -13,13 +13,11 @@ import { useSnackbar } from "@/contexts/Snackbar";
 import useUser from "@/hooks/useUser";
 import { useAppDispatch } from "@/store/hooks";
 import { signIn } from "@/store/modules/authSlice";
-import { MATCH_LIMIT } from "@/utils/constants";
+import { MATCH_LIMIT, MESSAGE_LIMIT } from "@/utils/constants";
 import { auth, googleAuthProvider } from "@/firebase";
-const DialogSignup = lazy(() => import("@/components/top/DialogSignup"));
-const DialogTermsOfService = lazy(
-  () => import("@/components/top/DialogTermsOfService"),
-);
-import "./index.scss";
+import DialogSignup from "@/components/Top/DialogSignup";
+import DialogTermsOfService from "@/components/Top/DialogTermsOfService";
+import "./Top.scss";
 
 const Top = () => {
   const features = [
@@ -41,24 +39,20 @@ const Top = () => {
   ];
   const QAs = [
     {
-      q: "18歳未満は利用可能ですか？",
+      q: "18歳未満は利用可能ですか?",
       a: "利用規約より、18歳未満の方の利用を禁止しております。18歳未満の方は本サービスのご利用をご遠慮下さい。また本サービスが原因でユーザーに損害が生じた場合、管理者は一切責任を負いませんので予めご了承下さい。",
     },
     {
-      q: "推奨ブラウザはありますか？",
+      q: "推奨ブラウザはありますか?",
       a: "『Google Chrome』の最新バージョンにて動作をテストしています。その他のブラウザでの動作については保証致しかねますのでご了承下さい。",
     },
     {
-      q: "メールアドレスとパスワードでサインアップする事はできますか？",
-      a: "Googleアカウント以外でサインアップする方法はございません。今後のアップデートでSNSサインアップの機能を追加します。今暫くお待ち下さいませ。",
-    },
-    {
-      q: "マッチング数の上限はありますか？",
+      q: "マッチング数の上限はありますか?",
       a: `現在のマッチング数の上限は${MATCH_LIMIT}件です。上限到達後に別のユーザーとマッチしたい場合、既存のユーザーをブロックする事で枠を空ける必要があります。`,
     },
     {
       q: "過去のメッセージの内容が遡れません。",
-      a: "最新のメッセージから50件表示する仕様になっています。今後のアップデートでメッセージを遡る機能を追加します。今暫くお待ち下さいませ。",
+      a: `最新のメッセージから${MESSAGE_LIMIT}件表示する仕様になっています。今後のアップデートでメッセージを遡る機能を追加します。今暫くお待ち下さいませ。`,
     },
   ];
 
@@ -239,7 +233,7 @@ const Top = () => {
                 </li>
                 <li>
                   <a
-                    href="https://twitter.com/ucho456"
+                    href="https://twitter.com/lite_chat"
                     target="_blank"
                     rel="noreferrer"
                   >
