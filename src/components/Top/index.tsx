@@ -9,14 +9,14 @@ import {
   Typography,
 } from "@mui/material";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import DialogSignup from "@/components/Top/DialogSignup";
+import DialogTermsOfService from "@/components/Top/DialogTermsOfService";
 import { useSnackbar } from "@/contexts/Snackbar";
 import useUser from "@/hooks/useUser";
 import { useAppDispatch } from "@/store/hooks";
 import { signIn } from "@/store/modules/authSlice";
 import { MATCH_LIMIT, MESSAGE_LIMIT } from "@/utils/constants";
 import { auth, googleAuthProvider } from "@/firebase";
-import DialogSignup from "@/components/Top/DialogSignup";
-import DialogTermsOfService from "@/components/Top/DialogTermsOfService";
 import "./Top.scss";
 
 const Top = () => {

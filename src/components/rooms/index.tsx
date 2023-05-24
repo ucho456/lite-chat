@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { linkWithPopup } from "firebase/auth";
-import { useSnackbar } from "@/contexts/Snackbar";
-import { auth, googleAuthProvider } from "@/firebase";
 import Header from "@/components/rooms/Header";
 import List from "@/components/rooms/List";
+import { useSnackbar } from "@/contexts/Snackbar";
+import { auth, googleAuthProvider } from "@/firebase";
 import "./index.scss";
 
 const Rooms = () => {

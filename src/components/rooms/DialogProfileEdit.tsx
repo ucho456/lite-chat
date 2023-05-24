@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Avatar, Dialog } from "@mui/material";
+import ProfileForm from "@/components/commons/ProfileForm";
 import { useSnackbar } from "@/contexts/Snackbar";
 import { useAppSelector } from "@/store/hooks";
 import { updateUser } from "@/utils/firestore";
 import { uploadImageAndGetUrl } from "@/utils/storage";
-import ProfileForm from "@/components/commons/ProfileForm";
 import "./DialogProfileEdit.scss";
 
 const DialogProfileEdit = () => {

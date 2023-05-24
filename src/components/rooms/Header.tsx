@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { Logout } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
+import DialogProfileEdit from "@/components/rooms/DialogProfileEdit";
 import { useSnackbar } from "@/contexts/Snackbar";
 import { useAppDispatch } from "@/store/hooks";
 import { signOut } from "@/store/modules/authSlice";
 import { resetUser } from "@/store/modules/userSlice";
 import { auth } from "@/firebase";
-import DialogProfileEdit from "@/components/rooms/DialogProfileEdit";
 import "./Header.scss";
 
 const Header = () => {

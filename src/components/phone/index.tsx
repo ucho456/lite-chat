@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import { useAppSelector } from "@/store/hooks";
 import Header from "@/components/phone/Header";
 import Videos from "@/components/phone/Videos";
+import { useAppSelector } from "@/store/hooks";
 
 const Phone = () => {
   const pc = new RTCPeerConnection({

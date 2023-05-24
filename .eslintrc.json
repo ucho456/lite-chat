@@ -59,6 +59,11 @@
             "position": "before"
           },
           {
+            "pattern": "@/components/**",
+            "group": "parent",
+            "position": "before"
+          },
+          {
             "pattern": "@/contexts/**",
             "group": "parent",
             "position": "before"
@@ -79,18 +84,13 @@
             "position": "before"
           },
           {
-            "pattern": "@/components/**",
-            "group": "parent",
-            "position": "after"
-          },
-          {
             "pattern": "@/**",
             "group": "parent",
             "position": "before"
           },
           {
             "pattern": "*.scss",
-            "group": "index",
+            "group": "parent",
             "position": "before"
           }
         ]

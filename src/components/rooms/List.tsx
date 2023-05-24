@@ -1,7 +1,7 @@
 import { List as MuiList } from "@mui/material";
-import { useAppSelector } from "@/store/hooks";
 import DialogUserSearch from "@/components/rooms/DialogUserSearch";
 import ListItem from "@/components/rooms/ListItem";
+import { useAppSelector } from "@/store/hooks";
 import "./List.scss";
 
 const List = () => {
