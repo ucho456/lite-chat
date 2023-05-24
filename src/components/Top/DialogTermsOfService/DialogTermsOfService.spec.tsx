@@ -1,6 +1,6 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import DialogTermsOfService from "./index";
+import DialogTermsOfService from "@/components/Top/DialogTermsOfService";
 
 describe("DialogTermsOfService", () => {
   test("renders the component with default props", () => {
