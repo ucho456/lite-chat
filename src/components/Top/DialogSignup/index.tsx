@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { LoadingButton } from "@mui/lab";
 import { Button, Checkbox, Dialog } from "@mui/material";
 import { signInAnonymously } from "firebase/auth";
+import ProfileForm from "@/components/commons/ProfileForm";
+import DialogTermsOfService from "@/components/Top/DialogTermsOfService";
 import { useSnackbar } from "@/contexts/Snackbar";
 import useUser from "@/hooks/useUser";
 import { useAppDispatch } from "@/store/hooks";
@@ -10,8 +12,6 @@ import { signIn } from "@/store/modules/authSlice";
 import { createUser } from "@/utils/firestore";
 import { uploadImageAndGetUrl } from "@/utils/storage";
 import { auth } from "@/firebase";
-import ProfileForm from "@/components/commons/ProfileForm";
-import DialogTermsOfService from "@/components/Top/DialogTermsOfService";
 
 type Props = {
   buttonText: string;

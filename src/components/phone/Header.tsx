@@ -2,8 +2,8 @@ import { Component, ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { ChevronLeft } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
-import { deletePhoneDocs } from "@/utils/firestore";
 import DialogProfile from "@/components/commons/DialogProfile";
+import { deletePhoneDocs } from "@/utils/firestore";
 import "./Header.scss";
 
 type Props = {
