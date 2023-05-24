@@ -1,4 +1,4 @@
-import * as React from "react";
+import { memo } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -12,33 +12,32 @@ type Props = {
   message: string;
 };
 
-const DialogConfirm = ({
-  open,
-  onClickAgree,
-  onClickReject,
-  message,
-}: Props) => {
-  return (
-    <div className="dialog-confirm">
-      <Dialog
-        open={open}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            {message}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClickReject}>いいえ</Button>
-          <Button onClick={onClickAgree} autoFocus>
-            はい
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-  );
-};
+const DialogConfirm = memo(
+  ({ open, onClickAgree, onClickReject, message }: Props) => {
+    return (
+      <div className="dialog-confirm">
+        <Dialog
+          open={open}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {message}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={onClickReject}>いいえ</Button>
+            <Button onClick={onClickAgree} autoFocus>
+              はい
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
+  },
+);
+
+DialogConfirm.displayName = "DialogConfirm";
 
 export default DialogConfirm;

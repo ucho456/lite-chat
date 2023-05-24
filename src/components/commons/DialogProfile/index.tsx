@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { Avatar, Dialog } from "@mui/material";
 import { ERAS } from "@/utils/constants";
 import "./DialogProfile.scss";
@@ -7,7 +7,7 @@ type Props = {
   you: RoomUser;
 };
 
-const DialogProfile = ({ you }: Props) => {
+const DialogProfile = memo(({ you }: Props) => {
   /** Dialog switch */
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -42,6 +42,8 @@ const DialogProfile = ({ you }: Props) => {
       </Dialog>
     </div>
   );
-};
+});
+
+DialogProfile.displayName = "DialogProfile";
 
 export default DialogProfile;
