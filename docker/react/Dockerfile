@@ -1,4 +1,4 @@
-FROM node:16.15.1-slim
+FROM node:18.16.0-slim
 
 ENV TZ Asia/Tokyo
 
