@@ -6,7 +6,14 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { ERAS } from "@/utils/constants";
+import {
+  AVATAR_SIZE_L,
+  ERAS,
+  MAN,
+  NAME_MAX_LENGTH,
+  SELF_INTRODUCTION_MAX_LENGTH,
+  WOMAN,
+} from "@/utils/constants";
 import "./ProfileForm.scss";
 
 type Props = {
@@ -53,7 +60,7 @@ const ProfileForm = ({ inputUser, setInputUser }: Props) => {
                 <Avatar
                   className="photo"
                   src={inputUser.photo ?? "/images/avatar.webp"}
-                  sx={{ width: 110, height: 110 }}
+                  sx={{ width: AVATAR_SIZE_L, height: AVATAR_SIZE_L }}
                 />
               </label>
               <input
@@ -68,7 +75,7 @@ const ProfileForm = ({ inputUser, setInputUser }: Props) => {
               <TextField
                 fullWidth
                 InputLabelProps={{ shrink: true }}
-                inputProps={{ maxLength: 10 }}
+                inputProps={{ maxLength: NAME_MAX_LENGTH }}
                 label="ニックネーム"
                 required
                 size="small"
@@ -93,8 +100,8 @@ const ProfileForm = ({ inputUser, setInputUser }: Props) => {
                     setInputUser({ ...inputUser, sex: e.target.value as Sex })
                   }
                 >
-                  <MenuItem value={"man"}>男性</MenuItem>
-                  <MenuItem value={"woman"}>女性</MenuItem>
+                  <MenuItem value={"man"}>{MAN}</MenuItem>
+                  <MenuItem value={"woman"}>{WOMAN}</MenuItem>
                 </Select>
               </FormControl>
               <div className="spacer" />
@@ -125,7 +132,7 @@ const ProfileForm = ({ inputUser, setInputUser }: Props) => {
           <TextField
             fullWidth
             InputLabelProps={{ shrink: true }}
-            inputProps={{ maxLength: 140 }}
+            inputProps={{ maxLength: SELF_INTRODUCTION_MAX_LENGTH }}
             label="自己紹介"
             type="text"
             multiline

@@ -12,24 +12,24 @@ describe("DialogProfile", () => {
     selfIntroduction: "Hello, I am John Doe.",
     unread: false,
   };
+  beforeEach(() => {
+    render(<DialogProfile you={roomUser} />);
+  });
   afterEach(() => {
     vi.clearAllMocks();
     vi.resetAllMocks();
   });
   test("renders user name", () => {
-    render(<DialogProfile you={roomUser} />);
     const nameElement = screen.getByText(roomUser.name);
     expect(nameElement).toBeInTheDocument();
   });
   test("opens dialog when clicked", async () => {
-    render(<DialogProfile you={roomUser} />);
     const nameElement = screen.getByText(roomUser.name);
     await userEvent.click(nameElement);
     const dialogElement = screen.getByRole("dialog");
     expect(dialogElement).toBeInTheDocument();
   });
   test("renders user information in dialog", async () => {
-    render(<DialogProfile you={roomUser} />);
     const nameElement = screen.getByText(roomUser.name);
     await userEvent.click(nameElement);
     const nameElement2 = screen.getAllByText(roomUser.name)[1];
