@@ -23,7 +23,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "push:main": "bash ./shells/push_to_main.sh"
+    "push:main": "bash ./shells/push_to_main.sh",
+    "make:seed": "bash ./shells/make_seed.sh"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
