@@ -12,7 +12,7 @@ import { useSnackbar } from "@/contexts/Snackbar";
 import useUser from "@/hooks/useUser";
 import { useAppSelector } from "@/store/hooks";
 import { ERAS, MATCH_LIMIT } from "@/utils/constants";
-import { createRoom, regainLife } from "@/utils/firestore";
+import { createRoom } from "@/utils/firestore";
 import "./DialogUserSearch.scss";
 
 type Props = {
@@ -76,32 +76,10 @@ const UserSearchDialog = ({ rooms }: Props) => {
     }
   };
 
-  const handleRegainLife = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    e.preventDefault();
-    if (!me) return;
-    try {
-      setLoading(true);
-      await regainLife(me);
-      openSnackbar("マッチング回数を回復しました。", "success");
-    } catch {
-      openSnackbar("マッチング回数の回復に失敗しました。", "error");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const [isMatchLimit, setIsMatchLimit] = useState(false);
   useEffect(() => {
     setIsMatchLimit(rooms.length >= MATCH_LIMIT);
   }, [rooms.length]);
-
-  const [isLife, setIsLife] = useState(true);
-  useEffect(() => {
-    if (!me) return;
-    setIsLife(me.life !== 0);
-  }, [me]);
 
   if (!me) return <></>;
   return (
@@ -164,11 +142,11 @@ const UserSearchDialog = ({ rooms }: Props) => {
               disabled={isMatchLimit}
               loading={loading}
               size="large"
-              type={isLife ? "submit" : "button"}
+              type="submit"
               variant="contained"
-              onClick={isLife ? handleMatching : handleRegainLife}
+              onClick={handleMatching}
             >
-              {isLife ? "マッチング開始" : "マッチング回数を回復する"}
+              マッチング開始
             </LoadingButton>
             {isMatchLimit ? (
               <div className="limit-reached">
@@ -176,7 +154,7 @@ const UserSearchDialog = ({ rooms }: Props) => {
                 別のユーザーとマッチしたい場合、既存のユーザーをブロックして枠を空けて下さい。
               </div>
             ) : (
-              <p>マッチング回数残り {me.life} 回</p>
+              <></>
             )}
           </div>
         </div>

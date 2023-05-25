@@ -13,7 +13,6 @@ export const userConverter: FirestoreDataConverter<User> = {
       sex: u.sex,
       era: u.era,
       selfIntroduction: u.selfIntroduction,
-      life: u.life,
       roomCount: u.roomCount,
       blocks: u.blocks,
       lastActionAt: u.lastActionAt,
@@ -28,7 +27,6 @@ export const userConverter: FirestoreDataConverter<User> = {
       sex: d.sex,
       era: d.era,
       selfIntroduction: d.selfIntroduction,
-      life: d.life,
       blocks: d.blocks,
       roomCount: d.roomCount,
     };

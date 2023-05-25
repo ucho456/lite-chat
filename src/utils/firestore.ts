@@ -30,7 +30,6 @@ export const createUser = async (user: User): Promise<void> => {
     sex: user.sex,
     era: user.era,
     selfIntroduction: user.selfIntroduction,
-    life: user.life,
     roomCount: user.roomCount,
     blocks: user.blocks,
     lastActionAt: serverTimestamp(),
@@ -83,7 +82,6 @@ export const createRoom = async (me: User, you: User): Promise<void> => {
 
   const meDocRef = doc(db, "users", me.uid).withConverter(userConverter);
   batch.update(meDocRef, {
-    life: increment(-1),
     roomCount: increment(1),
     lastActionAt: serverTimestamp(),
   });
@@ -92,14 +90,6 @@ export const createRoom = async (me: User, you: User): Promise<void> => {
   batch.update(youDocRef, { roomCount: increment(1) });
 
   await batch.commit();
-};
-
-export const regainLife = async (user: User): Promise<void> => {
-  const docRef = doc(db, "users", user.uid).withConverter(userConverter);
-  await updateDoc(docRef, {
-    life: 3,
-    lastActionAt: serverTimestamp(),
-  });
 };
 
 export const createMessage = async (

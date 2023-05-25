@@ -21,7 +21,6 @@ type User = {
   sex: Sex;
   era: Era;
   selfIntroduction: string;
-  life: number;
   roomCount: number;
   blocks: string[];
   lastActionAt?: import("firebase/firestore").Timestamp;
