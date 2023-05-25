@@ -25,11 +25,7 @@ const Header = ({ me, you }: Props) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [dialogType, setDialogType] = useState<DialogType>("");
-  const handleReject = (): void => {
-    setOpen(false);
-    setMessage("");
-    setDialogType("");
-  };
+  const handleReject = (): void => setOpen(false);
 
   /** Call phone */
   const handleCallPhone = (): void => {

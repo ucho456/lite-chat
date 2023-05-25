@@ -1,19 +1,19 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { Avatar, Dialog } from "@mui/material";
-import { ERAS } from "@/utils/constants";
+import { AVATAR_SIZE_L, ERAS, MAN, WOMAN } from "@/utils/constants";
 import "./DialogProfile.scss";
 
 type Props = {
   you: RoomUser;
 };
 
-const DialogProfile = ({ you }: Props) => {
+const DialogProfile = memo(({ you }: Props) => {
   /** Dialog switch */
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const sex = you.sex === "man" ? "男性" : "女性";
+  const sex = you.sex === "man" ? MAN : WOMAN;
   const era = ERAS.find((e) => e.value === you.era);
 
   if (!era) return <></>;
@@ -28,7 +28,11 @@ const DialogProfile = ({ you }: Props) => {
           <div className="photo-row">
             <Avatar
               src={you.photo ?? "/images/avatar.webp"}
-              sx={{ width: 110, height: 110, margin: "0 auto" }}
+              sx={{
+                width: AVATAR_SIZE_L,
+                height: AVATAR_SIZE_L,
+                margin: "0 auto",
+              }}
             />
           </div>
           <div className="profile-row">
@@ -42,6 +46,8 @@ const DialogProfile = ({ you }: Props) => {
       </Dialog>
     </div>
   );
-};
+});
+
+DialogProfile.displayName = "DialogProfile";
 
 export default DialogProfile;

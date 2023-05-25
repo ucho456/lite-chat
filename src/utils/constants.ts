@@ -13,6 +13,13 @@ export const ERAS = [
   { value: "over 70's", name: "70代以上" },
 ];
 
-export const MATCH_LIMIT = 30;
+export const MAN = "男性";
+export const WOMAN = "女性";
 
+export const NAME_MAX_LENGTH = 10;
+export const SELF_INTRODUCTION_MAX_LENGTH = 140;
+
+export const MATCH_LIMIT = 30;
 export const MESSAGE_LIMIT = 50;
+
+export const AVATAR_SIZE_L = 110;
