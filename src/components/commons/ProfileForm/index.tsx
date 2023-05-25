@@ -57,6 +57,7 @@ const ProfileForm = ({ inputUser, setInputUser }: Props) => {
                 />
               </label>
               <input
+                data-testid="photo"
                 id="photo-input"
                 type="file"
                 accept="image/*"

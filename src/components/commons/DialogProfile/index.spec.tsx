@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import DialogProfile from "@/components/commons/DialogProfile";
 
@@ -12,34 +12,31 @@ describe("DialogProfile", () => {
     selfIntroduction: "Hello, I am John Doe.",
     unread: false,
   };
-
+  afterEach(() => {
+    vi.clearAllMocks();
+    vi.resetAllMocks();
+  });
   test("renders user name", () => {
     render(<DialogProfile you={roomUser} />);
     const nameElement = screen.getByText(roomUser.name);
     expect(nameElement).toBeInTheDocument();
   });
-
   test("opens dialog when clicked", async () => {
     render(<DialogProfile you={roomUser} />);
     const nameElement = screen.getByText(roomUser.name);
-    userEvent.click(nameElement);
-    await waitFor(() => {
-      const dialogElement = screen.getByRole("dialog");
-      expect(dialogElement).toBeInTheDocument();
-    });
+    await userEvent.click(nameElement);
+    const dialogElement = screen.getByRole("dialog");
+    expect(dialogElement).toBeInTheDocument();
   });
-
   test("renders user information in dialog", async () => {
     render(<DialogProfile you={roomUser} />);
     const nameElement = screen.getByText(roomUser.name);
-    userEvent.click(nameElement);
-    await waitFor(() => {
-      const nameElement = screen.getAllByText(roomUser.name)[1];
-      const sexAndEraElement = screen.getByText(`男性 30代前半`);
-      const introductionElement = screen.getByText(roomUser.selfIntroduction);
-      expect(nameElement).toBeInTheDocument();
-      expect(sexAndEraElement).toBeInTheDocument();
-      expect(introductionElement).toBeInTheDocument();
-    });
+    await userEvent.click(nameElement);
+    const nameElement2 = screen.getAllByText(roomUser.name)[1];
+    const sexAndEraElement = screen.getByText(`男性 30代前半`);
+    const introductionElement = screen.getByText(roomUser.selfIntroduction);
+    expect(nameElement2).toBeInTheDocument();
+    expect(sexAndEraElement).toBeInTheDocument();
+    expect(introductionElement).toBeInTheDocument();
   });
 });
