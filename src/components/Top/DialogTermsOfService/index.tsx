@@ -7,7 +7,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import "./DialogTermsOfService.scss";
+import { TextStyled } from "@/components/Top/DialogTermsOfService/styled";
 
 type Props = {
   text?: string;
@@ -37,13 +37,9 @@ const DialogTermsOfService = memo(
     ];
     return (
       <>
-        <span
-          className="dialog-terms-of-service"
-          style={textStyle}
-          onClick={handleOpen}
-        >
+        <TextStyled style={textStyle} onClick={handleOpen}>
           {text}
-        </span>
+        </TextStyled>
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>利用規約</DialogTitle>
           <DialogContent>

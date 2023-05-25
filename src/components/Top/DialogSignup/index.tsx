@@ -14,10 +14,10 @@ import { uploadImageAndGetUrl } from "@/utils/storage";
 import { auth } from "@/firebase";
 
 type Props = {
-  buttonText: string;
+  buttonText?: string;
 };
 
-const DialogSignup = memo(({ buttonText }: Props) => {
+const DialogSignup = memo(({ buttonText = "お試しで開始" }: Props) => {
   /** Dialog switch */
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
