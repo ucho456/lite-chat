@@ -1,11 +1,11 @@
-import "./index.scss";
+import { ErrorStyled } from "@/components/Error/styled";
 
 const Error = () => {
   return (
-    <div className="error-page">
+    <ErrorStyled>
       <h1>Oops!</h1>
       <p>Sorry, an unexpected error has occurred.</p>
-    </div>
+    </ErrorStyled>
   );
 };
 
