@@ -36,13 +36,12 @@ service cloud.firestore {
 
     match /users/{userUid} {
       function isValidUser(user) {
-        return user.size() == 10
+        return user.size() == 9
         && 'name' in user && user.name is string
         && 'photo' in user && (user.photo is string || user.photo == null)
         && 'sex' in user && user.sex is string
         && 'era' in user && user.era is string
         && 'selfIntroduction' in user && user.selfIntroduction is string
-        && 'life' in user && user.life is number
         && 'roomCount' in user && user.roomCount is number
         && 'blocks' in user && user.blocks is list
         && 'lastActionAt' in user && user.lastActionAt is timestamp;
@@ -57,7 +56,6 @@ service cloud.firestore {
       && isValidSex(newData().sex)
       && isValidEra(newData().era)
       && isValidString(newData().selfIntroduction, 0, 140)
-      && isValidInt(newData().life, 0, 3)
       && isValidInt(newData().roomCount, 0, 30);
 
       allow update: if
@@ -69,7 +67,6 @@ service cloud.firestore {
         && isValidSex(newData().sex)
         && isValidEra(newData().era)
         && isValidString(newData().selfIntroduction, 0, 140)
-        && isValidInt(newData().life, 0, 3)
         && isValidInt(newData().roomCount, 0, 30)
       )
       ||
@@ -82,7 +79,6 @@ service cloud.firestore {
         && newData().sex == oldData().sex
         && newData().era == oldData().era
         && newData().selfIntroduction == oldData().selfIntroduction
-        && newData().life == oldData().life
         && newData().roomCount == oldData().roomCount + 1
         && isValidInt(newData().roomCount, 0, 30)
       );

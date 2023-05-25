@@ -61,7 +61,6 @@ const DialogSignup = memo(({ buttonText }: Props) => {
         await createUser({
           uid: uid,
           ...inputUser,
-          life: 3,
           roomCount: 0,
           blocks: [],
         });
