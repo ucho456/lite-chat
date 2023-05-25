@@ -1,4 +1,6 @@
-.app-snackbar {
+import styled from "styled-components";
+
+export const AppSnackbarStyled = styled.div`
   .MuiSnackbar-root {
     .MuiPaper-root {
       .MuiAlert-icon {
@@ -13,4 +15,4 @@
       }
     }
   }
-}
+`;

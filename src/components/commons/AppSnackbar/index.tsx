@@ -1,7 +1,7 @@
 import { forwardRef, memo } from "react";
 import { Snackbar } from "@mui/material";
 import MuiAlert, { AlertColor, AlertProps } from "@mui/material/Alert";
-import "./AppSnackbar.scss";
+import { AppSnackbarStyled } from "@/components/commons/AppSnackbar/styled";
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -20,7 +20,7 @@ type Props = {
 const AppSnackbar = memo(
   ({ open, message, severity = "info", onClose }: Props) => {
     return (
-      <div className="app-snackbar">
+      <AppSnackbarStyled>
         <Snackbar
           open={open}
           onClose={onClose}
@@ -29,7 +29,7 @@ const AppSnackbar = memo(
         >
           <Alert severity={severity}>{message}</Alert>
         </Snackbar>
-      </div>
+      </AppSnackbarStyled>
     );
   },
 );

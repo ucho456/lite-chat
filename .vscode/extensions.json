@@ -12,6 +12,7 @@
     "chflick.firecode",
     "firsttris.vscode-jest-runner",
     "shardulm94.trailing-spaces",
-    "bierner.markdown-mermaid"
+    "bierner.markdown-mermaid",
+    "styled-components.vscode-styled-components"
   ]
 }
