@@ -13,6 +13,7 @@
     "firsttris.vscode-jest-runner",
     "shardulm94.trailing-spaces",
     "bierner.markdown-mermaid",
-    "styled-components.vscode-styled-components"
+    "styled-components.vscode-styled-components",
+    "github.vscode-github-actions"
   ]
 }
