@@ -19,20 +19,15 @@ describe("DialogTermsOfService", () => {
   test("opens the dialog when the text is clicked and closes it when the close button is clicked", async () => {
     render(<DialogTermsOfService />);
     const textElement = screen.getByText("利用規約に同意する");
-
     userEvent.click(textElement);
-
     await waitFor(() => {
       const dialogElement = screen.getByRole("dialog");
       expect(dialogElement).toBeInTheDocument();
-
       const closeButton = within(dialogElement).getByRole("button", {
         name: "閉じる",
       });
-
       userEvent.click(closeButton);
     });
-
     await waitFor(() => {
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     });

@@ -1,16 +1,23 @@
-@import "../../index.scss";
+import styled from "styled-components";
+import { hover, pc, sp, tab, wideSp, wideTab } from "@/utils/style/mixins";
+import {
+  containerMaxWidth,
+  ghostWhite,
+  headerHeight,
+  white,
+} from "@/utils/style/variables";
 
-.top {
+export const TopStyled = styled.div`
   min-height: 100vh;
   header {
-    height: $headerHeight;
+    height: ${headerHeight};
     width: 100%;
-    background-color: $ghostwhite;
+    background-color: ${ghostWhite};
     .container {
       display: grid;
       grid-template-columns: 200px auto 100px;
-      grid-template-rows: $headerHeight;
-      max-width: $pageMaxWidth;
+      grid-template-rows: ${headerHeight};
+      max-width: ${containerMaxWidth};
       height: 100%;
       margin: 0 auto;
       img {
@@ -22,18 +29,18 @@
         grid-column: 3 / 4;
         align-self: center;
         text-decoration: none;
-        @include hover();
+        ${hover}
       }
     }
   }
   .hero {
     margin: 0 auto;
-    height: calc(100vh - $headerHeight);
-    background-color: $ghostwhite;
+    height: calc(100vh - ${headerHeight});
+    background-color: ${ghostWhite};
     .container {
       display: grid;
       grid-template-columns: 1.5fr 1fr;
-      max-width: $pageMaxWidth;
+      max-width: ${containerMaxWidth};
       margin: 0 auto;
       height: 100%;
       .left {
@@ -78,7 +85,7 @@
         }
       }
     }
-    @include pc() {
+    ${pc(`
       .container {
         .left {
           .text {
@@ -91,19 +98,17 @@
             width: 211px;
           }
         }
-      }
-    }
-    @include wideTab {
+      }`)}
+    ${wideTab(`
       .container {
         .left {
           .text {
             margin-top: 35%;
           }
         }
-      }
-    }
-    @include tab() {
-      height: calc(70vh - $headerHeight);
+      }`)}
+    ${tab(`
+      height: calc(70vh - ${headerHeight});
       .container {
         .left {
           .text {
@@ -117,9 +122,9 @@
           }
         }
       }
-    }
-    @include wideSp() {
-      height: calc(100vh - $headerHeight);
+    `)}
+    ${wideSp(`
+      height: calc(100vh - ${headerHeight});
       .container {
         .left {
           .text {
@@ -133,39 +138,39 @@
           }
         }
       }
-    }
-    @include sp() {
-      height: calc(65vh - $headerHeight);
-      .container {
-        grid-template-columns: 200px 170px;
-        .left {
-          .text {
-            margin-top: 50px;
-            h2 {
-              .desktop {
-                display: none;
-              }
-              .mobile {
-                display: inline-block;
+    `)}
+    ${sp(`
+      height: calc(65vh - ${headerHeight});
+        .container {
+          grid-template-columns: 200px 170px;
+          .left {
+            .text {
+              margin-top: 50px;
+              h2 {
+                .desktop {
+                  display: none;
+                }
+                .mobile {
+                  display: inline-block;
+                }
               }
             }
-          }
-          .buttons {
-            flex-direction: column;
-            justify-content: center;
-            align-items: stretch;
-            margin: 10px auto 0 0;
-            button {
-              width: 150px;
-              margin: 0 0 20px 30px;
-            }
-            .sign-in-button {
-              width: 150px;
+            .buttons {
+              flex-direction: column;
+              justify-content: center;
+              align-items: stretch;
+              margin: 10px auto 0 0;
+              button {
+                width: 150px;
+                margin: 0 0 20px 30px;
+              }
+              .sign-in-button {
+                width: 150px;
+              }
             }
           }
         }
-      }
-    }
+    `)}
   }
   .features {
     margin: 50px 0;
@@ -180,7 +185,7 @@
       grid-template-rows: 450px;
       gap: 50px;
       justify-content: center;
-      max-width: $pageMaxWidth;
+      max-width: ${containerMaxWidth};
       margin: 0 auto;
       .feature {
         img {
@@ -194,7 +199,7 @@
         }
       }
     }
-    @include wideTab {
+    ${wideTab(`
       .container {
         grid-template-columns: 200px 200px 200px;
         .feature {
@@ -205,8 +210,8 @@
           }
         }
       }
-    }
-    @include tab() {
+    `)}
+    ${tab(`
       .container {
         grid-template-columns: 300px;
         grid-template-rows: 450px 450px 450px;
@@ -218,11 +223,11 @@
           }
         }
       }
-    }
+    `)}
   }
   .q-a {
     padding-bottom: 100px;
-    background-color: $ghostwhite;
+    background-color: ${ghostWhite};
     h2 {
       font-weight: 700;
       padding-top: 50px;
@@ -230,7 +235,7 @@
       margin-bottom: 50px;
     }
     .container {
-      max-width: $pageMaxWidth;
+      max-width: ${containerMaxWidth};
       margin: 0 auto;
     }
   }
@@ -248,7 +253,7 @@
         margin-left: 30px;
         width: 100%;
       }
-      @include sp() {
+      ${sp(`
         width: 100%;
         flex-direction: column;
         justify-content: center;
@@ -261,7 +266,7 @@
         .sign-in-button {
           width: 80%;
         }
-      }
+      `)}
     }
   }
   footer {
@@ -274,24 +279,21 @@
     .footer-links {
       list-style: none;
       text-align: center;
-      // padding: 0;
-      // margin: 0;
       li {
         display: inline-block;
         margin-right: 20px;
         a {
-          color: $white;
+          color: ${white};
           text-decoration: none;
-          @include hover();
+          ${hover};
         }
       }
     }
     .copy-right {
-      color: $white;
+      color: ${white};
       font-size: 14px;
-      // margin-top: 10px;
       padding-top: 20px;
       text-align: center;
     }
   }
-}
+`;

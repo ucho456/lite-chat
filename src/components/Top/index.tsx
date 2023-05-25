@@ -11,13 +11,13 @@ import {
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import DialogSignup from "@/components/Top/DialogSignup";
 import DialogTermsOfService from "@/components/Top/DialogTermsOfService";
+import { TopStyled } from "@/components/Top/styled";
 import { useSnackbar } from "@/contexts/Snackbar";
 import useUser from "@/hooks/useUser";
 import { useAppDispatch } from "@/store/hooks";
 import { signIn } from "@/store/modules/authSlice";
 import { MATCH_LIMIT, MESSAGE_LIMIT } from "@/utils/constants";
 import { auth, googleAuthProvider } from "@/firebase";
-import "./Top.scss";
 
 const Top = () => {
   const features = [
@@ -116,7 +116,7 @@ const Top = () => {
   };
 
   return (
-    <div className="top">
+    <TopStyled>
       <header>
         <div className="container">
           <img src="https://placehold.jp/150x50.png" alt="logo" />
@@ -165,7 +165,7 @@ const Top = () => {
                 </>
               ) : (
                 <>
-                  <DialogSignup buttonText="開始する" />
+                  <DialogSignup />
                 </>
               )}
             </div>
@@ -209,7 +209,7 @@ const Top = () => {
       <section className="lets-try">
         <h2>ー さぁ始めましょう！ ー</h2>
         <div className="buttons">
-          <DialogSignup buttonText="サインアップ" />
+          <DialogSignup />
           <LoadingButton
             className="sign-in-button"
             loading={loading}
@@ -248,7 +248,7 @@ const Top = () => {
           </div>
         </div>
       </footer>
-    </div>
+    </TopStyled>
   );
 };
 
