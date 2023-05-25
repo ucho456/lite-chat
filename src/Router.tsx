@@ -14,7 +14,7 @@ import { isFirstAuthChecked } from "@/store/modules/authSlice";
 import { auth } from "@/firebase";
 const Room = lazy(() => import("@/components/room"));
 const Rooms = lazy(() => import("@/components/rooms"));
-const Error = lazy(() => import("@/components/error"));
+const Error = lazy(() => import("@/components/Error"));
 const Phone = lazy(() => import("@/components/phone"));
 
 const IsAuth = () => {
