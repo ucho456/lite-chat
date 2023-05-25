@@ -1,4 +1,6 @@
-.profile-form {
+import styled from "styled-components";
+
+export const ProfileFormStyled = styled.div`
   .container {
     display: grid;
     gap: 20px;
@@ -55,4 +57,4 @@
       grid-row: 2 / 3;
     }
   }
-}
+`;

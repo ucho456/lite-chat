@@ -6,6 +6,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+import { ProfileFormStyled } from "@/components/commons/ProfileForm/styled";
 import {
   AVATAR_SIZE_L,
   ERAS,
@@ -14,7 +15,6 @@ import {
   SELF_INTRODUCTION_MAX_LENGTH,
   WOMAN,
 } from "@/utils/constants";
-import "./ProfileForm.scss";
 
 type Props = {
   inputUser: InputUser;
@@ -50,7 +50,7 @@ const ProfileForm = ({ inputUser, setInputUser }: Props) => {
     reader.readAsDataURL(file);
   };
   return (
-    <div className="profile-form">
+    <ProfileFormStyled>
       <div className="container">
         <div className="me-row">
           <h3>- あなたのプロフィール -</h3>
@@ -144,7 +144,7 @@ const ProfileForm = ({ inputUser, setInputUser }: Props) => {
           />
         </div>
       </div>
-    </div>
+    </ProfileFormStyled>
   );
 };
 

@@ -1,7 +1,10 @@
 import { memo, useState } from "react";
 import { Avatar, Dialog } from "@mui/material";
+import {
+  ContainerStyled,
+  DialogProfileStyled,
+} from "@/components/commons/DialogProfile/styled";
 import { AVATAR_SIZE_L, ERAS, MAN, WOMAN } from "@/utils/constants";
-import "./DialogProfile.scss";
 
 type Props = {
   you: RoomUser;
@@ -18,13 +21,13 @@ const DialogProfile = memo(({ you }: Props) => {
 
   if (!era) return <></>;
   return (
-    <div className="dialog-profile">
+    <DialogProfileStyled>
       <div className="user-column" onClick={handleOpen}>
         <Avatar className="avatar" src={you.photo ?? "/images/avatar.webp"} />
         <div className="name">{you.name}</div>
       </div>
       <Dialog className="dialog-profile" open={open} onClose={handleClose}>
-        <div className="container">
+        <ContainerStyled>
           <div className="photo-row">
             <Avatar
               src={you.photo ?? "/images/avatar.webp"}
@@ -42,9 +45,9 @@ const DialogProfile = memo(({ you }: Props) => {
             </p>
             <p>{you.selfIntroduction}</p>
           </div>
-        </div>
+        </ContainerStyled>
       </Dialog>
-    </div>
+    </DialogProfileStyled>
   );
 });
 
