@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { hover } from "@/utils/style/mixins";
-import { HEADER_HEIGHT } from "@/utils/style/variables";
+import { FONT_COLOR_WHITE, HEADER_HEIGHT } from "@/utils/style/variables";
 
 export const DialogStyled = styled.div`
   .user-column {
@@ -11,6 +11,7 @@ export const DialogStyled = styled.div`
     .name {
       line-height: 40px;
       margin-left: 5px;
+      color: ${FONT_COLOR_WHITE};
     }
   }
 `;

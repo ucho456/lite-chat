@@ -2,12 +2,12 @@ import { useNavigate } from "react-router-dom";
 import { Logout } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import DialogProfileEdit from "@/components/Rooms/DialogProfileEdit";
+import { RoomsHeaderStyled } from "@/components/Rooms/Header/styled";
 import { useSnackbar } from "@/contexts/Snackbar";
 import { useAppDispatch } from "@/store/hooks";
 import { signOut } from "@/store/modules/authSlice";
 import { resetUser } from "@/store/modules/userSlice";
 import { auth } from "@/firebase";
-import "./Header.scss";
 
 const Header = () => {
   /** SignOut */
@@ -23,7 +23,7 @@ const Header = () => {
   };
 
   return (
-    <div className="rooms-header">
+    <RoomsHeaderStyled>
       <div className="container">
         <div className="user-column">
           <DialogProfileEdit />
@@ -34,7 +34,7 @@ const Header = () => {
           </IconButton>
         </div>
       </div>
-    </div>
+    </RoomsHeaderStyled>
   );
 };
 

@@ -8,12 +8,12 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
+import { ContainerStyled } from "@/components/Rooms/DialogUserSearch/styled";
 import { useSnackbar } from "@/contexts/Snackbar";
 import useUser from "@/hooks/useUser";
 import { useAppSelector } from "@/store/hooks";
 import { ERAS, MATCH_LIMIT } from "@/utils/constants";
 import { createRoom } from "@/utils/firestore";
-import "./DialogUserSearch.scss";
 
 type Props = {
   rooms: Room[];
@@ -88,7 +88,7 @@ const UserSearchDialog = ({ rooms }: Props) => {
         マッチング相手を探す
       </Button>
       <Dialog className="dialog-user-search" open={open} onClose={handleClose}>
-        <div className="container">
+        <ContainerStyled>
           <h3>- 相手の条件 -</h3>
           <div className="sex-row">
             <FormControl>
@@ -157,7 +157,7 @@ const UserSearchDialog = ({ rooms }: Props) => {
               <></>
             )}
           </div>
-        </div>
+        </ContainerStyled>
       </Dialog>
     </div>
   );
