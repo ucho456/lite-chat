@@ -1,12 +1,14 @@
-export const primary = "#b3e5fc";
-export const primaryLight = "#e1f5fe";
-export const ghostWhite = "#f8f8ff";
-export const white = "#fff";
+export const PRIMARY = "#b3e5fc";
+export const PRIMARY_LIGHT = "#e1f5fe";
+export const GHOST_WHITE = "#fcfcfc";
+export const WHITE = "#fff";
 
-export const fontColorBase = "#263238";
-export const fontColorLight = "gray";
-export const fontColorAlert = "red";
-export const fontColorLink = "#0099ff";
+export const FONT_COLOR_BASE = "#263238";
+export const FONT_COLOR_WHITE = "#fff";
+export const FONT_COLOR_GRAY = "gray";
+export const FONT_COLOR_RED = "red";
 
-export const headerHeight = "50px";
-export const containerMaxWidth = "1000px";
+export const LINK_COLOR = "#0099ff";
+
+export const HEADER_HEIGHT = "50px";
+export const CONTAINER_MAX_WIDTH = "1000px";
