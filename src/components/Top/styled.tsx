@@ -1,23 +1,25 @@
 import styled from "styled-components";
 import { hover, pc, sp, tab, wideSp, wideTab } from "@/utils/style/mixins";
 import {
-  containerMaxWidth,
-  ghostWhite,
-  headerHeight,
-  white,
+  CONTAINER_MAX_WIDTH,
+  FONT_COLOR_WHITE,
+  GHOST_WHITE,
+  HEADER_HEIGHT,
+  LINK_COLOR,
+  WHITE,
 } from "@/utils/style/variables";
 
 export const TopStyled = styled.div`
   min-height: 100vh;
   header {
-    height: ${headerHeight};
+    height: ${HEADER_HEIGHT};
     width: 100%;
-    background-color: ${ghostWhite};
+    background-color: ${WHITE};
     .container {
       display: grid;
       grid-template-columns: 200px auto 100px;
-      grid-template-rows: ${headerHeight};
-      max-width: ${containerMaxWidth};
+      grid-template-rows: ${HEADER_HEIGHT};
+      max-width: ${CONTAINER_MAX_WIDTH};
       height: 100%;
       margin: 0 auto;
       img {
@@ -26,6 +28,7 @@ export const TopStyled = styled.div`
         height: 50px;
       }
       div {
+        color: ${LINK_COLOR};
         grid-column: 3 / 4;
         align-self: center;
         text-decoration: none;
@@ -35,12 +38,12 @@ export const TopStyled = styled.div`
   }
   .hero {
     margin: 0 auto;
-    height: calc(100vh - ${headerHeight});
-    background-color: ${ghostWhite};
+    height: calc(100vh - ${HEADER_HEIGHT});
+    background-color: ${WHITE};
     .container {
       display: grid;
       grid-template-columns: 1.5fr 1fr;
-      max-width: ${containerMaxWidth};
+      max-width: ${CONTAINER_MAX_WIDTH};
       margin: 0 auto;
       height: 100%;
       .left {
@@ -108,7 +111,7 @@ export const TopStyled = styled.div`
         }
       }`)}
     ${tab(`
-      height: calc(70vh - ${headerHeight});
+      height: calc(70vh - ${HEADER_HEIGHT});
       .container {
         .left {
           .text {
@@ -124,7 +127,7 @@ export const TopStyled = styled.div`
       }
     `)}
     ${wideSp(`
-      height: calc(100vh - ${headerHeight});
+      height: calc(100vh - ${HEADER_HEIGHT});
       .container {
         .left {
           .text {
@@ -140,7 +143,7 @@ export const TopStyled = styled.div`
       }
     `)}
     ${sp(`
-      height: calc(65vh - ${headerHeight});
+      height: calc(65vh - ${HEADER_HEIGHT});
         .container {
           grid-template-columns: 200px 170px;
           .left {
@@ -173,10 +176,11 @@ export const TopStyled = styled.div`
     `)}
   }
   .features {
-    margin: 50px 0;
+    background-color: ${GHOST_WHITE};
     h2 {
       font-weight: 700;
       text-align: center;
+      padding-top: 50px;
       margin-bottom: 50px;
     }
     .container {
@@ -185,7 +189,7 @@ export const TopStyled = styled.div`
       grid-template-rows: 450px;
       gap: 50px;
       justify-content: center;
-      max-width: ${containerMaxWidth};
+      max-width: ${CONTAINER_MAX_WIDTH};
       margin: 0 auto;
       .feature {
         img {
@@ -227,7 +231,7 @@ export const TopStyled = styled.div`
   }
   .q-a {
     padding-bottom: 100px;
-    background-color: ${ghostWhite};
+    background-color: ${WHITE};
     h2 {
       font-weight: 700;
       padding-top: 50px;
@@ -235,12 +239,13 @@ export const TopStyled = styled.div`
       margin-bottom: 50px;
     }
     .container {
-      max-width: ${containerMaxWidth};
+      max-width: ${CONTAINER_MAX_WIDTH};
       margin: 0 auto;
     }
   }
   .lets-try {
-    margin: 50px 0 100px;
+    padding: 50px 0 100px;
+    background-color: ${GHOST_WHITE};
     h2 {
       font-weight: 700;
       text-align: center;
@@ -283,14 +288,14 @@ export const TopStyled = styled.div`
         display: inline-block;
         margin-right: 20px;
         a {
-          color: ${white};
+          color: ${FONT_COLOR_WHITE};
           text-decoration: none;
           ${hover};
         }
       }
     }
     .copy-right {
-      color: ${white};
+      color: ${FONT_COLOR_WHITE};
       font-size: 14px;
       padding-top: 20px;
       text-align: center;
