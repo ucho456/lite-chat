@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Avatar, Dialog } from "@mui/material";
 import ProfileForm from "@/components/commons/ProfileForm";
+import { DialogStyled } from "@/components/rooms/DialogProfileEdit/styled";
 import { useSnackbar } from "@/contexts/Snackbar";
 import { useAppSelector } from "@/store/hooks";
 import { updateUser } from "@/utils/firestore";
 import { uploadImageAndGetUrl } from "@/utils/storage";
-import "./DialogProfileEdit.scss";
 
 const DialogProfileEdit = () => {
   /** Dialog switch */
@@ -62,7 +62,7 @@ const DialogProfileEdit = () => {
 
   if (!user) return <></>;
   return (
-    <div className="dialog-profile-edit">
+    <DialogStyled>
       <div className="user-column" onClick={handleOpen}>
         <Avatar src={user.photo ?? "/images/avatar.webp"} />
         <div className="name">{user.name}</div>
@@ -81,7 +81,7 @@ const DialogProfileEdit = () => {
           </LoadingButton>
         </div>
       </Dialog>
-    </div>
+    </DialogStyled>
   );
 };
 
