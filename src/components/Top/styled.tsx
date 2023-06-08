@@ -6,6 +6,7 @@ import {
   GHOST_WHITE,
   HEADER_HEIGHT,
   LINK_COLOR,
+  PRIMARY,
   WHITE,
 } from "@/utils/style/variables";
 
@@ -275,7 +276,7 @@ export const TopStyled = styled.div`
     }
   }
   footer {
-    background-color: #2a2a2a;
+    background-color: ${PRIMARY};
     padding: 40px 0;
     .container {
       max-width: 960px;
