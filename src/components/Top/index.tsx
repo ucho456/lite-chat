@@ -119,7 +119,7 @@ const Top = () => {
     <TopStyled>
       <header>
         <div className="container">
-          <img src="https://placehold.jp/150x50.png" alt="logo" />
+          <img src="/images/logo.webp" alt="logo" />
           <div onClick={handleSignIn}>サインイン</div>
         </div>
       </header>
