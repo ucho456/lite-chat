@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { linkWithPopup } from "firebase/auth";
-import Header from "@/components/rooms/Header";
-import List from "@/components/rooms/List";
+import Header from "@/components/Rooms/Header";
+import List from "@/components/Rooms/List";
+import { RoomsStyled } from "@/components/Rooms/styled";
 import { useSnackbar } from "@/contexts/Snackbar";
 import { auth, googleAuthProvider } from "@/firebase";
-import "./index.scss";
 
 const Rooms = () => {
   const [isAnonymous, setIsAnonymous] = useState(false);
@@ -26,7 +26,7 @@ const Rooms = () => {
     }
   };
   return (
-    <div className="rooms">
+    <RoomsStyled>
       <Header />
       <div className="spacer" />
       <div className="list">
@@ -44,7 +44,7 @@ const Rooms = () => {
           <></>
         )}
       </div>
-    </div>
+    </RoomsStyled>
   );
 };
 

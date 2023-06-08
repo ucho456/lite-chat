@@ -6,8 +6,8 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@mui/material";
+import { ItemStyled } from "@/components/Rooms/List/Item/styled";
 import { useAppSelector } from "@/store/hooks";
-import "./ListItem.scss";
 
 type Props = {
   room: Room;
@@ -30,7 +30,7 @@ const ListItem = ({ room }: Props) => {
   };
 
   return (
-    <div className="rooms-list-item" onClick={handleNavigateRoom}>
+    <ItemStyled onClick={handleNavigateRoom}>
       <MuiListItem alignItems="flex-start">
         <ListItemAvatar>
           <Avatar alt={you.name} src={you.photo ?? "/images/avatar.webp"} />
@@ -56,7 +56,7 @@ const ListItem = ({ room }: Props) => {
         />
       </MuiListItem>
       <Divider variant="inset" component="li" />
-    </div>
+    </ItemStyled>
   );
 };
 

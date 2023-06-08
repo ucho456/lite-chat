@@ -1,8 +1,7 @@
 import { List as MuiList } from "@mui/material";
-import DialogUserSearch from "@/components/rooms/DialogUserSearch";
-import ListItem from "@/components/rooms/ListItem";
+import DialogUserSearch from "@/components/Rooms/DialogUserSearch";
+import ListItem from "@/components/Rooms/List/Item";
 import { useAppSelector } from "@/store/hooks";
-import "./List.scss";
 
 const List = () => {
   const rooms = useAppSelector((state) => state.rooms.rooms);
@@ -12,7 +11,7 @@ const List = () => {
       className="rooms-body"
       sx={{ margin: "0 auto", width: "96%", bgcolor: "background.paper" }}
     >
-      <div className="matching-button">
+      <div style={{ textAlign: "right" }}>
         <DialogUserSearch rooms={rooms} />
       </div>
       {rooms.length === 0 ? (
