@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Logout } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
-import DialogProfileEdit from "@/components/rooms/DialogProfileEdit";
+import DialogProfileEdit from "@/components/Rooms/DialogProfileEdit";
 import { useSnackbar } from "@/contexts/Snackbar";
 import { useAppDispatch } from "@/store/hooks";
 import { signOut } from "@/store/modules/authSlice";

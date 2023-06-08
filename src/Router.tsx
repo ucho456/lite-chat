@@ -13,7 +13,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { isFirstAuthChecked } from "@/store/modules/authSlice";
 import { auth } from "@/firebase";
 const Room = lazy(() => import("@/components/room"));
-const Rooms = lazy(() => import("@/components/rooms"));
+const Rooms = lazy(() => import("@/components/Rooms"));
 const Error = lazy(() => import("@/components/Error"));
 const Phone = lazy(() => import("@/components/phone"));
 

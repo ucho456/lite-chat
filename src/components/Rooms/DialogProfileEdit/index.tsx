@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Avatar, Dialog } from "@mui/material";
 import ProfileForm from "@/components/commons/ProfileForm";
-import { DialogStyled } from "@/components/rooms/DialogProfileEdit/styled";
+import { DialogStyled } from "@/components/Rooms/DialogProfileEdit/styled";
 import { useSnackbar } from "@/contexts/Snackbar";
 import { useAppSelector } from "@/store/hooks";
 import { updateUser } from "@/utils/firestore";

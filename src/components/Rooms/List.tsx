@@ -1,6 +1,6 @@
 import { List as MuiList } from "@mui/material";
-import DialogUserSearch from "@/components/rooms/DialogUserSearch";
-import ListItem from "@/components/rooms/ListItem";
+import DialogUserSearch from "@/components/Rooms/DialogUserSearch";
+import ListItem from "@/components/Rooms/ListItem";
 import { useAppSelector } from "@/store/hooks";
 import "./List.scss";
 
