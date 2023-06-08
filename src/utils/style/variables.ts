@@ -1,5 +1,4 @@
-export const PRIMARY = "#b3e5fc";
-export const PRIMARY_LIGHT = "#e1f5fe";
+export const PRIMARY = "#2a2a2a";
 export const GHOST_WHITE = "#fcfcfc";
 export const WHITE = "#fff";
 
