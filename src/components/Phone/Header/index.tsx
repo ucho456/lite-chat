@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { ChevronLeft } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import DialogProfile from "@/components/commons/DialogProfile";
+import { PhoneHeaderStyled } from "@/components/Phone/Header/styled";
 import { deletePhoneDocs } from "@/utils/firestore";
-import "./Header.scss";
 
 type Props = {
   pc: RTCPeerConnection;
@@ -24,7 +24,7 @@ class Header extends Component<Props> {
   }
   render(): ReactNode {
     return (
-      <div className="phone-header">
+      <PhoneHeaderStyled>
         <div className="container">
           <div className="leave-column">
             <Link to={`/rooms/${this.props.roomId}`}>
@@ -37,7 +37,7 @@ class Header extends Component<Props> {
             <DialogProfile you={this.props.you} />
           </div>
         </div>
-      </div>
+      </PhoneHeaderStyled>
     );
   }
 }

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
+import { ListStyled } from "@/components/Room/List/styled";
 import useMessage from "@/hooks/useMessage";
 import { scrollBottom } from "@/utils/scrollBottom";
-import "./List.scss";
 
 type Props = {
   bodyRef: React.RefObject<HTMLDivElement>;
@@ -19,7 +19,7 @@ const List = ({ bodyRef, me }: Props) => {
   }, [bodyCurrent]);
 
   return (
-    <div className="room-list">
+    <ListStyled>
       <div className="container" ref={bodyRef}>
         {messages.map((m) => (
           <div
@@ -30,7 +30,7 @@ const List = ({ bodyRef, me }: Props) => {
           </div>
         ))}
       </div>
-    </div>
+    </ListStyled>
   );
 };
 

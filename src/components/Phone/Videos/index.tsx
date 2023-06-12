@@ -8,6 +8,7 @@ import {
 } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import { onSnapshot } from "firebase/firestore";
+import { VideosStyled } from "@/components/Phone/Videos/styled";
 import useOneTimeMountEffect from "@/hooks/useOneTimeMountEffect";
 import {
   createAnswerCandidate,
@@ -18,7 +19,6 @@ import {
   getCandidateDocRefs,
   updateCall,
 } from "@/utils/firestore";
-import "./Videos.scss";
 
 type Props = {
   pc: RTCPeerConnection;
@@ -180,7 +180,7 @@ const Videos = ({
   };
 
   return (
-    <div className="phone-videos">
+    <VideosStyled>
       <div className="videos-container">
         <video className="remote" ref={remoteRef} autoPlay playsInline />
         <video className="local" ref={localRef} autoPlay playsInline muted />
@@ -193,7 +193,7 @@ const Videos = ({
           </IconButton>
         </div>
       </div>
-    </div>
+    </VideosStyled>
   );
 };
 

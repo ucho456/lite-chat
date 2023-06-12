@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@mui/material";
-import Form from "@/components/room/Form";
-import Header from "@/components/room/Header";
-import List from "@/components/room/List";
+import Form from "@/components/Room/Form";
+import Header from "@/components/Room/Header";
+import List from "@/components/Room/List";
 import { useAppSelector } from "@/store/hooks";
 import { readMessage } from "@/utils/firestore";
-import "./index.scss";
 
 const Room = () => {
   /** Get room */

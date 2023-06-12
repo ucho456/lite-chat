@@ -12,10 +12,10 @@ import useUser from "@/hooks/useUser";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { isFirstAuthChecked } from "@/store/modules/authSlice";
 import { auth } from "@/firebase";
-const Room = lazy(() => import("@/components/room"));
+const Room = lazy(() => import("@/components/Room"));
 const Rooms = lazy(() => import("@/components/Rooms"));
 const Error = lazy(() => import("@/components/Error"));
-const Phone = lazy(() => import("@/components/phone"));
+const Phone = lazy(() => import("@/components/Phone"));
 
 const IsAuth = () => {
   /** Loading at the root to persist reactive data to the store */

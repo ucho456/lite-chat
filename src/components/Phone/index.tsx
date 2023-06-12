@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import Header from "@/components/phone/Header";
-import Videos from "@/components/phone/Videos";
+import Header from "@/components/Phone/Header";
+import Videos from "@/components/Phone/Videos";
 import { useAppSelector } from "@/store/hooks";
 
 const Phone = () => {
