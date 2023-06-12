@@ -5,9 +5,9 @@ import { IconButton } from "@mui/material";
 import { onSnapshot } from "firebase/firestore";
 import DialogConfirm from "@/components/commons/DialogConfirm";
 import DialogProfile from "@/components/commons/DialogProfile";
+import { HeaderStyled } from "@/components/Room/Header/styled";
 import { useSnackbar } from "@/contexts/Snackbar";
 import { blockRoom, getCallColRef } from "@/utils/firestore";
-import "./Header.scss";
 
 type Props = {
   me: RoomUser;
@@ -83,7 +83,7 @@ const Header = ({ me, you }: Props) => {
   };
 
   return (
-    <div className="room-header">
+    <HeaderStyled>
       <div className="container">
         <div className="leave-column">
           <IconButton onClick={handleNavigateRooms}>
@@ -116,7 +116,7 @@ const Header = ({ me, you }: Props) => {
         onClickReject={handleReject}
         message={message}
       />
-    </div>
+    </HeaderStyled>
   );
 };
 

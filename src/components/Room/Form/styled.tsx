@@ -1,16 +1,17 @@
-@import "./index.scss";
+import styled from "styled-components";
+import { CONTAINER_MAX_WIDTH, PRIMARY, WHITE } from "@/utils/style/variables";
 
-.room-form {
+export const FormStyled = styled.div`
   position: absolute;
   bottom: 0;
   width: 100%;
-  background-color: $primary;
+  background-color: ${PRIMARY};
   padding-top: 10px;
   form {
     width: 94%;
-    max-width: $pageMaxWidth;
+    max-width: ${CONTAINER_MAX_WIDTH};
     margin: 0 auto;
-    background-color: $primaryLight;
+    background-color: ${WHITE};
     border-radius: 5px;
     position: relative;
     display: flex;
@@ -34,4 +35,4 @@
       margin: 0 0 0 auto;
     }
   }
-}
+`

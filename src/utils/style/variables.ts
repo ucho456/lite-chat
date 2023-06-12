@@ -1,4 +1,6 @@
+export const BLACK = "#000";
 export const PRIMARY = "#2a2a2a";
+export const GRAY = "#F8F8FF";
 export const GHOST_WHITE = "#fcfcfc";
 export const WHITE = "#fff";
 

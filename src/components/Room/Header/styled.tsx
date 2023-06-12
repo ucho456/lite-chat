@@ -1,13 +1,14 @@
-@import "./index.scss";
+import styled from "styled-components";
+import { CONTAINER_MAX_WIDTH, GHOST_WHITE, HEADER_HEIGHT } from "@/utils/style/variables";
 
-.room-header {
-  height: $headerHeight;
-  background-color: $primaryLight;
+export const HeaderStyled = styled.div`
+  height: ${HEADER_HEIGHT};
+  background-color: ${GHOST_WHITE};
   .container {
     display: grid;
     grid-template-columns: 50px 210px auto 50px 50px;
     grid-template-rows: 50px;
-    max-width: $pageMaxWidth;
+    max-width: ${CONTAINER_MAX_WIDTH};
     height: 100%;
     margin: 0 auto;
     .leave-column {
@@ -24,4 +25,4 @@
       grid-column: 5 / 6;
     }
   }
-}
+`

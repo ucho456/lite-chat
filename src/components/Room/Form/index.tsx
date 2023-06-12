@@ -1,9 +1,9 @@
 import { useReducer, useRef } from "react";
 import { Send } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
+import { FormStyled } from "@/components/Room/Form/styled";
 import { createMessage } from "@/utils/firestore";
 import { scrollBottom } from "@/utils/scrollBottom";
-import "./Form.scss";
 
 type State = { text: string; height: number };
 
@@ -62,7 +62,7 @@ const Form = ({ user, room, bodyRef }: Props) => {
   };
 
   return (
-    <div className="room-form" style={{ height: textarea.height + "px" }}>
+    <FormStyled style={{ height: textarea.height + "px" }}>
       <form style={{ height: textarea.height - 20 + "px" }}>
         <textarea
           ref={textareaRef}
@@ -77,7 +77,7 @@ const Form = ({ user, room, bodyRef }: Props) => {
           </IconButton>
         </div>
       </form>
-    </div>
+    </FormStyled>
   );
 };
 
