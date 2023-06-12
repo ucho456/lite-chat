@@ -4,7 +4,7 @@ import { createRoot } from "react-dom/client";
 import { SnackbarContextProvider } from "@/contexts/Snackbar";
 import { store } from "@/store/store";
 import Router from "@/Router";
-import "./index.scss";
+import "./main.css";
 
 createRoot(document.getElementById("root") as HTMLElement).render(
   <StrictMode>
