@@ -4,11 +4,11 @@ React \* Firebase \* WebRTC を使用して、ランダムでマッチした相�
 
 <br />
 
-![demo2](https://user-images.githubusercontent.com/95033809/236656329-e7bad853-0742-48ca-bab6-6a781f61d737.gif)
+![demo](https://github.com/ucho456/lite-chat/assets/95033809/cabba148-cb7c-403a-8b78-bbc5c28498aa)
 
 <br />
 
-## デモ URL
+## 公開URL
 
 https://lite-chat.com?testUser=true
 
@@ -24,21 +24,7 @@ https://lite-chat.com?testUser=true
 
 ## 使用技術一覧
 
-- React v18.2.0
-  - Redux v8.0.5
-  - React-router-dom v6.9.0
-- Vite v4.2.0
-- Vitest v0.30.1
-- Typescript v4.9.3
-- Material ui v5.11.14
-- Sass v1.60.0
-- Firebase v9.18.0
-  - Authentication
-  - Firestore
-  - Storage
-  - Hosting
-- Docker 20.10.23
-- Github actions
+React, Typescript, Material ui, Firebase, Docker, Github actions
 
 <br />
 
