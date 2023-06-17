@@ -1,5 +1,11 @@
 import styled from "styled-components";
-import { CONTAINER_MAX_WIDTH, GHOST_WHITE, GRAY, PRIMARY, WHITE } from "@/utils/style/variables";
+import {
+  CONTAINER_MAX_WIDTH,
+  GHOST_WHITE,
+  GRAY,
+  PRIMARY,
+  WHITE,
+} from "@/utils/style/variables";
 
 export const ListStyled = styled.div`
   background-color: ${WHITE};
@@ -62,4 +68,4 @@ export const ListStyled = styled.div`
       }
     }
   }
-`
+`;

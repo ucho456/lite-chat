@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { sp, wideSp } from "@/utils/style/mixins"
+import { sp, wideSp } from "@/utils/style/mixins";
 import { CONTAINER_MAX_WIDTH, PRIMARY, WHITE } from "@/utils/style/variables";
 
 export const VideosStyled = styled.div`
@@ -32,4 +32,4 @@ export const VideosStyled = styled.div`
       }
     }
   }
-`
+`;

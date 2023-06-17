@@ -1,5 +1,9 @@
 import styled from "styled-components";
-import { CONTAINER_MAX_WIDTH, GHOST_WHITE, HEADER_HEIGHT } from "@/utils/style/variables";
+import {
+  CONTAINER_MAX_WIDTH,
+  GHOST_WHITE,
+  HEADER_HEIGHT,
+} from "@/utils/style/variables";
 
 export const HeaderStyled = styled.div`
   height: ${HEADER_HEIGHT};
@@ -25,4 +29,4 @@ export const HeaderStyled = styled.div`
       grid-column: 5 / 6;
     }
   }
-`
+`;
