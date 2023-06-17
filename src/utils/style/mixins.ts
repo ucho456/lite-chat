@@ -1,9 +1,15 @@
-export const hover = `
+import { css } from "styled-components";
+
+export const hover = css`
   &:hover {
     cursor: pointer;
     opacity: 0.6;
   }
 `;
+
+export const screenUnder = (px: number) => {
+  return `@media (max-width: ${px}px)`;
+};
 
 export const pc = (content: string) => {
   return `

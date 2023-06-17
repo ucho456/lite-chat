@@ -1,29 +1,24 @@
 import styled from "styled-components";
 import { hover } from "@/utils/style/mixins";
-import {
-  CONTAINER_MAX_WIDTH,
-  FONT_COLOR_LINK,
-  FONT_COLOR_RED,
-  GHOST_WHITE,
-} from "@/utils/style/variables";
+import { colors, containerMaxWidth, fontColors } from "@/utils/style/variables";
 
 export const RoomsStyled = styled.div`
-  background-color: ${GHOST_WHITE};
+  background-color: ${colors.ghostWhite};
   .spacer {
     height: 10px;
   }
   .list {
     min-height: calc(100vh - 60px);
-    max-width: ${CONTAINER_MAX_WIDTH};
+    max-width: ${containerMaxWidth};
     width: 100%;
     margin: 0 auto;
     p {
       text-align: center;
-      color: ${FONT_COLOR_RED};
+      color: ${fontColors.red};
       font-size: 12px;
       span {
         span {
-          color: ${FONT_COLOR_LINK};
+          color: ${fontColors.blue};
           ${hover};
         }
       }

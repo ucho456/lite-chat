@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FONT_COLOR_GRAY, FONT_COLOR_RED } from "@/utils/style/variables";
+import { fontColors } from "@/utils/style/variables";
 
 export const ContainerStyled = styled.div`
   min-width: 310px;
@@ -25,12 +25,12 @@ export const ContainerStyled = styled.div`
       width: 200px;
       margin: 5px auto 0;
       text-align: left;
-      color: ${FONT_COLOR_RED};
+      color: ${fontColors.red};
       font-size: 10px;
     }
     p {
       margin: 5px 0;
-      color: ${FONT_COLOR_GRAY};
+      color: ${fontColors.gray};
       font-size: 12px;
     }
   }

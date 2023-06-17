@@ -1,18 +1,18 @@
 import styled from "styled-components";
 import {
-  CONTAINER_MAX_WIDTH,
-  GHOST_WHITE,
-  HEADER_HEIGHT,
+  containerMaxWidth,
+  colors,
+  headerHeight,
 } from "@/utils/style/variables";
 
 export const HeaderStyled = styled.div`
-  height: ${HEADER_HEIGHT};
-  background-color: ${GHOST_WHITE};
+  height: ${headerHeight};
+  background-color: ${colors.ghostWhite};
   .container {
     display: grid;
     grid-template-columns: 50px 210px auto 50px 50px;
     grid-template-rows: 50px;
-    max-width: ${CONTAINER_MAX_WIDTH};
+    max-width: ${containerMaxWidth};
     height: 100%;
     margin: 0 auto;
     .leave-column {

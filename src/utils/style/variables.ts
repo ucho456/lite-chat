@@ -1,16 +1,39 @@
-export const BLACK = "#000";
-export const PRIMARY = "#2a2a2a";
+export const colors = {
+  primary: "#2a2a2a",
+  gray: "#f8f8ff",
+  ghostWhite: "#fcfcfc",
+  white: "#fff",
+};
+
+export const fontColors = {
+  base: "#263238",
+  white: "#fff",
+  gray: "#f8f8ff",
+  red: "#ff3333",
+  blue: "#0099ff",
+};
+
+export const fontWeight = {
+  normal: 300,
+  bold: 700,
+};
+
+export const screenWidth = {
+  pc: 1280,
+  wideTab: 1024,
+  tab: 768,
+  wideSp: 690,
+  sp: 479,
+};
+
 export const GRAY = "#F8F8FF";
-export const GHOST_WHITE = "#fcfcfc";
-export const WHITE = "#fff";
 
 export const FONT_COLOR_BASE = "#263238";
-export const FONT_COLOR_WHITE = "#fff";
 export const FONT_COLOR_GRAY = "gray";
 export const FONT_COLOR_RED = "red";
 export const FONT_COLOR_LINK = "#1976d2";
 
 export const LINK_COLOR = "#0099ff";
 
-export const HEADER_HEIGHT = "50px";
-export const CONTAINER_MAX_WIDTH = "1000px";
+export const headerHeight = "50px";
+export const containerMaxWidth = "1000px";

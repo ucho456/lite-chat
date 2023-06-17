@@ -1,26 +1,25 @@
 import styled from "styled-components";
-import { hover, pc, sp, tab, wideSp, wideTab } from "@/utils/style/mixins";
+import { hover, screenUnder } from "@/utils/style/mixins";
 import {
-  CONTAINER_MAX_WIDTH,
-  FONT_COLOR_WHITE,
-  GHOST_WHITE,
-  HEADER_HEIGHT,
-  LINK_COLOR,
-  PRIMARY,
-  WHITE,
+  colors,
+  containerMaxWidth,
+  fontColors,
+  fontWeight,
+  headerHeight,
+  screenWidth,
 } from "@/utils/style/variables";
 
 export const TopStyled = styled.div`
   min-height: 100vh;
   header {
-    height: ${HEADER_HEIGHT};
+    height: ${headerHeight};
     width: 100%;
-    background-color: ${WHITE};
+    background-color: ${colors.white};
     .container {
       display: grid;
       grid-template-columns: 200px auto 100px;
-      grid-template-rows: ${HEADER_HEIGHT};
-      max-width: ${CONTAINER_MAX_WIDTH};
+      grid-template-rows: ${headerHeight};
+      max-width: ${containerMaxWidth};
       height: 100%;
       margin: 0 auto;
       img {
@@ -29,7 +28,7 @@ export const TopStyled = styled.div`
         height: 50px;
       }
       div {
-        color: ${LINK_COLOR};
+        color: ${fontColors.blue};
         grid-column: 3 / 4;
         align-self: center;
         text-decoration: none;
@@ -39,12 +38,12 @@ export const TopStyled = styled.div`
   }
   .hero {
     margin: 0 auto;
-    height: calc(100vh - ${HEADER_HEIGHT});
-    background-color: ${WHITE};
+    height: calc(100vh - ${headerHeight});
+    background-color: ${colors.white};
     .container {
       display: grid;
       grid-template-columns: 1.5fr 1fr;
-      max-width: ${CONTAINER_MAX_WIDTH};
+      max-width: ${containerMaxWidth};
       margin: 0 auto;
       height: 100%;
       .left {
@@ -54,11 +53,11 @@ export const TopStyled = styled.div`
           text-align: center;
           h2 {
             .desktop {
-              font-weight: 700;
+              font-weight: ${fontWeight.bold};
               display: inline-block;
             }
             .mobile {
-              font-weight: 700;
+              font-weight: ${fontWeight.bold};
               display: none;
             }
           }
@@ -89,7 +88,7 @@ export const TopStyled = styled.div`
         }
       }
     }
-    ${pc(`
+    ${screenUnder(screenWidth.pc)} {
       .container {
         .left {
           .text {
@@ -102,17 +101,19 @@ export const TopStyled = styled.div`
             width: 211px;
           }
         }
-      }`)}
-    ${wideTab(`
+      }
+    }
+    ${screenUnder(screenWidth.wideTab)} {
       .container {
         .left {
           .text {
             margin-top: 35%;
           }
         }
-      }`)}
-    ${tab(`
-      height: calc(70vh - ${HEADER_HEIGHT});
+      }
+    }
+    ${screenUnder(screenWidth.tab)} {
+      height: calc(70vh - ${headerHeight});
       .container {
         .left {
           .text {
@@ -126,9 +127,9 @@ export const TopStyled = styled.div`
           }
         }
       }
-    `)}
-    ${wideSp(`
-      height: calc(100vh - ${HEADER_HEIGHT});
+    }
+    ${screenUnder(screenWidth.wideSp)} {
+      height: calc(100vh - ${headerHeight});
       .container {
         .left {
           .text {
@@ -142,44 +143,44 @@ export const TopStyled = styled.div`
           }
         }
       }
-    `)}
-    ${sp(`
-      height: calc(65vh - ${HEADER_HEIGHT});
-        .container {
-          grid-template-columns: 200px 170px;
-          .left {
-            .text {
-              margin-top: 50px;
-              h2 {
-                .desktop {
-                  display: none;
-                }
-                .mobile {
-                  display: inline-block;
-                }
+    }
+    ${screenUnder(screenWidth.sp)} {
+      height: calc(65vh - ${headerHeight});
+      .container {
+        grid-template-columns: 200px 170px;
+        .left {
+          .text {
+            margin-top: 50px;
+            h2 {
+              .desktop {
+                display: none;
               }
-            }
-            .buttons {
-              flex-direction: column;
-              justify-content: center;
-              align-items: stretch;
-              margin: 10px auto 0 0;
-              button {
-                width: 150px;
-                margin: 0 0 20px 30px;
-              }
-              .sign-in-button {
-                width: 150px;
+              .mobile {
+                display: inline-block;
               }
             }
           }
+          .buttons {
+            flex-direction: column;
+            justify-content: center;
+            align-items: stretch;
+            margin: 10px auto 0 0;
+            button {
+              width: 150px;
+              margin: 0 0 20px 30px;
+            }
+            .sign-in-button {
+              width: 150px;
+            }
+          }
         }
-    `)}
+      }
+    }
   }
   .features {
-    background-color: ${GHOST_WHITE};
+    background-color: ${colors.ghostWhite};
     h2 {
-      font-weight: 700;
+      font-weight: ${fontWeight.bold};
       text-align: center;
       padding-top: 50px;
       margin-bottom: 50px;
@@ -190,7 +191,7 @@ export const TopStyled = styled.div`
       grid-template-rows: 450px;
       gap: 50px;
       justify-content: center;
-      max-width: ${CONTAINER_MAX_WIDTH};
+      max-width: ${containerMaxWidth};
       margin: 0 auto;
       .feature {
         img {
@@ -198,13 +199,13 @@ export const TopStyled = styled.div`
           width: 300px;
         }
         h3 {
-          font-weight: 700;
+          font-weight: ${fontWeight.bold};
           text-align: center;
           margin-bottom: 5px;
         }
       }
     }
-    ${wideTab(`
+    ${screenUnder(screenWidth.wideTab)} {
       .container {
         grid-template-columns: 200px 200px 200px;
         .feature {
@@ -215,8 +216,8 @@ export const TopStyled = styled.div`
           }
         }
       }
-    `)}
-    ${tab(`
+    }
+    ${screenUnder(screenWidth.tab)} {
       .container {
         grid-template-columns: 300px;
         grid-template-rows: 450px 450px 450px;
@@ -228,27 +229,27 @@ export const TopStyled = styled.div`
           }
         }
       }
-    `)}
+    }
   }
   .q-a {
     padding-bottom: 100px;
-    background-color: ${WHITE};
+    background-color: ${colors.white};
     h2 {
-      font-weight: 700;
+      font-weight: ${fontWeight.bold};
       padding-top: 50px;
       text-align: center;
       margin-bottom: 50px;
     }
     .container {
-      max-width: ${CONTAINER_MAX_WIDTH};
+      max-width: ${containerMaxWidth};
       margin: 0 auto;
     }
   }
   .lets-try {
     padding: 50px 0 100px;
-    background-color: ${GHOST_WHITE};
+    background-color: ${colors.ghostWhite};
     h2 {
-      font-weight: 700;
+      font-weight: ${fontWeight.bold};
       text-align: center;
     }
     .buttons {
@@ -259,7 +260,7 @@ export const TopStyled = styled.div`
         margin-left: 30px;
         width: 100%;
       }
-      ${sp(`
+      ${screenUnder(screenWidth.sp)} {
         width: 100%;
         flex-direction: column;
         justify-content: center;
@@ -272,11 +273,11 @@ export const TopStyled = styled.div`
         .sign-in-button {
           width: 80%;
         }
-      `)}
+      }
     }
   }
   footer {
-    background-color: ${PRIMARY};
+    background-color: ${colors.primary};
     padding: 40px 0;
     .container {
       max-width: 960px;
@@ -289,14 +290,14 @@ export const TopStyled = styled.div`
         display: inline-block;
         margin-right: 20px;
         a {
-          color: ${FONT_COLOR_WHITE};
+          color: ${fontColors.white};
           text-decoration: none;
           ${hover};
         }
       }
     }
     .copy-right {
-      color: ${FONT_COLOR_WHITE};
+      color: ${fontColors.white};
       font-size: 14px;
       padding-top: 20px;
       text-align: center;

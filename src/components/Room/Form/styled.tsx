@@ -1,17 +1,20 @@
 import styled from "styled-components";
-import { CONTAINER_MAX_WIDTH, PRIMARY, WHITE } from "@/utils/style/variables";
+import { colors, containerMaxWidth } from "@/utils/style/variables";
+
+export const formHeight = "70px";
 
 export const FormStyled = styled.div`
+  height: ${formHeight};
   position: absolute;
   bottom: 0;
   width: 100%;
-  background-color: ${PRIMARY};
+  background-color: ${colors.primary};
   padding-top: 10px;
   form {
     width: 94%;
-    max-width: ${CONTAINER_MAX_WIDTH};
+    max-width: ${containerMaxWidth};
     margin: 0 auto;
-    background-color: ${WHITE};
+    background-color: ${colors.white};
     border-radius: 5px;
     position: relative;
     display: flex;

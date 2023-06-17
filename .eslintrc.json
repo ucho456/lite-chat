@@ -87,11 +87,6 @@
             "pattern": "@/**",
             "group": "parent",
             "position": "before"
-          },
-          {
-            "pattern": "*.scss",
-            "group": "parent",
-            "position": "before"
           }
         ]
       }
