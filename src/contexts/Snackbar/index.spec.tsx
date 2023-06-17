@@ -7,7 +7,7 @@ describe("SnackbarContextProvider", () => {
   test("provides correct context values", async () => {
     const message = "Test message";
     const severity: AlertColor = "success";
-    const openSnackbarMock = vi.fn();
+    const openSnackbarMock = jest.fn();
 
     render(
       <SnackbarContext.Provider

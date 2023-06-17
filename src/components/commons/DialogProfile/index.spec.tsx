@@ -15,10 +15,6 @@ describe("DialogProfile", () => {
   beforeEach(() => {
     render(<DialogProfile you={roomUser} />);
   });
-  afterEach(() => {
-    vi.clearAllMocks();
-    vi.resetAllMocks();
-  });
   test("renders user name", () => {
     const nameElement = screen.getByText(roomUser.name);
     expect(nameElement).toBeInTheDocument();

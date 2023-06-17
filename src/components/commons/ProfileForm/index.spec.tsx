@@ -10,27 +10,27 @@ describe("ProfileForm", () => {
     era: "over 18",
     selfIntroduction: "",
   };
-  const mockSetInputUser = vi.fn();
+  const mockSetInputUser = jest.fn();
   beforeEach(() => {
     render(
       <ProfileForm inputUser={inputUser} setInputUser={mockSetInputUser} />,
     );
   });
   afterEach(() => {
-    vi.clearAllMocks();
-    vi.resetAllMocks();
+    jest.clearAllMocks();
+    jest.resetAllMocks();
   });
-  // test("updates photo when file is selected", async () => {
-  // const file = new File(["(photo content)"], "photo.jpg", {
-  //   type: "image/jpeg",
-  // });
-  // const photoInput = screen.getByTestId("photo");
-  // Object.defineProperty(photoInput, "files", {
-  //   value: [file],
-  // });
-  // await fireEvent(photoInput, new Event("change"));
-  // expect(mockSetInputUser.mock.calls[0][0].photo).toBe(file);
-  // });
+  /*test("updates photo when file is selected", async () => {
+    const file = new File(["(photo content)"], "photo.jpg", {
+      type: "image/jpeg",
+    });
+    const photoInput = screen.getByTestId("photo");
+    Object.defineProperty(photoInput, "files", {
+      value: [file],
+    });
+    await userEvent.upload(photoInput, file);
+    expect(mockSetInputUser.mock.calls[0][0].photo).toBe(file);
+  }); */
   test("updates name when input value is changed", async () => {
     const nameInput = screen.getAllByRole("textbox")[0];
     const newName = "A";
