@@ -3,11 +3,10 @@ import userEvent from "@testing-library/user-event";
 import DialogConfirm from "@/components/commons/DialogConfirm";
 
 describe("DialogConfirm", () => {
-  const mockOnClickAgree = vi.fn();
-  const mockOnClickReject = vi.fn();
+  const mockOnClickAgree = jest.fn();
+  const mockOnClickReject = jest.fn();
   afterEach(() => {
-    vi.clearAllMocks();
-    vi.resetAllMocks();
+    jest.clearAllMocks();
   });
   test("renders with the correct message", () => {
     const message = "Are you sure?";

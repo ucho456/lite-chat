@@ -1,0 +1,19 @@
+{
+  "roots": [
+    "<rootDir>/src"
+  ],
+  "testMatch": [
+    "**/?(*.)+(spec|test).+(ts|tsx|js)"
+  ],
+  "transform": {
+    "^.+\\.(ts|tsx)$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "^@/(.*)$": "<rootDir>/src/$1"
+  },
+  "testEnvironment": "jest-environment-jsdom",
+  "setupFilesAfterEnv": [
+    "@testing-library/jest-dom/extend-expect",
+    "<rootDir>/src/utils/test/setup.ts"
+  ]
+}
