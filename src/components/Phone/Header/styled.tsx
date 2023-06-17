@@ -1,6 +1,11 @@
 import styled from "styled-components";
 import { hover } from "@/utils/style/mixins";
-import { CONTAINER_MAX_WIDTH, FONT_COLOR_WHITE, HEADER_HEIGHT, PRIMARY } from "@/utils/style/variables";
+import {
+  CONTAINER_MAX_WIDTH,
+  FONT_COLOR_WHITE,
+  HEADER_HEIGHT,
+  PRIMARY,
+} from "@/utils/style/variables";
 
 export const PhoneHeaderStyled = styled.div`
   height: ${HEADER_HEIGHT};
@@ -28,4 +33,4 @@ export const PhoneHeaderStyled = styled.div`
       padding: 5px 0 0 5px;
     }
   }
-`
+`;

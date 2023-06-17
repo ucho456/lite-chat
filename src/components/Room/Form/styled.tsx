@@ -35,4 +35,4 @@ export const FormStyled = styled.div`
       margin: 0 0 0 auto;
     }
   }
-`
+`;
