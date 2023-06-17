@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { hover } from "@/utils/style/mixins";
+import { fontWeight } from "@/utils/style/variables";
 
 export const DialogProfileStyled = styled.div`
   .user-column {
@@ -25,7 +26,7 @@ export const ContainerStyled = styled.div`
     grid-row: 2 / 3;
     padding: 20px;
     .name {
-      font-weight: bold;
+      font-weight: ${fontWeight.bold};
     }
   }
 `;
